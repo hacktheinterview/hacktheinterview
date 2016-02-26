@@ -1,0 +1,1 @@
+web: gunicorn hacktheinterview.wsgi --log-file -
