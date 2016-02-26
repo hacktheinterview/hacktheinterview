@@ -8,6 +8,7 @@ from backend.views import *
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^$', home),
 	url(r'^home/$',home),
     # Examples:
     # url(r'^$', 'Site.views.home', name='home'),
