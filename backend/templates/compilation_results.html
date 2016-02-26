@@ -1,0 +1,27 @@
+<h3 class="header smaller lighter">
+	{% if status == "ACCEPTED" %}
+	<span id="compilation_status" class="green"> Well ! You have cleared all sample test cases. Go Ahead and Submit !  <i class="icon-2 icon-thumbs-up"></i></span>
+	{% else %}
+	<span id="compilation_status" class="red">Sorry ! You did not clear the sample test cases. Please Try Again <i class="icon-2 icon-thumbs-down"></i></span>
+	{% endif %}
+</h3>
+
+
+{% if status == "COMPILATION_ERROR" %}
+<div id="compiler_log_div">
+	<strong>Compilation log</strong><br>
+	<pre id="compiler_log_text">{{ compilation_log }}</pre>
+</div>
+{% else %}
+<div id="output_div">
+	{% for unitrun_result in unitrun_results %}
+		<hr><strong>Test case #{{ unitrun_result.testcase_no }}</strong><br>
+		<pre class="output">{{ unitrun_result.output }}</pre>
+		{% if unitrun_result.result == "ACCEPTED" %}
+			<span class="green">Verdict : ACCEPTED <i class="icon-2 icon-thumbs-up"></i></span>
+		{% else %}
+			<span class="red">Verdict : {{ unitrun_result.result }} <i class="large icon-thumbs-down"></i></span>
+		{% endif %}
+	{% endfor %}
+</div>
+{% endif %}

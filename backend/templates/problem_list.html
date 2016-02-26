@@ -1,0 +1,31 @@
+<!-- LIST OF Problems ACOORDING TO TYPES-->
+<div id="problem_list_container">
+{% for problem in problems %}
+<div class="profile-activity">
+	<div style="position:relative;">
+		<h4 class="blue" style="font-weight: lighter;">{{ problem.title}}
+			<span style="right:0px; position:absolute; font-size:13px;">
+				<i class="icon-star orange"></i>
+				{{ problem.difficulty }} Points
+			</span>
+		</h4>
+	</div>
+	<div>
+		<p>{{ problem.previewtext }} </p>
+		<span>
+			<i class="icon-user blue"></i>
+			{{ problem.totalsubmission }} users attempted&nbsp;&nbsp;
+			<i class="icon-bar-chart green"></i>
+			{{ problem.accuracy }}% accuracy
+		</span>
+		<span class="pull-right">
+			<a class="btn btn-small btn-primary" >Submissions</a>
+			&nbsp;
+			<a class="btn btn-small btn-primary" href="/problem/{{ problem.problem_id }}/">Solve</a>
+		</span>
+		<br style="clear:both;"/>
+	</div>
+</div>
+{% endfor %}
+</div>
+<!-- LIST OF problemS ACOORDING TO TYPES ENDS -->

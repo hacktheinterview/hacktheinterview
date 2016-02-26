@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<script>
+	$(document).ready(function(){
+		$("#compilation_result").hide();
+		$("#compiler_log_div").hide();
+		$("#output_div").hide();
+		$("#loading_spinner").hide();
+	});
+	$("#submit_code").click(ace.click_event, function() {
+		bootbox.confirm("Are you sure you want to submit ?", function(result) {
+			if(result) {
+				var language = $("#language_tabs .active").attr("id");
+				var problem_id = $("#problem_id").text();
+				var source_code = "";
+				if(language === "C")
+					source_code = c_editor.getValue();
+				else if(language === "CPP")
+					source_code = cpp_editor.getValue();
+				$("#submit_code").attr("disabled", "disabled");
+				var post_data = {"source_code":source_code, "language":language,"problem_id":problem_id};
+				bootbox.alert(post_data);
+				$.post("/submit/", post_data, function(result_data){
+					bootbox.alert(result_data);
+					window.location.href = result_data["redirect_url"];
+				});
+			}
+		});
+	});
+
+	$("#compile_and_test").click(function(){
+		var language = $("#language_tabs .active").attr("id");
+		var source_code = "";
+		var problem_id = $("#problem_id").text();
+		if(language === "C")
+			source_code = c_editor.getValue();
+		else if(language === "CPP")
+			source_code = cpp_editor.getValue();
+
+		$("#compile_and_test").attr("disabled", "disabled");
+		$("#loading_spinner").show();
+
+		var post_data = {"source_code":source_code, "language":language,"problem_id":problem_id};
+		$.post("/compile_and_test/", post_data, function(result_data){
+			var run_id = result_data["run_id"];
+			bootbox.alert(run_id);		
+			
+			var interval = setInterval(function(){poll_compilation()}, 1000);
+			function poll_compilation() {
+				console.log("polling... ");
+				$.get("/get_compilation_status/", {'run_id' : run_id}, function(compilation_status_data){
+					console.log(compilation_status_data);
+					//clearInterval(interval);
+					if(compilation_status_data["status"] != "QUEUED"){
+						clearInterval(interval);
+						$("#compilation_result").show();
+
+						$.get("/get_compilation_result", {'run_id' : run_id}, function(compilation_result_data){
+							$("#compilation_result").html(compilation_result_data);
+						});
+						$("#compile_and_test").removeAttr('disabled');	
+						$("#loading_spinner").hide();
+					}
+				});
+			}
+
+		});
+	});
+</script>
+
+		

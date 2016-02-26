@@ -1,0 +1,62 @@
+{% load staticfiles %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="utf-8" />
+		<title>Hack the interview</title>
+
+		<meta name="description" content="This is page-header (.page-header &gt; h1)" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<!--basic styles-->
+
+		<link href="{% static "assets/css/bootstrap.min.css" %}" rel="stylesheet" />
+		<link href="{% static "assets/css/bootstrap-responsive.min.css" %}" rel="stylesheet" />
+		<link rel="stylesheet" href="{%static "assets/css/font-awesome.min.css" %}" />
+
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!--page specific plugin styles-->
+
+		<link rel="stylesheet" href="{% static "assets/css/prettify.css" %}"/>
+
+		<!--fonts-->
+
+		<link rel="stylesheet" href="{% static "assets/css/ace-fonts.css" %}" />
+
+		<!--ace styles-->
+
+		<link rel="stylesheet" href="{% static "assets/css/ace.min.css" %}" />
+		<link rel="stylesheet" href="{% static "assets/css/ace-responsive.min.css" %}" />
+		<link rel="stylesheet" href="{% static "assets/css/ace-skins.min.css" %}" />
+
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="{% static "assets/css/ace-ie.min.css" %}" />
+		<![endif]-->
+
+		<style type="text/css">
+			html,body {
+				height: 100%;
+				background-color: #f2f2f2;
+			}
+
+			#background_container {
+				background-color: #f2f2f2;
+			}
+
+			#mainest_container {
+				margin:0px 15%;
+				background-color:#fff;
+				padding:10px 20px;
+				-moz-box-shadow: 0px 0px 5px #888;
+				-webkit-box-shadow: 0px 0px 5px #888;
+				box-shadow: 0px 0px 5px #888;
+			}
+		</style>
+	</head>
+
+	<body>

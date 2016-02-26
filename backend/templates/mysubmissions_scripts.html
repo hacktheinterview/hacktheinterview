@@ -1,0 +1,10 @@
+{% load staticfiles %}
+<script src="{% static "assets/js/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "assets/js/jquery.dataTables.bootstrap.js" %}"></script>
+<script type="text/javascript">
+	$(function() {
+		var oTable1 = $('#mysubmissions').dataTable({
+			 "bSort": false,
+		});
+	});
+</script>

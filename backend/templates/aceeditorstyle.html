@@ -1,0 +1,37 @@
+{% load staticfiles %}
+
+<!--  scripts to load ACE-Code Editor -->
+<!--inline styles related to this page-->		
+
+<script src="{% static "assets/ace/src-min-noconflict/ace.js" %}" type="text/javascript" charset="utf-8"></script>
+<script>
+    var c_editor = ace.edit("c_editor");
+    c_editor.setTheme("ace/theme/dreamweaver");
+    c_editor.getSession().setMode("ace/mode/c_cpp");
+    c_editor.setShowPrintMargin(false);
+    c_editor.getSession().setUseWrapMode(true);
+    document.getElementById('c_editor').style.fontSize='15px';
+
+    var cpp_editor = ace.edit("cpp_editor");
+    cpp_editor.setTheme("ace/theme/dreamweaver");
+    cpp_editor.getSession().setMode("ace/mode/c_cpp");
+    cpp_editor.setShowPrintMargin(false);
+    cpp_editor.getSession().setUseWrapMode(true);
+    document.getElementById('cpp_editor').style.fontSize='15px';
+</script>
+
+<style type="text/css" media="screen">
+    #c_editor,#cpp_editor { 
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    .code_editor_container {
+        height: 500px;
+    }
+    .code_editor {
+        margin: 10px;
+    }
+</style>

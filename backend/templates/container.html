@@ -1,0 +1,45 @@
+<div class="main-container container-fluid">
+	<div class="sidebar" id="sidebar"></div>
+	<div class="main-content" style="margin-right:190px;">
+		<div class="breadcrumbs" id="breadcrumbs">
+			<ul class="breadcrumb">
+				<li>
+					<i class="icon-home home-icon"></i>
+					<a href="#">Home</a>
+
+					<span class="divider">
+						<i class="icon-angle-right arrow-icon"></i>
+					</span>
+				</li>
+				<li class="active">Amazon Codesprint</li>
+			</ul><!--.breadcrumb-->
+		</div>
+		<div class="page-content">
+			<div class="row-fluid">
+				<div class="span12">
+					<!--PAGE CONTENT BEGINS-->
+					<div class="row-fluid">
+						<div class="span4" id="questions" style="margin-top:40px;">
+						{% include 'problem_type_sidebar.html'%}
+						</div>		
+							
+						<div class="span8">
+							<div>
+								<h3 class="header smaller lighter blue" style="margin-bottom:0px;">
+									&nbsp;Simple DataStructure Problems
+								</h3>
+							</div>
+							{% include 'problem_list.html' %}
+							<!--/.page-header-->							
+						</div><!-- span8 ends-->
+					</div><!-- row-fluid ends-->
+				</div><!-- span 12 ends -->
+			</div><!-- row-fuild ends -->
+		</div>
+	</div><!--/.main-content-->
+</div><!--/.main-container-->
+		
+
+		<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+			<i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>

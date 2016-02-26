@@ -1,0 +1,84 @@
+<div id="background_container">
+<div id="mainest_container">
+
+	<div class="breadcrumbs" id="breadcrumbs">
+		<ul class="breadcrumb">
+			<li>
+				<i class="icon-home home-icon"></i>
+				<a href="#">Home</a>
+
+				<span class="divider">
+					<i class="icon-angle-right arrow-icon"></i>
+				</span>
+			</li>
+			<li><a href="typography.html">Amazon Codesprint</a>
+				<span class="divider">
+					<i class="icon-angle-right arrow-icon"></i>
+				</span>
+			</li>
+			<li class="active">
+				Majority
+			</li>
+		</ul><!--.breadcrumb-->
+
+		<div class="nav-search" id="nav-search">
+			<form class="form-search">
+				<span class="input-icon">
+					<input type="text" placeholder="Search ..." class="input-small nav-search-input" id="nav-search-input" autocomplete="off" />
+					<i class="icon-search nav-search-icon"></i>
+				</span>
+			</form>
+		</div><!--#nav-search-->
+	</div>
+
+	<h3 class="header smaller lighter blue">
+		{{problem.title}}
+		<small style="margin-top:10px; float:right;">
+			<i class="icon-star orange"></i>
+		{{problem.difficulty}}
+		</small>
+		<span style="display:none" id="problem_id">{{ problem.problem_id}}</span>
+	</h3>
+
+	{% include 'problem_text.html' %}
+	
+	<hr>
+
+	<div class="tabbable" id="code_editor">
+	    <ul class="nav nav-tabs" id="language_tabs">
+	        <li class="active" id="C">
+	            <a data-toggle="tab" href="#c_editor_container">C</a>
+	        </li>
+	        <li id="CPP">
+	            <a data-toggle="tab" href="#cpp_editor_container">C++</a>
+	        </li>
+	    </ul> <!-- #language_tabs -->
+	    <div class="tab-content" id="code_editors">
+	        <div class="tab-pane active code_editor_container" id="c_editor_container">
+	            <pre class="code_editor" id="c_editor">{{problem.problem_code_c}}</pre>
+	        </div>
+	        <div class="tab-pane code_editor_container" id="cpp_editor_container">
+	            <pre class="code_editor" id="cpp_editor">{{problem.problem_code_cpp}}</pre>
+	        </div>
+	    </div> <!-- #code_editors -->
+	</div> <!-- #code_editor -->
+		<br>
+		<ul class="nav nav-pills">
+			<li class="active">
+				<a href="#" id="compile_and_test">Compile And Test</a>
+			</li>
+			<li class="active">
+				<a href="#" id="submit_code">Submit</a>
+			</li>
+		</ul>
+	
+	<i id="loading_spinner" class="icon-spinner icon-spin blue bigger-200"></i>
+
+	<hr>
+
+	<div id="compilation_result" style="margin-top:12px">
+	    
+	</div>
+
+</div>
+</div>

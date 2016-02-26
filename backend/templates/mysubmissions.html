@@ -1,0 +1,54 @@
+{% include 'header.html' %}
+{% include 'navbar.html' %}
+
+<div id="background_container">
+	<div id="mainest_container">
+		<table id="mysubmissions" class="table table-striped table-bordered table-hover">
+			<thead>
+				<tr>
+					<th class="center">Problem</th>
+					<th class="center">Language</th>
+					<th class="center"><i class="icon-calendar bigger-110"></i>&nbsp;Time</th>
+					<th class="center">Status</th>
+					<th class="center">More Info</th>
+				</tr>
+			</thead>
+
+			<tbody >
+				{% for submission in submissions %}
+				<tr>
+					<td class="center">
+						<a href="/problem/{{submission.problem_id}}">{{ submission.problem.title }}</a>
+					</td>
+
+					<td class="center">{{ submission.language }}</td>
+					<td class="center">{{ submission.submission_time }}</td>
+
+					<td class="center status">						
+						{% if submission.status == "ACCEPTED" %}
+							<span style="font-size:1.1em;" class="label label-success  arrowed-in-right arrowed-in">&nbsp;&nbsp;Accepted&nbsp;&nbsp;</span>
+						{% elif submission.status == "Time Limit Exceeded" %}
+							<span class="label label-warning">&nbsp;&nbsp;{{ submission.status}}&nbsp;&nbsp;</span>
+						{% elif submission.status == "COMPILATION_ERROR" %}
+							<span class="label label-warning">&nbsp;&nbsp;Compilation Error&nbsp;&nbsp;</span>
+						{% else %}
+							<span class="label label-important">&nbsp;&nbsp;{{ submission.status}}&nbsp;&nbsp;</span>
+						{% endif %}
+					</td>
+					<td class="center">
+						<a href="/submissions/{{submission.run_id }}">
+							<button class="btn btn-mini "  style="border-radius:10px;">
+								<span class="hidden-phone">View Code</span>
+								<i class="icon-share-alt"></i>
+							</button>
+							</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% include 'scripts.html' %}
+{% include 'mysubmissions_scripts.html' %}
+{% include 'footer.html' %}
