@@ -5,7 +5,7 @@ Base Project cloned from https://github.com/heroku/heroku-django-template
 
 ## Local Machine Set up
 Clone git hub repo
-    $ git clone git@github.com:hacktheinterview/hacktheinterview.git
+    ```git clone git@github.com:hacktheinterview/hacktheinterview.git```
         
 Install requirements.txt
     $ sudo pip install -r requirements.txt
