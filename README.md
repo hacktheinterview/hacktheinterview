@@ -4,11 +4,11 @@ We use Heroku. Get heroku credentails from Rad.
 Base Project cloned from https://github.com/heroku/heroku-django-template
 
 ## Local Machine Set up
-    # Clone git hub repo
-        $ git clone git@github.com:hacktheinterview/hacktheinterview.git
+Clone git hub repo
+    $ git clone git@github.com:hacktheinterview/hacktheinterview.git
         
-    # Install requirements.txt
-        $ sudo pip install -r requirements.txt
+Install requirements.txt
+    $ sudo pip install -r requirements.txt
     
     # Install postgresSQL from http://postgresapp.com/
         # Instructions to create local db
