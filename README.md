@@ -1,11 +1,9 @@
-# Heroku Django Starter Template
+# Hack The Interview Set Up
+Base Project cloned from https://github.com/heroku/heroku-django-template
 
-An utterly fantastic project starter template for Django 1.9.
+## Local Machine Set up
 
-## Features
-
-- Production-ready configuration for Static Files, Database Settings, Gunicorn, etc.
-- Enhancements to Django's static file serving functionality via WhiteNoise
+$ git clone git@github.com:hacktheinterview/hacktheinterview.git
 
 ## How to Use
 
@@ -25,16 +23,16 @@ You can replace ``helloworld`` with your desired project name.
 
 ## Deployment to Heroku
 
-    $ git init
+    $ touch file.txt
     $ git add -A
-    $ git commit -m "Initial commit"
+    $ git commit -m "Commit"
 
     $ heroku create
     $ git push heroku master
 
-    $ heroku run python manage.py migrate
+    Always run migrate
+    $ heroku run python manage.py migrate 
 
-See also, a [ready-made application](https://github.com/heroku/python-getting-started), ready to deploy.
 
 ## Further Reading
 
