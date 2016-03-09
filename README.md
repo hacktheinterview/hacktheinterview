@@ -1,9 +1,32 @@
 # Hack The Interview Set Up
+We use Heroku. Get heroku credentails from Rad.
+
 Base Project cloned from https://github.com/heroku/heroku-django-template
 
 ## Local Machine Set up
+    # Clone git hub repo
+    $ git clone git@github.com:hacktheinterview/hacktheinterview.git
+    
+    # Install requirements.txt
+    $ sudo pip install -r requirements.txt
+    
+    # Install postgresSQL from http://postgresapp.com/
+    # Instructions to create local db
+    
+    # Login
+    $ psql
 
-$ git clone git@github.com:hacktheinterview/hacktheinterview.git
+    # Create database and user
+    $ CREATE DATABASE ht;
+    $ CREATE USER hack_user WITH PASSWORD 'hack_pass';
+    $ GRANT ALL PRIVILEGES ON DATABASE ht TO hack_user;
+    
+    # Set default encoding to UTF-8 and timezone to UTC which Django expects.
+
+    $ ALTER ROLE hack_user SET client_encoding TO 'utf8';
+    $ ALTER ROLE hack_user SET default_transaction_isolation TO 'read committed';
+    $ ALTER ROLE hack_user SET timezone TO 'UTC';
+
 
 ## How to Use
 
@@ -13,15 +36,19 @@ To use this project, follow these steps:
 2. Install Django (`$ pip install django`)
 3. Create a new project using this template
 
-## Creating Your Project
 
-Using this template to create a new Django app is easy::
+## Github workflow
 
-    $ django-admin.py startproject --template=https://github.com/heroku/heroku-django-template/archive/master.zip --name=Procfile helloworld
-
-You can replace ``helloworld`` with your desired project name.
-
-## Deployment to Heroku
+    $ git checkout -b feature-branch
+    $ touch new-file.txt
+    $ git commit -a -m 'Added new-file.txt'
+    $ git push origin feature-branch
+    
+    # Go to https://github.com/hacktheinterview/hacktheinterview to create a Pull Request.
+    # Circle CI runs your code 
+    # Merge the code into master
+    
+## Deployment Example to Heroku
 
     $ touch file.txt
     $ git add -A
