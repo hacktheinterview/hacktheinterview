@@ -14,23 +14,23 @@ Install requirements.txt
     
 Install postgresSQL from http://postgresapp.com/
 
-    $ psql
+    psql
 
 Create database and user
 
-    $ CREATE DATABASE ht;
-    $ CREATE USER hack_user WITH PASSWORD 'hack_pass';
-    $ GRANT ALL PRIVILEGES ON DATABASE ht TO hack_user;
+    CREATE DATABASE ht;
+    CREATE USER hack_user WITH PASSWORD 'hack_pass';
+    GRANT ALL PRIVILEGES ON DATABASE ht TO hack_user;
             
 Set default encoding to UTF-8 and timezone to UTC which Django expects.
 
-    $ ALTER ROLE hack_user SET client_encoding TO 'utf8';
-    $ ALTER ROLE hack_user SET default_transaction_isolation TO 'read committed';
-    $ ALTER ROLE hack_user SET timezone TO 'UTC';
+    ALTER ROLE hack_user SET client_encoding TO 'utf8';
+    ALTER ROLE hack_user SET default_transaction_isolation TO 'read committed';
+    ALTER ROLE hack_user SET timezone TO 'UTC';
 
 Go to project root and run the following to run the web-server locally
 
-    $heroku local -p 5767
+    heroku local -p 5767
         
 ## Github workflow
 
