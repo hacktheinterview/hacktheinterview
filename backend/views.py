@@ -13,13 +13,18 @@ from django.views.decorators.csrf import csrf_exempt
 from rq import Queue
 from worker import conn
 
+from backend.runner import Runner
+
 q = Queue(connection=conn)
+
+runner = Runner()
 
 def count_words_at_url(url):
 	print "Counting words for task"
-	resp = requests.get(url)
-	print len(resp.text.split())
-	return len(resp.text.split())
+	print runner.submit("print('42')", 'python')
+	# resp = requests.get(url)
+	# print len(resp.text.split())
+	# return len(resp.text.split())
 
 def getmysubmissions(request):
 	user_id = 1
