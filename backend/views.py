@@ -55,6 +55,7 @@ def submit(request):
 	print redirect_url
 	return HttpResponse(simplejson.dumps({'redirect_url':redirect_url}), 'application/json')
 
+@csrf_exempt
 def test_url(request):
 	print "Request came"
 	# q.enqueue(count_words_at_url, 'http://heroku.com')
