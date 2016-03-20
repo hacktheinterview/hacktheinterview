@@ -16,9 +16,9 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-TEMPLATE_DIRS = (PROJECT_ROOT,)
+# TEMPLATE_DIRS = (PROJECT_ROOT,)
 
-print TEMPLATE_DIRS
+# print TEMPLATE_DIRS
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -56,22 +56,22 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'hacktheinterview.urls'
 
-# TEMPLATES = (
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [PROJECT_ROOT],
-#         'APP_DIRS': False,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#             'debug': DEBUG,
-#         },
-#     },
-# )
+TEMPLATES = (
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [PROJECT_ROOT],
+        'APP_DIRS': False,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': DEBUG,
+        },
+    },
+)
 
 WSGI_APPLICATION = 'hacktheinterview.wsgi.application'
 
