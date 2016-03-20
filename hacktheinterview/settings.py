@@ -26,6 +26,10 @@ SECRET_KEY = "nl507!qy@9xw%qxqexy=9dw)1kh=-5oqx7&7b^!vjvf^-k5-s9"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+IDEONE_USERNAME = "aayushbahuguna"
+
+IDEONE_PASSWORD = "abcde12345"
+
 # Application definition
 
 INSTALLED_APPS = (

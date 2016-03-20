@@ -97,7 +97,6 @@ def submissions(request, offset):
 
 	return render_to_response("submissions.html", { 'submission': submission, 'unitruns': unitruns })
 
-
 def problem(request,offset):
 	problem_no = int(offset)
 	rows = list(Problem.objects.filter(problem_id=problem_no))

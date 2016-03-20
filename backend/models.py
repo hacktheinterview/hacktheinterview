@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-from backend.enums import ProblemCategory, ProblemDifficultyType, ProblemName, CompanyName, LanguageType
+from backend.enums import ProblemCategory, ProblemDifficultyType, ProblemName, CompanyName, LanguageType, \
+	TestCaseSubmissionStatus
 
 
 class Company(models.Model):
@@ -8,6 +9,8 @@ class Company(models.Model):
 
 
 class Problem(models.Model):
+	"""
+	"""
 	name = models.CharField(max_length=255, choices=ProblemName.choices())
 	category = models.CharField(max_length=255, choices=ProblemCategory.choices())
 	difficulty = models.CharField(max_length=255, choices=ProblemDifficultyType.choices())
@@ -20,23 +23,31 @@ class Problem(models.Model):
 
 
 class TestCase(models.Model):
+	"""
+	"""
 	problem = models.ForeignKey(Problem, related_name="testCases")
 
 
 class Candidate(models.Model):
+	"""
+	"""
 	name = models.CharField(max_length=255)
 	user = models.OneToOneField(User, related_name="candidate", on_delete=models.CASCADE)
 
 
 class Submission(models.Model):
+	"""
+	Stores a submission made by candidate
+	"""
 	problem = models.ForeignKey(Problem, related_name="submissions")
 	candidate = models.ForeignKey(Candidate, related_name="submissions")
 	language = models.CharField(max_length=255, choices=LanguageType.choices())
 
-	class Meta:
-		unique_together = ('problem', 'candidate')
 
-
+class TestCaseSubmission(models.Model):
+	testCase = models.ForeignKey(TestCase, related_name='testCaseSubmissions')
+	submission = models.ForeignKey(Submission, related_name='submissions')
+	status = models.CharField(max_length=255, choices=TestCaseSubmissionStatus.choices())
 
 
 
