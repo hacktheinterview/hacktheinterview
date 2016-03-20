@@ -1,11 +1,5 @@
 from backend.utils.model_choice_enum import ModelChoicesEnum, EnumValue
 
-
-class ProblemName(ModelChoicesEnum):
-	# ARRAY
-	MIN_STEPS_IN_INFINITE_GRID = EnumValue("MIN_STEPS_IN_INFINITE_GRIDBOOKMARK", "Min Steps in Infinite Grid")
-
-
 class ProblemSubCategory(ModelChoicesEnum):
 	# ARRAY
 	ARRAY_MATH            = EnumValue("ARRAY_MATH", "Math")
@@ -21,16 +15,10 @@ class ProblemCategory(ModelChoicesEnum):
 	LINKED_LIST = EnumValue("LINKED_LIST", "Linked List")
 
 
-class ProblemDifficultyType(ModelChoicesEnum):
+class ProblemDifficulty(ModelChoicesEnum):
 	EASY   = EnumValue("EASY", "Easy")
 	MEDIUM = EnumValue("MEDIUM", "Medium")
 	HARD   = EnumValue("HARD", "Hard")
-
-
-class CompanyName(ModelChoicesEnum):
-	GOOGLE    = EnumValue("GOOGLE", "Google")
-	FACEBOOK  = EnumValue("FACEBOOK", "Facebook")
-	MICROSOFT = EnumValue("MICROSOFT", "Microsoft")
 
 
 class LanguageName(ModelChoicesEnum):
@@ -67,4 +55,3 @@ class TestCaseSubmissionResult(ModelChoicesEnum):
 	MEMORY_LIMIT_EXCEEDED = EnumValue("17", "Memory Limit Exceeded")
 	ILLEGAL_SYSTEM_CALL   = EnumValue("19", "Illegal System Call")
 	INTERNAL_ERROR        = EnumValue("20", "Internal Error")
-

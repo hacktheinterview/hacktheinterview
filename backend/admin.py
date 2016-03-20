@@ -3,8 +3,7 @@ from backend.models import *
 
 admin.site.register(Problem)
 admin.site.register(Submission)
-admin.site.register(Submission_unitrun)
-admin.site.register(Problem_Functions)
+admin.site.register(TestCase)
 
 class ProblemAdmin(admin.ModelAdmin):
 	pass

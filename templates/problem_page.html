@@ -1,0 +1,375 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta name="description" content="bootstrap admin template">
+  <meta name="author" content="">
+  <title>Page Title</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="{% static "global/css/bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "global/css/bootstrap-extend.min.css" %}">
+  <link rel="stylesheet" href="{% static "assets/css/site.min.css" %}">
+
+  <link rel="stylesheet" href="{% static "global/vendor/ace/ace.css">
+  <!-- Fonts -->
+
+  <link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+  <link rel="stylesheet" href="{% static "global/fonts/web-icons/web-icons.min.css">
+</head>
+
+<body style="font-size:18px;" class="layout-boxed">
+  <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <nav class="site-navbar navbar navbar-default navbar-inverse navbar-static-top navbar-mega"
+  role="navigation">
+
+    <div class="navbar-container container-fluid">
+      <!-- Navbar Collapse -->
+      <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+        <!-- Navbar Toolbar -->
+        <ul class="nav navbar-toolbar navbar-left navbar-toolbar-left">
+            <a class="navbar-brand" href="javascript:void(0)">Hack The Interview</a>
+        </ul>
+        <!-- End Navbar Toolbar -->
+        <!-- Navbar Toolbar Right -->
+        <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+          <li class="dropdown">
+            <a class="navbar-avatar dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"
+            data-animation="scale-up" role="button">
+              <span class="avatar avatar-online">
+                <img src="{% static "global/portraits/5.jpg" %}" alt="...">
+                <i></i>
+              </span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li role="presentation">
+                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</a>
+              </li>
+              <li role="presentation">
+                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Billing</a>
+              </li>
+              <li role="presentation">
+                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Settings</a>
+              </li>
+              <li class="divider" role="presentation"></li>
+              <li role="presentation">
+                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
+              </li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false"
+            data-animation="scale-up" role="button">
+              <i class="icon wb-bell" aria-hidden="true"></i>
+              <span class="badge badge-danger up">5</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
+              <li class="dropdown-menu-header" role="presentation">
+                <h5>NOTIFICATIONS</h5>
+                <span class="label label-round label-danger">New 5</span>
+              </li>
+              <li class="list-group" role="presentation">
+                <div data-role="container">
+                  <div data-role="content">
+                    <a class="list-group-item" href="javascript:void(0)" role="menuitem">
+                      <div class="media">
+                        <div class="media-left padding-right-10">
+                          <i class="icon wb-order bg-red-600 white icon-circle" aria-hidden="true"></i>
+                        </div>
+                        <div class="media-body">
+                          <h6 class="media-heading">A new order has been placed</h6>
+                          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">5 hours ago</time>
+                        </div>
+                      </div>
+                    </a>
+                    <a class="list-group-item" href="javascript:void(0)" role="menuitem">
+                      <div class="media">
+                        <div class="media-left padding-right-10">
+                          <i class="icon wb-chat bg-orange-600 white icon-circle" aria-hidden="true"></i>
+                        </div>
+                        <div class="media-body">
+                          <h6 class="media-heading">Message received</h6>
+                          <time class="media-meta" datetime="2015-06-10T12:34:48+08:00">3 days ago</time>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="dropdown-menu-footer" role="presentation">
+                <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
+                  <i class="icon wb-settings" aria-hidden="true"></i>
+                </a>
+                <a href="javascript:void(0)" role="menuitem">
+                    All notifications
+                  </a>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+  <!-- Page -->
+  <div class="page animsition">
+    <div class="page-header">
+      <ol class="breadcrumb">
+        <li><a href="../index.html">Home</a></li>
+        <li class="active">Basic UI</li>
+      </ol>
+
+    </div>
+
+    <!-- Page Content -->
+    <div class="page-content container-fluid">
+        <div class="col-xs-12">
+            <div class="row">
+
+            <div class="col-xs-12 col-xlg-9 col-md-9 col-sm-height">
+              <div class="panel panel-bordered">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Reverse a Linked List</h3>
+                </div>
+                <div class="panel-body">
+                    <p> Suppose a sorted array is rotated at some pivot unknown to you beforehand.</p>
+                    <br/>
+                    <p> (i.e., <code>0 1 2 4 5 6 7</code>  might become <code>4 5 6 7 0 1 2</code>).</p>
+                    <br/>
+                    <p> You are given a target value to search. If found in the array, return its index, otherwise return -1. </p>
+                    <p> You may assume no duplicate exists in the array.</p>
+
+                    For example if the input array is <code>[4 5 6 7 0 1 2]</code> and <code>target = 4</code>,
+                    the output will be <code>0</code> because <code>4</code> is found in position <code>0</code>.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-xlg-3 col-md-3 col-sm-height">
+                <div class="panel panel-bordered">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Notes</h3>
+                    </div>
+
+                    <div class="panel-body" style="padding: 0px;">
+                        <div style="min-width:100%;">
+                            <pre class="ace-editor" id="notes-editor" data-plugin="ace" data-mode="text" style="margin:0; min-height: 250px;">
+
+                            </pre>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+              <div class="clearfix visible-md-block visible-lg-block hidden-xlg"></div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+                          <div class="panel-title">
+                              <div class="btn-group vertical-align-middle">
+                                  <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1"
+                                    data-toggle="dropdown" aria-expanded="false">C (gcc-4.8)
+                                        <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">C++11 (gcc-4.8)</a></li>
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">Python (python-2.7)</a></li>
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">Java 8 (oracle-jdk-1.8)</a></li>
+                                  </ul>
+                              </div>
+                              <div class="pull-right btn-group vertical-align-middle">
+                                  <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1"
+                                  data-toggle="dropdown" aria-expanded="false">Monokai
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">White Theme</a></li>
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">Green Theme</a></li>
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">Monokai</a></li>
+                                    <li role="presentation"><a href="javascript:void(0)" role="menuitem">Lime Light</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="panel-body" style="padding:0;">
+                          <div style="min-width:100%;">
+                              <pre class="ace-editor" id="c_editor" data-plugin="ace" data-mode="javascript" style="margin:0; min-height: 400px; padding: 0;">
+
+                              </pre>
+                          </div>
+                      </div>
+
+                      <div class="panel-footer">
+                          <div class="btn-group vertical-align-middle" aria-label="Basic example" role="group">
+                              <button type="button" class="btn btn-primary btn-default animation-hover animation-scale ">Save</button>
+                              <button type="button" class="btn btn-danger btn-default animation-hover animation-scale">Reset</button>
+                          </div>
+
+                          <div class="pull-right btn-group vertical-align-middle " aria-label="Basic example" role="group">
+                              <button type="button" class="btn btn-primary animation-hover animation-scale btn-default">&nbsp;&nbsp;Test&nbsp;&nbsp;</button>
+                              <button type="button" class="btn btn-danger  animation-hover animation-scale btn-default">Submit</button>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+
+                          <h3 class="panel-title"><span class="text-warning">Compiling your solution..</span></h3>
+                            <div class="panel-actions">
+                            <span class="text-warning"><i style="" class="fa fa-spinner fa-spin" ></i></span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+
+                          <h3 class="panel-title"><span class="text-success">Compilation Success</span></h3>
+                            <div class="panel-actions">
+                            <i style="color:green" class="icon wb-check" ></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+                          <h3 class="panel-title"><span class="text-danger">Compilation Error</span></h3>
+                            <div class="panel-actions">
+                            <a class="" data-toggle="panel-collapse" 
+                                  href="#">
+                              <i style="color:red" class="icon wb-alert-circle" ></i>
+                            </a>
+                          
+                          </div>
+                      </div>
+
+                      <div class="panel-body">
+                        <div>
+                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson
+                          ad squid. Nihil anim keffiyeh helvetica, craft beer labore
+                          wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                      </div>
+
+                      
+                  </div>
+              </div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+                          <h3 class="panel-title"><span class="text-danger">Failed Test Case.</span></h3>
+                            <div class="panel-actions">
+                            <a class="" data-toggle="panel-collapse" 
+                                  href="#">
+                              <i style="color:red" class="icon wb-close" ></i>
+                            </a>
+                          
+                          </div>
+                      </div>
+
+                      <div class="panel-body">
+                        <div>
+                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson
+                          ad squid. Nihil anim keffiyeh helvetica, craft beer labore
+                          wes anderson cred nesciunt sapiente ea proident.
+                        </div>
+                      </div>
+
+                      
+                  </div>
+              </div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+
+                          <h3 class="panel-title"><span class="text-warning">Running test cases..</span></h3>
+                            <div class="panel-actions">
+                            <span class="text-warning"><i style="" class="fa fa-spinner fa-spin" ></i></span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-xs-12 col-xlg-9 col-md-9">
+                  <div class="panel panel-bordered">
+                      <div class="panel-heading">
+
+                          <h3 class="panel-title"><span class="text-success">All test cases passed.</span></h3>
+                            <div class="panel-actions">
+                            <i style="color:green" class="icon wb-check" ></i>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    <!-- End Page Content -->
+    </div>
+    </div>
+  <!-- End Page -->
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="site-footer-legal">© 2015 <a href="http://themeforest.net/item/remark-responsive-bootstrap-admin-template/11989202">Remark</a></div>
+    <div class="site-footer-right">
+      Crafted with <i class="red-600 wb wb-heart"></i> by <a href="http://themeforest.net/user/amazingSurge">amazingSurge</a>
+    </div>
+  </footer>
+
+  <!-- Core  -->
+  <script src="{% static "global/vendor/jquery/jquery.js" %}"></script>
+  <script src="{% static "global/vendor/bootstrap/bootstrap.js" %}"></script>
+  <script src="{% static "global/vendor/animsition/animsition.js" %}"></script>
+
+  <!-- Plugins -->
+  <script src="{% static "global/vendor/ace/ace.js" %}"></script>
+  <!-- Scripts -->
+
+  <script src="{% static "global/js/core.js" %}"></script>
+  <script src="{% static "assets/js/site.js" %}"></script>
+
+  <script src="{% static "global/js/components/panel.js" %}"></script>
+  <script src="{% static "assets/examples/js/uikit/panel-structure.js" %}"></script>
+  <script src="{% static "global/js/components/ace.js" %}"></script>
+
+  <script>
+      var c_editor = ace.edit("c_editor");
+      c_editor.setTheme("ace/theme/twilight");
+      c_editor.getSession().setMode("ace/mode/javascript");
+      c_editor.setShowPrintMargin(false);
+      c_editor.getSession().setUseWrapMode(true);
+      c_editor.getSession().setUseWorker(false);
+      document.getElementById('c_editor').style.fontSize='15px';
+
+      var notes_editor = ace.edit("notes-editor");
+      notes_editor.setTheme("ace/theme/solarized_light");
+      notes_editor.getSession().setMode("ace/mode/text");
+      notes_editor.setShowPrintMargin(false);
+      notes_editor.getSession().setUseWrapMode(true);
+      notes_editor.renderer.setShowGutter(false);
+      notes_editor.renderer.setOption('showLineNumbers', false);
+      notes_editor.getSession().setUseWorker(false);
+      document.getElementById('notes_editor').style.fontSize='13px';
+
+  </script>
+
+</body>
+</html>

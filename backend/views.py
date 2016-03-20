@@ -119,23 +119,25 @@ def problem(request,offset):
 
 def home(request):
 	type = "LIST"
-	rows  = list(Problem.objects.filter(types__contains=type))
-	problems = []
-	for row in rows:
-		q = dict()
-		print row.title
-		q["title"] = row.title
-		q["difficulty"] = row.difficulty * 100
-		q["previewtext"] = row.previewtext
-		q["totalsubmission"] = row.totalsubmission
-		q["problem_id"] = row.problem_id
-		if row.totalsubmission == 0:
-			q["accuracy"] = 0
-		else:
-			q["accuracy"] = ((row.passedsubmissions*100)/row.totalsubmission)
-		problems.append(q)
+	return render_to_response("templates/problem_page.html")
 
-	return render_to_response("home.html",locals())
+	# rows  = list(Problem.objects.filter(types__contains=type))
+	# problems = []
+	# for row in rows:
+	# 	q = dict()
+	# 	print row.title
+	# 	q["title"] = row.title
+	# 	q["difficulty"] = row.difficulty * 100
+	# 	q["previewtext"] = row.previewtext
+	# 	q["totalsubmission"] = row.totalsubmission
+	# 	q["problem_id"] = row.problem_id
+	# 	if row.totalsubmission == 0:
+	# 		q["accuracy"] = 0
+	# 	else:
+	# 		q["accuracy"] = ((row.passedsubmissions*100)/row.totalsubmission)
+	# 	problems.append(q)
+
+	# return render_to_response("home.html",locals())
 
 def get_problems_by_type(request):
 	type = request.GET['type']
