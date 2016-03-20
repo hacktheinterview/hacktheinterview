@@ -16,7 +16,10 @@ from worker import conn
 q = Queue(connection=conn)
 
 def count_words_at_url(url):
+	print "Counting words for task"
     resp = requests.get(url)
+    print resp[:100]
+    print len(resp.text.split())
     return len(resp.text.split())
 
 def getmysubmissions(request):
