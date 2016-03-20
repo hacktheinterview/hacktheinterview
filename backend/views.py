@@ -1,10 +1,23 @@
 # Create your views here.
+import os
+import datetime
+
+import simplejson
+import requests
+
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
 from backend.models import *
-import os,datetime
-import simplejson
 from django.views.decorators.csrf import csrf_exempt
+
+from rq import Queue
+from worker import conn
+
+q = Queue(connection=conn)
+
+def count_words_at_url(url):
+    resp = requests.get(url)
+    return len(resp.text.split())
 
 def getmysubmissions(request):
 	user_id = 1
@@ -34,6 +47,10 @@ def submit(request):
 	redirect_url = "/submissions/%s" % str(run_id)
 	print redirect_url
 	return HttpResponse(simplejson.dumps({'redirect_url':redirect_url}), 'application/json')
+
+def test_url(request):
+	q.enqueue(count_words_at_url, 'http://heroku.com')
+	return HttpResponse("haha")
 
 @csrf_exempt
 def compile_and_test(request):

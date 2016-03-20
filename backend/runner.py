@@ -1,3 +1,5 @@
+import requests
+
 from hacktheinterview.settings import IDEONE_PASSWORD
 from hacktheinterview.settings import IDEONE_USERNAME
 
@@ -12,3 +14,9 @@ class Runner(object):
 
 	def submit(self, solution, languageName):
 		return self.ideone.create_submission(solution, language_name=languageName)
+
+def count_words_at_url(url):
+	resp = requests.get(url)
+	return len(resp.text.split())
+
+
