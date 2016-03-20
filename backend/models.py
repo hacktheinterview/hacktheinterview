@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from backend.enums import ProblemCategory, ProblemDifficultyType, ProblemName, CompanyName, LanguageType, \
+from backend.enums import ProblemCategory, ProblemDifficultyType, ProblemName, CompanyName, LanguageName, \
 	TestCaseSubmissionStatus
 
 
@@ -41,13 +41,16 @@ class Submission(models.Model):
 	"""
 	problem = models.ForeignKey(Problem, related_name="submissions")
 	candidate = models.ForeignKey(Candidate, related_name="submissions")
-	language = models.CharField(max_length=255, choices=LanguageType.choices())
+	language = models.CharField(max_length=255, choices=LanguageName.choices())
+	source = models.TextField(verbose_name='source code')
 
 
 class TestCaseSubmission(models.Model):
-	testCase = models.ForeignKey(TestCase, related_name='testCaseSubmissions')
-	submission = models.ForeignKey(Submission, related_name='submissions')
+	testCase = models.ForeignKey(TestCase, related_name="testCaseSubmissions")
+	submission = models.ForeignKey(Submission, related_name="submissions")
 	status = models.CharField(max_length=255, choices=TestCaseSubmissionStatus.choices())
+	submissionDetail = models.TextField(verbose_name="")
+
 
 
 

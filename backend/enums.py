@@ -33,11 +33,11 @@ class CompanyName(ModelChoicesEnum):
 	MICROSOFT = EnumValue("MICROSOFT", "Microsoft")
 
 
-class LanguageType(ModelChoicesEnum):
-	C_PLUS_PLUS      = EnumValue("C_PLUS_PLUS", "C++")
-	JAVA             = EnumValue("JAVA", "Java")
-	PYTHON           = EnumValue("PYTHON", "Python")
-	JAVASCRIPT       = EnumValue("JAVASCRIPT", "Javascript")
+class LanguageName(ModelChoicesEnum):
+	C_PLUS_PLUS      = EnumValue("1", "C++")
+	JAVA             = EnumValue("10", "Java")
+	PYTHON           = EnumValue("4", "Python")
+	JAVASCRIPT       = EnumValue("35", "Javascript")
 
 
 class SubmissionStatus(ModelChoicesEnum):
