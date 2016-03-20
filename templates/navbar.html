@@ -1,95 +1,92 @@
-  <!--[if lt IE 8]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-  <nav class="site-navbar navbar navbar-default navbar-inverse navbar-static-top navbar-mega"
-  role="navigation">
-
-    <div class="navbar-container container-fluid">
-      <!-- Navbar Collapse -->
-      <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
-        <!-- Navbar Toolbar -->
-        <ul class="nav navbar-toolbar navbar-left navbar-toolbar-left">
-            <a class="navbar-brand" href="javascript:void(0)">Hack The Interview</a>
-        </ul>
-        <!-- End Navbar Toolbar -->
-        <!-- Navbar Toolbar Right -->
-        <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
-          <li class="dropdown">
-            <a class="navbar-avatar dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false"
-            data-animation="scale-up" role="button">
-              <span class="avatar avatar-online">
-                <img src="{% static "global/portraits/5.jpg" %}" alt="...">
-                <i></i>
-              </span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</a>
-              </li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Billing</a>
-              </li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Settings</a>
-              </li>
-              <li class="divider" role="presentation"></li>
-              <li role="presentation">
-                <a href="javascript:void(0)" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
-              </li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false"
-            data-animation="scale-up" role="button">
-              <i class="icon wb-bell" aria-hidden="true"></i>
-              <span class="badge badge-danger up">5</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
-              <li class="dropdown-menu-header" role="presentation">
-                <h5>NOTIFICATIONS</h5>
-                <span class="label label-round label-danger">New 5</span>
-              </li>
-              <li class="list-group" role="presentation">
-                <div data-role="container">
-                  <div data-role="content">
-                    <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                      <div class="media">
-                        <div class="media-left padding-right-10">
-                          <i class="icon wb-order bg-red-600 white icon-circle" aria-hidden="true"></i>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="media-heading">A new order has been placed</h6>
-                          <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">5 hours ago</time>
-                        </div>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+{% load staticfiles %}
+<nav class="site-navbar navbar navbar-default navbar-inverse navbar-static-top navbar-mega" role="navigation">
+  <div class="navbar-container container-fluid">
+    <!-- Navbar Collapse -->
+    <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+      <!-- Navbar Toolbar -->
+      <ul class="nav navbar-toolbar navbar-left navbar-toolbar-left">
+        <a class="navbar-brand" href="javascript:void(0)">Hack The Interview</a>
+      </ul>
+      <!-- End Navbar Toolbar -->
+      <!-- Navbar Toolbar Right -->
+      <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+        <li class="dropdown">
+          <a class="navbar-avatar dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up" role="button">
+            <span class="avatar avatar-online">
+            <img src="{% static "global/portraits/5.jpg" %}" alt="...">
+            <i></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li role="presentation">
+              <a href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</a>
+            </li>
+            <li role="presentation">
+              <a href="javascript:void(0)" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Billing</a>
+            </li>
+            <li role="presentation">
+              <a href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Settings</a>
+            </li>
+            <li class="divider" role="presentation"></li>
+            <li role="presentation">
+              <a href="javascript:void(0)" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false" data-animation="scale-up" role="button">
+            <i class="icon wb-bell" aria-hidden="true"></i>
+            <span class="badge badge-danger up">5</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
+            <li class="dropdown-menu-header" role="presentation">
+              <h5>NOTIFICATIONS</h5>
+              <span class="label label-round label-danger">New 5</span>
+            </li>
+            
+            <li class="list-group" role="presentation">
+              <div data-role="container">
+                <div data-role="content">
+                  <a class="list-group-item" href="javascript:void(0)" role="menuitem">
+                    <div class="media">
+                      <div class="media-left padding-right-10">
+                        <i class="icon wb-order bg-red-600 white icon-circle" aria-hidden="true"></i>
                       </div>
-                    </a>
-                    <a class="list-group-item" href="javascript:void(0)" role="menuitem">
-                      <div class="media">
-                        <div class="media-left padding-right-10">
-                          <i class="icon wb-chat bg-orange-600 white icon-circle" aria-hidden="true"></i>
-                        </div>
-                        <div class="media-body">
-                          <h6 class="media-heading">Message received</h6>
-                          <time class="media-meta" datetime="2015-06-10T12:34:48+08:00">3 days ago</time>
-                        </div>
+                      <div class="media-body">
+                        <h6 class="media-heading">A new order has been placed</h6>
+                        <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">5 hours ago</time>
                       </div>
-                    </a>
-                  </div>
-                </div>
-              </li>
-              <li class="dropdown-menu-footer" role="presentation">
-                <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
-                  <i class="icon wb-settings" aria-hidden="true"></i>
-                </a>
-                <a href="javascript:void(0)" role="menuitem">
-                    All notifications
+                    </div>
                   </a>
-              </li>
-            </ul>
-          </li>
+                  <a class="list-group-item" href="javascript:void(0)" role="menuitem">
+                    <div class="media">
+                      <div class="media-left padding-right-10">
+                        <i class="icon wb-chat bg-orange-600 white icon-circle" aria-hidden="true"></i>
+                      </div>
+                      <div class="media-body">
+                        <h6 class="media-heading">Message received</h6>
+                        <time class="media-meta" datetime="2015-06-10T12:34:48+08:00">3 days ago</time>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </li>
 
-        </ul>
-
-      </div>
+            <li class="dropdown-menu-footer" role="presentation">
+              <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
+                <i class="icon wb-settings" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0)" role="menuitem">
+                  All notifications
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
