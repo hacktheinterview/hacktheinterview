@@ -7,7 +7,7 @@ import requests
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
-from backend.models import *
+# from backend.models import *
 from django.views.decorators.csrf import csrf_exempt
 
 from rq import Queue
