@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^test_url/', test_url)
+    url(r'^test_url/', test_url),
     url(r'^submit/',submit),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^get_problems_by_type/',get_problems_by_type),
