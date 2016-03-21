@@ -1,6 +1,7 @@
 # Create your views here.
 import os
 import datetime
+import json
 
 import simplejson
 import requests
@@ -18,6 +19,18 @@ from backend.runner import Runner
 q = Queue(connection=conn)
 
 runner = Runner()
+
+
+@csrf_exempt
+def test_url(request):
+	payload = request.POST.get('payload', '')
+	payload = json.loads(payload)
+	print payload
+
+	print "Request came"
+	# q.enqueue(count_words_at_url, 'http://heroku.com')
+	return HttpResponse("API Response Received")
+
 
 def count_words_at_url(url):
 	print "Counting words for task"
@@ -55,11 +68,6 @@ def submit(request):
 	print redirect_url
 	return HttpResponse(simplejson.dumps({'redirect_url':redirect_url}), 'application/json')
 
-@csrf_exempt
-def test_url(request):
-	print "Request came"
-	# q.enqueue(count_words_at_url, 'http://heroku.com')
-	return HttpResponse("haha")
 
 @csrf_exempt
 def compile_and_test(request):
