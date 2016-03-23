@@ -1,10 +1,11 @@
-# Create your views here.
 import os
 import datetime
 import json
-
 import simplejson
 import requests
+
+from rq import Queue
+from worker import conn
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, Http404
@@ -13,12 +14,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 
-from rq import Queue
-from worker import conn
 
 from backend.runner import Runner
 from backend.enums import LanguageName
 from backend.utils.source_utils import createFullSourceCode
+
+from hackerearth.api_handlers import HackerEarthAPI
+from hackerearth.parameters import RunAPIParameters, SupportedLanguages
+from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
 q = Queue(connection=conn)
 
@@ -52,10 +55,25 @@ def getmysubmissions(request):
 
 def postRequest():
 	headerSource = open("problems/1/header.cpp").read()
-	userSource = open("problems/1/source.cpp").read()
+	userSource = open("problems/1/solution.cpp").read()
 	footerSource = open("problems/1/footer.cpp").read()
+	inputSource = open("problems/1/input.txt").read()
 
 	fullSource = createFullSourceCode(headerSource, userSource, footerSource)
+	params = RunAPIParameters(
+		client_secret=HACKER_EARTH_API_KEY,
+		source=createFullSourceCode,
+		lang=SupportedLanguages.CPP,
+		async=0,
+		program_input=inputSource,
+		id=123123,
+		# callback='sheltered-ocean-78784.herokuapp.com/test_url/',
+		compressed=0,
+	)
+	api = HackerEarthAPI(params)
+	r = api.compile()
+	print r.__dict__
+
 
 @csrf_exempt
 def create_submission(request):
