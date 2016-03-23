@@ -11,10 +11,14 @@ from django.http import HttpResponse, Http404
 # from backend.models import *
 from django.views.decorators.csrf import csrf_exempt
 
+
+
 from rq import Queue
 from worker import conn
 
 from backend.runner import Runner
+from backend.enums import LanguageName
+from backend.utils.source_utils import createFullSourceCode
 
 q = Queue(connection=conn)
 
@@ -47,7 +51,23 @@ def getmysubmissions(request):
 
 
 @csrf_exempt
-def submit(request):
+def create_submission(request):
+	user_source_code = "print x"
+	problem = Problem.objects.get(id=1)
+	language = LanguageName.C_PLUS_PLUS
+	candidate = Candidate.objects.get(id=1)
+	
+
+	Submission.objects.create(
+		problem=problem,
+		candidate=candidate,
+		language=language,
+		source=user_source_code,
+	)
+
+	return HttpResponse("Yeah things are good")
+
+
 	run_id = Submission.objects.count()+1
 	user_id = 1
 	problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))

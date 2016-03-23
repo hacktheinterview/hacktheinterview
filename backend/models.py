@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
-from backend.enums import ProblemCategory, ProblemDifficulty, LanguageName, TestCaseSubmissionStatus
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
+from backend.enums import ProblemCategory, ProblemDifficulty, LanguageName, TestCaseSubmissionStatus
 
 class Company(models.Model):
 	name = models.CharField(max_length=255)
@@ -37,6 +39,10 @@ class Submission(models.Model):
 	language = models.CharField(max_length=255, choices=LanguageName.choices())
 	source = models.TextField(verbose_name='source code')
 
+@receiver(post_save, sender=Submission)
+def postSubmissionToHackerEarth(sender, instance, *args, **kwargs):
+	print args
+	print kwargs
 
 class TestCaseSubmission(models.Model):
 	testCase = models.ForeignKey(TestCase, related_name="testCaseSubmissions")
