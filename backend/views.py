@@ -50,6 +50,13 @@ def getmysubmissions(request):
 	return render_to_response("mysubmissions.html",locals())
 
 
+def postRequest():
+	headerSource = open("problems/1/header.cpp").read()
+	userSource = open("problems/1/source.cpp").read()
+	footerSource = open("problems/1/footer.cpp").read()
+
+	fullSource = createFullSourceCode(headerSource, userSource, footerSource)
+
 @csrf_exempt
 def create_submission(request):
 	user_source_code = "print x"
