@@ -100,14 +100,14 @@ def handleGeneralSubmission(result, submission):
 
 	if failed:
 		submission.status = SubmissionStatus.WA
-		submission.time_used = result.time_used
-		submission.memory_used = result.memory_used
-		submission.failed_test_case_num = failedIndex
+		submission.timeUsed = result.time_used
+		submission.memoryUsed = result.memory_used
+		submission.failedCase = failedIndex
 		submission.save()
 	else:
 		submission.status = SubmissionStatus.AC
-		submission.time_used = result.time_used
-		submission.memory_used = result.memory_used
+		submission.timeUsed = result.time_used
+		submission.memoryUsed = result.memory_used
 		submission.save()
 
 def parseHackerEarthResult(result):

@@ -53,6 +53,8 @@ class Submission(models.Model):
 	timeUsed = models.DecimalField(default=0.00, null=True, max_digits=2, decimal_places=2, verbose_name="Time taken by the program")
 	memoryUsed = models.PositiveIntegerField(default=0, null=True, verbose_name="Memory used by the program in kilo bytes")
 
+	failedCase = models.PositiveIntegerField(default=None, null=True, verbose_name="Test Case # failed because of wrong answer")
+
 # Saves the draft for particular problem for an user
 class Draft(models.Model):
 	problem = models.ForeignKey(Problem, related_name="draft")
