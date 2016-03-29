@@ -103,6 +103,8 @@ def handleGeneralSubmission(result, submission):
 		submission.timeUsed = result.time_used
 		submission.memoryUsed = result.memory_used
 		submission.failedCase = failedIndex
+		submission.expected = expected
+		submission.obtained = obtained
 		submission.save()
 	else:
 		submission.status = SubmissionStatus.AC
@@ -110,17 +112,30 @@ def handleGeneralSubmission(result, submission):
 		submission.memoryUsed = result.memory_used
 		submission.save()
 
+
+def handleRunTimeError(result, submission):
+	pass
+
+def handleTimeLimitExceeded(result, submission):
+	#expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	obtainedOutput = result.output
+
+	#eLines = expectedOutput.split("\n")
+	oLines = obtainedOutput.split("\n")
+	failedCase = len(oLines) - 1
+
 def parseHackerEarthResult(result):
 	# TODO(Rad), dump result to a logger / analytics
 	# Verify whether compile_status is ok or not.
+	subission = result.id
 	if result['status'] == 'CE':
-		handleCompilationError(result)
+		handleCompilationError(result, submission)
 	elif result['status'] == 'OK':
-		handleGeneralSubmission(result)
+		handleGeneralSubmission(result, submission)
 	elif result['status'] == 'RE':
-		handleRunTimeError(result)
+		handleRunTimeError(result, submission)
 	elif result['status'] == 'TLE':
-		handleTimeLimitExceeded(result)
+		handleTimeLimitExceeded(result, submission)
 	else:
 		handleException(result)
 

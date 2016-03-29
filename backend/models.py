@@ -54,6 +54,8 @@ class Submission(models.Model):
 	memoryUsed = models.PositiveIntegerField(default=0, null=True, verbose_name="Memory used by the program in kilo bytes")
 
 	failedCase = models.PositiveIntegerField(default=None, null=True, verbose_name="Test Case # failed because of wrong answer")
+	expected = models.TextField(default=None, null=True, verbose_name="Expected outcome for failed test case")
+	obtained = models.TextField(default=None, null=True, verbose_name="Obtained outcome for failed test case")
 
 # Saves the draft for particular problem for an user
 class Draft(models.Model):
