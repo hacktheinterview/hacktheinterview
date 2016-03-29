@@ -8,7 +8,7 @@ class ProblemSubCategory(ModelChoicesEnum):
 
 	# LINKED LIST
 	LINKED_LIST_2_POINTER = EnumValue("LINKED_LIST_2_POINTER", "List 2 Pointer")
-
+	LINKED_LIST_BASIC   = EnumValue("LINKED_LIST_BASIC", "Linked List problems")
 
 class ProblemCategory(ModelChoicesEnum):
 	ARRAY       = EnumValue("ARRAY", "Array")

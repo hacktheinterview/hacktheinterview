@@ -91,8 +91,8 @@ class ProblemFunction(models.Model):
 	language = models.CharField(max_length=255, choices=LanguageName.choices())
 	problem = models.ForeignKey(Problem, related_name="problemFunctions")
 	header = models.TextField()
-	userSkeleton = models.TextField()
-	runnerFunction = models.TextField()
+	skeleton = models.TextField()
+	footer = models.TextField()
 
 # class Submission(models.Model):
 # 	run_id = models.IntegerField(primary_key=True)

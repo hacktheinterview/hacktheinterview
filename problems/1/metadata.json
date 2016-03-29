@@ -1,0 +1,10 @@
+"""{
+	"companies": ["FACEBOOK", "GOOGLE", "AMAZON", "MICROSOFT"],
+	"category": "LINKED_LIST",
+	"subCategory": "LINKED_LIST_BASIC",
+	"time_limit": 1,
+	"memory_limit": 200000,
+	"name": "Reverse a singly linked list",
+	"difficulty": "EASY"
+}
+"""
