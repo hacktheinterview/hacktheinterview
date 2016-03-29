@@ -4,14 +4,17 @@ from backend.models import Problem, Company, ProblemFunctions, Candidate
 from backend.enums import ProblemSubCategory, ProblemCategory, \
 	ProblemDifficulty, LanguageType
 
-def seedCompany():
-	return Company.objects.create(name='FACEBOOK')
-
 def masterSeeder():
 	candidate = seedCandidate()
 	company = seedCompany()
 	problem = seedBasicProblem(companies=[company])
 	seedProblemFunction(problem)
+
+def seedCompany():
+	return Company.objects.create(name='FACEBOOK')
+
+def seedCollege():
+	return College.objects.create(name="IIT ROPAR")
 
 def seedUser():
 	lastUserId = User.objects.last().id if User.objects.last() else -1
@@ -26,7 +29,7 @@ def seedUser():
 
 def seedCandidate():
 	user = seedUser()
-	return Candidate.objects.create(college="IIT Ropar")
+	return Candidate.objects.create(college=seedCollege(), company=seedCompany())
 
 def problemFunctionForAddTwoNumbers():
 	cHeaders = ""
