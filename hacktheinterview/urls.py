@@ -24,7 +24,6 @@ urlpatterns = [
     url(r'^get_problems_by_type/',get_problems_by_type),
     url(r'^problem/(\d+)/',problem),
     url(r'^submissions/(\d+)/',submissions),
-    url(r'^submissions/my/$',getmysubmissions),
     url(r'^compile_and_test/',compile_and_test),
     url(r'^get_compilation_result/',get_compilation_result),
     url(r'^get_compilation_status/',get_compilation_status),

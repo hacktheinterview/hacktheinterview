@@ -1,0 +1,3 @@
+
+def getLanguageExtension(lang):
+	pass

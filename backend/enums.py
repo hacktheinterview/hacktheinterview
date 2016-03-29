@@ -20,13 +20,6 @@ class ProblemDifficulty(ModelChoicesEnum):
 	MEDIUM = EnumValue("MEDIUM", "Medium")
 	HARD   = EnumValue("HARD", "Hard")
 
-class LanguageFileExtension(ModelChoicesEnum):
-	C = EnumValue(".c", "C")
-	C_PLUS_PLUS = EnumValue(".cpp", "C++")
-	JAVA = EnumValue(".java", "Java")
-	PYTHON = EnumValue(".py", "Python")
-	JAVASCRIPT = EnumValue(".js", "Javascript")
-
 class LanguageName(ModelChoicesEnum):
 	C_PLUS_PLUS      = EnumValue("1", "C++")
 	JAVA             = EnumValue("10", "Java")

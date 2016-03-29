@@ -3,6 +3,7 @@ import datetime
 import json
 import simplejson
 import requests
+import random
 
 from rq import Queue
 from worker import conn
@@ -20,13 +21,8 @@ from backend.enums import LanguageName
 from backend.utils.source_utils import createFullSourceCode
 
 from hackerearth.api_handlers import HackerEarthAPI
-from hackerearth.parameters import RunAPIParameters, SupportedLanguages
+from hackerearth.parameters import RunAPIParameters, SupportedLanguages, CompileAPIParameters
 from hacktheinterview.settings import HACKER_EARTH_API_KEY
-
-q = Queue(connection=conn)
-
-runner = Runner()
-
 
 @csrf_exempt
 def test_url(request):
@@ -39,41 +35,68 @@ def test_url(request):
 	return HttpResponse("API Response Received")
 
 
-def count_words_at_url(url):
-	print "Counting words for task"
-	print runner.submit("print('42')", 'python')
-	# resp = requests.get(url)
-	# print len(resp.text.split())
-	# return len(resp.text.split())
 
-def getmysubmissions(request):
-	user_id = 1
-	submissions = Submission.objects.filter(user_id=user_id,issubmission=True).order_by('-submission_time')
-	print submissions
-	return render_to_response("mysubmissions.html",locals())
+def postSubmissionToEngine(submissionId):
+	submission = Submission.objects.get(id=submissionId)
+	problemId = submission.problem_id
+	lang = submission.language
+	userSource = submission.source
+	fullSourceCode = prepareSourceCode(problemId, lang, userSource)
 
 
-def postRequest():
-	headerSource = open("problems/1/header.cpp").read()
-	userSource = open("problems/1/solution.cpp").read()
-	footerSource = open("problems/1/footer.cpp").read()
-	inputSource = open("problems/1/input.txt").read()
+def prepareSourceCode(problemId, lang, userSource):
+	# Validate whether problem id is correct or not
+	# Validate language
+	headerSourceFileName = "header." + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, headerSourceFileName)
+	headerSource = open(headerSourceFileLocation).read()
 
-	fullSource = createFullSourceCode(headerSource, userSource, footerSource)
-	params = RunAPIParameters(
+	footerSourceFileName = "footer." + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, footerSourceFileName)
+	footerSource = open(footerSourceFileLocation).read()
+
+	fullSourceCode = createFullSourceCode(headerSource, userSource, footerSource)
+	return fullSourceCode
+
+def getInputData(problemId, isSample=False):
+	inputSourceFileName = "input.txt"
+	inputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, inputSourceFileName)
+	inputSource = open(inputSourceFileLocation).read()
+	return inputSource
+
+def getProblemLimits(problemId):
+	return {
+		'time_limit' : 1,
+		'memory_limit': 1024 * 1024,
+	}
+
+def postSubmissionToEngine(submissionId):
+	submission = Submission.objects.get(id=submissionId)
+	userSource = submission.source
+	lang = submission.language
+	isSample = submission.isSample
+	fullSource = prepareSourceCode(problemId, lang, userSource)
+	inputText = getInputData(problemId, isSample)
+
+	hackerEarthLanguage = HTI_TO_HACKER_EARTH_LANGUAGE_MAP.get(lang)
+	limits = getProblemLimits(problemId)
+
+	run_params = RunAPIParameters(
 		client_secret=HACKER_EARTH_API_KEY,
-		source=createFullSourceCode,
-		lang=SupportedLanguages.CPP,
-		async=0,
+		source=fullSource,
+		lang=hackerEarthLanguage,
 		program_input=inputSource,
-		id=123123,
-		# callback='sheltered-ocean-78784.herokuapp.com/test_url/',
+		time_limit=limits['time_limit'],
+		memory_limit=limits['memory_limit'],
+		async=1,
+		id=submission.id,
+		callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
-	api = HackerEarthAPI(params)
-	r = api.compile()
-	print r.__dict__
 
+	api = HackerEarthAPI(run_params)
+	r = api.run()
+	print r.__dict__
 
 @csrf_exempt
 def create_submission(request):
@@ -83,41 +106,40 @@ def create_submission(request):
 	candidate = Candidate.objects.get(id=1)
 	
 
-	Submission.objects.create(
+	s = Submission.objects.create(
 		problem=problem,
 		candidate=candidate,
 		language=language,
 		source=user_source_code,
 	)
+	postSubmissionToEngine(s)
+	return HttpResponse(json.dumps({'submission_id': s.id}), 'application/json')
 
-	return HttpResponse("Yeah things are good")
-
-
-	run_id = Submission.objects.count()+1
-	user_id = 1
-	problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))
-	source_code = request.POST["source_code"]
-	submission_time = datetime.datetime.now()
-	language = request.POST["language"]
-	language = language.upper()
-	status = "QUEUED"
-	compiler_error_log= " "
-	time_taken = -1
-	exit_code = 100000
-	print problem
-	s= Submission(run_id=run_id,user_id=user_id,problem=problem,source_code=source_code,submission_time=submission_time,
-		status=status,language=language,compiler_error_log=compiler_error_log,time_taken=time_taken,
-		exit_code=exit_code,issubmission=True)
-	s.save()
-	redirect_url = "/submissions/%s" % str(run_id)
-	print redirect_url
-	return HttpResponse(simplejson.dumps({'redirect_url':redirect_url}), 'application/json')
+	# run_id = Submission.objects.count()+1
+	# user_id = 1
+	# problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))
+	# source_code = request.POST["source_code"]
+	# submission_time = datetime.datetime.now()
+	# language = request.POST["language"]
+	# language = language.upper()
+	# status = "QUEUED"
+	# compiler_error_log= " "
+	# time_taken = -1
+	# exit_code = 100000
+	# print problem
+	# s= Submission(run_id=run_id,user_id=user_id,problem=problem,source_code=source_code,submission_time=submission_time,
+	# 	status=status,language=language,compiler_error_log=compiler_error_log,time_taken=time_taken,
+	# 	exit_code=exit_code,issubmission=True)
+	# s.save()
+	# redirect_url = "/submissions/%s" % str(run_id)
+	# print redirect_url
+	# return HttpResponse(simplejson.dumps({'redirect_url':redirect_url}), 'application/json')
 
 
 @csrf_exempt
 def compile_and_test(request):
 	# insert source code
-	run_id = Submission.objects.count()+1
+	run_id = Submission.objects.count() +1
 	user_id = 1
 	problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))
 	source_code = request.POST["source_code"]
@@ -239,4 +261,4 @@ def get_problems_by_type(request):
 
 		questions.append(q)
 
-	return render_to_response("problem_list.html",{"problems":questions})
+	return render_to_response("problem_list.html", {"problems":questions})

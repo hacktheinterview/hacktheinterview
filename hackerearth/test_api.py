@@ -12,16 +12,17 @@ source = open('test_source.py', 'r').read()
 lang = SupportedLanguages.PYTHON
 compressed = 1
 html = 0
-params = RunAPIParameters(async=1,
+params = RunAPIParameters(async=0,
         client_secret=client_secret, source=source,
         lang=lang,id=213123,
-	callback='http://sheltered-ocean-78784.herokuapp.com/test_url/')
+	#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/'
+)
 
 api = HackerEarthAPI(params)
 
-print 'Compiling code..'
-r = api.compile()
-print r.__dict__
+#print 'Compiling code..'
+#r = api.compile()
+#print r.__dict__
 
 print '\nRunning code...'
 r = api.run()

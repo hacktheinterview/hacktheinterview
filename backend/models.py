@@ -8,6 +8,9 @@ from backend.enums import ProblemCategory, ProblemDifficulty, LanguageName, Test
 class Company(models.Model):
 	name = models.CharField(max_length=255)
 
+class College(models.Model):
+	name = models.CharField(max_length=255)
+
 class Problem(models.Model):
 	name = models.CharField(max_length=255)
 	category = models.CharField(max_length=255, choices=ProblemCategory.choices())
@@ -27,7 +30,9 @@ class TestCase(models.Model):
 
 
 class Candidate(models.Model):
-	college = models.CharField(max_length=255)
+	college = models.ForeignKey(College, related_name="candidates")
+	company = models.ForeignKey(Company, related_name="candidates")
+	# TODO(Aayush), do we need cascade?
 	user = models.OneToOneField(User, related_name="candidate", on_delete=models.CASCADE)
 
 class Submission(models.Model):
@@ -38,17 +43,7 @@ class Submission(models.Model):
 	candidate = models.ForeignKey(Candidate, related_name="submissions")
 	language = models.CharField(max_length=255, choices=LanguageName.choices())
 	source = models.TextField(verbose_name='source code')
-
-@receiver(post_save, sender=Submission)
-def postSubmissionToHackerEarth(sender, instance, *args, **kwargs):
-	print args
-	print kwargs
-
-class TestCaseSubmission(models.Model):
-	testCase = models.ForeignKey(TestCase, related_name="testCaseSubmissions")
-	submission = models.ForeignKey(Submission, related_name="submissions")
-	status = models.CharField(max_length=255, choices=TestCaseSubmissionStatus.choices())
-	submissionDetail = models.TextField(verbose_name="")
+	isSample = models.BooleanField(verbose_name='Compile and run sample tests or not', default=False)
 
 
 # Saves the draft for particular problem for an user
@@ -81,17 +76,12 @@ class Draft(models.Model):
 #	   call user function and make sure result is right
 # }
 
-class ProblemFunctions(models.Model):
-	problem = models.ForeignKey(Problem, related_name="problemFunctions")
+class ProblemFunction(models.Model):
 	language = models.CharField(max_length=255, choices=LanguageName.choices())
-	
-	headers = models.TextField()
+	problem = models.ForeignKey(Problem, related_name="problemFunctions")
+	header = models.TextField()
 	userSkeleton = models.TextField()
 	runnerFunction = models.TextField()
-
-	cPlusHeaders = models.TextField()
-	cPlusUserSkeleton = models.TextField()
-	cPlusRunnerFunction = models.TextField()
 
 # class Submission(models.Model):
 # 	run_id = models.IntegerField(primary_key=True)

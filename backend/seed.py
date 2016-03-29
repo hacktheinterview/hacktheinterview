@@ -4,7 +4,6 @@ from backend.models import Problem, Company, ProblemFunctions, Candidate
 from backend.enums import ProblemSubCategory, ProblemCategory, \
 	ProblemDifficulty, LanguageType
 
-
 def seedCompany():
 	return Company.objects.create(name='FACEBOOK')
 
@@ -37,7 +36,7 @@ def problemFunctionForAddTwoNumbers():
 
 
 def seedProblemFunction(problem, cHeaders=None, 
-			cUserSkeleton=None, cRunnerFunction=None):
+						cUserSkeleton=None, cRunnerFunction=None):
 	cHeaders, cUserSkeleton, cRunnerFunction = problemFunctionForAddTwoNumbers()
 
 	ProblemFunctions.objects.create(cHeaders=cHeaders,
