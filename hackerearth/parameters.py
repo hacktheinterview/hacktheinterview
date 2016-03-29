@@ -96,6 +96,8 @@ class RunAPIParameters(CompileAPIParameters):
         super(RunAPIParameters, self).__init__(client_secret,
                                                source, lang)
 
+        print "Radhakrishnan "
+        print program_input
         self.id = id
         self.callback = callback
         self.compressed = compressed
@@ -104,6 +106,7 @@ class RunAPIParameters(CompileAPIParameters):
         self.compiled = compiled
         self.time_limit = min(time_limit, settings.RUN_TIME_UPPER_LIMIT)
         self.memory_limit = min(memory_limit, settings.MEMORY_UPPER_LIMIT)
+        self.input = program_input
         print self.memory_limit
 
     def _build_params_dict(self):
@@ -113,7 +116,8 @@ class RunAPIParameters(CompileAPIParameters):
             'html': self.html,
             'compiled': self.compiled,
             'time_limit': self.time_limit,
-            'memory_limit': self.memory_limit
+            'memory_limit': self.memory_limit,
+            'input': self.input,
             })
         return params
 

@@ -3,13 +3,13 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from backend.enums import ProblemCategory, ProblemDifficulty, LanguageName, TestCaseSubmissionStatus
+from backend.enums import ProblemCategory, ProblemDifficulty, LanguageName, SubmissionStatus
 
 class Company(models.Model):
-	name = models.CharField(max_length=255)
+	name = models.CharField(max_length=255, null=False)
 
 class College(models.Model):
-	name = models.CharField(max_length=255)
+	name = models.CharField(max_length=255, null=False)
 
 class Problem(models.Model):
 	name = models.CharField(max_length=255)
@@ -30,8 +30,8 @@ class TestCase(models.Model):
 
 
 class Candidate(models.Model):
-	college = models.ForeignKey(College, related_name="candidates")
-	company = models.ForeignKey(Company, related_name="candidates")
+	college = models.ForeignKey(College, related_name="candidates", default=None, null=True)
+	company = models.ForeignKey(Company, related_name="candidates", default=None, null=True)
 	# TODO(Aayush), do we need cascade?
 	user = models.OneToOneField(User, related_name="candidate", on_delete=models.CASCADE)
 
@@ -39,12 +39,16 @@ class Submission(models.Model):
 	"""
 	Stores a submission made by candidate
 	"""
-	problem = models.ForeignKey(Problem, related_name="submissions")
+	problem   = models.ForeignKey(Problem, related_name="submissions")
 	candidate = models.ForeignKey(Candidate, related_name="submissions")
-	language = models.CharField(max_length=255, choices=LanguageName.choices())
-	source = models.TextField(verbose_name='source code')
-	isSample = models.BooleanField(verbose_name='Compile and run sample tests or not', default=False)
-
+	language  = models.CharField(max_length=255, choices=LanguageName.choices())
+	source    = models.TextField(verbose_name='source code')
+	isSample  = models.BooleanField(verbose_name='Compile and run sample tests or not', default=False)
+	status    = models.CharField(max_length=255, 
+					choices=SubmissionStatus.choices(), default=SubmissionStatus.PENDING, null=True)
+	
+	originalCompilerLog = models.TextField(default=None, null=True, verbose_name="Compiler log returned from hacker earth api")
+	compilerLog = models.TextField(default=None, null=True, verbose_name="Compiler log lines modified by our util function")
 
 # Saves the draft for particular problem for an user
 class Draft(models.Model):

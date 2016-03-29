@@ -18,17 +18,84 @@ from django.views.decorators.csrf import csrf_exempt
 
 from backend.runner import Runner
 from backend.enums import LanguageName
+from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP
 from backend.utils.source_utils import createFullSourceCode
 
 from hackerearth.api_handlers import HackerEarthAPI
 from hackerearth.parameters import RunAPIParameters, SupportedLanguages, CompileAPIParameters
 from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
+def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
+	# Refer http://stackoverflow.com/questions/18022124/parsing-gcc-error-log
+	lines = compilerLog.split("\n")
+	output_log = ""
+	for line in lines:
+		items = line.split(":")
+		if len(items) > 2:
+			items[0] = str(int(items[1]) - no_of_lines_to_subtract)
+			output_log += ":".join(items)
+		else:
+			output_log += line
+	return output_log
+
+def getHeaderSource(problemId, lang):
+	headerSourceFileName = "header." + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, headerSourceFileName)
+	headerSource = open(headerSourceFileLocation).read()
+	return headerSource
+
+def handleCompilationError(result, submission):
+	if submission.language in [LanguageName.C, LanguageName.CPP] :
+		linesToSubtract = len(getHeaderSource(problem.id, submission.language)) + 2
+		compilationErrorLog = editGccCompilerLog(result.compile_status, linesToSubtract)
+		# save metadata information in the submission
+		submission.status = SubmissionStatus.CE
+		submission.originalCompilerLog = result.compile_status
+		submission.compilerLog = compilationErrorLog
+		submission.save()
+	else:
+		raise NotImplementedError("Not implemented for other languages")
+
+def getInputData(problemId, isSample=False):
+	inputSourceFileName = "input.txt"
+	inputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, inputSourceFileName)
+	inputSource = open(inputSourceFileLocation).read()
+	return inputSource
+
+
+def getOutputData(problemId, isSample=False):
+	outputSourceFileName = "output_sample.txt" if isSample else "output.txt"
+	outputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, outputSourceFileName)
+	outputSource = open(outputSourceFileLocation).read()
+	return outputSource
+
+def handleGeneralSubmission(result, submission):
+	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	obtainedOutput = result.output
+	0. read output file
+	1. Handle wrong answer
+	2. handle correct answer
+
+
+def parseHackerEarthResult(result):
+	# TODO(Rad), dump result to a logger / analytics
+	# Verify whether compile_status is ok or not.
+	if result['status'] == 'CE':
+		handleCompilationError(result)
+	elif result['status'] == 'OK':
+		handleGeneralSubmission(result)
+	elif result['status'] == 'RE':
+		handleRunTimeError(result)
+	elif result['status'] == 'TLE':
+		handleTimeLimitExceeded(result)
+	else:
+		handleException(result)
+
+
 @csrf_exempt
 def test_url(request):
 	payload = request.POST.get('payload', '')
 	payload = json.loads(payload)
-	print payload
 
 	print "Request came"
 	# q.enqueue(count_words_at_url, 'http://heroku.com')
@@ -57,12 +124,6 @@ def prepareSourceCode(problemId, lang, userSource):
 
 	fullSourceCode = createFullSourceCode(headerSource, userSource, footerSource)
 	return fullSourceCode
-
-def getInputData(problemId, isSample=False):
-	inputSourceFileName = "input.txt"
-	inputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, inputSourceFileName)
-	inputSource = open(inputSourceFileLocation).read()
-	return inputSource
 
 def getProblemLimits(problemId):
 	return {

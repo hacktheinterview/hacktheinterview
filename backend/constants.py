@@ -1,4 +1,5 @@
 from backend.enums import LanguageName
+from hackerearth.parameters import SupportedLanguages
 
 PROBLEM_ROOT_DIR = "problems/"
 
