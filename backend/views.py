@@ -13,9 +13,6 @@ from django.http import HttpResponse, Http404
 # from backend.models import *
 from django.views.decorators.csrf import csrf_exempt
 
-
-
-
 from backend.runner import Runner
 from backend.enums import LanguageName
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP
@@ -99,10 +96,14 @@ def handleGeneralSubmission(result, submission):
 			break
 
 	if failed:
+		inputSource = getInputData(submission.problem.id, submission.isSample)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
 		submission.status = SubmissionStatus.WA
 		submission.timeUsed = result.time_used
 		submission.memoryUsed = result.memory_used
 		submission.failedCase = failedIndex
+		submission.testCaseText = inputLines[failedIndex]
 		submission.expected = expected
 		submission.obtained = obtained
 		submission.save()
@@ -113,16 +114,42 @@ def handleGeneralSubmission(result, submission):
 		submission.save()
 
 
+# May be show wrong answer while doing the comparison and if comparison is ok, then show RTE?
 def handleRunTimeError(result, submission):
-	pass
+	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	obtainedOutput = result.output
+
+	oLines = obtainedOutput.split("\n")
+	failedCase = len(oLines)
+
+	inputSource = getInputData(submission.problem.id, submission.isSample)
+	inputLines = inputSource.split("\n")
+	inputLines = inputLines[1:]
+
+	submission.status = SubmissionStatus.RTE
+	submission.failedCase = failedCase
+	submission.testCaseText = inputLines[failedIndex]
+	submission.save()
 
 def handleTimeLimitExceeded(result, submission):
-	#expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
 	obtainedOutput = result.output
 
 	#eLines = expectedOutput.split("\n")
 	oLines = obtainedOutput.split("\n")
-	failedCase = len(oLines) - 1
+	failedCase = len(oLines)
+
+	inputSource = getInputData(submission.problem.id, submission.isSample)
+	inputLines = inputSource.split("\n")
+	inputLines = inputLines[1:]
+
+	submission.status = SubmissionStatus.TLE
+	submission.failedCase = failedCase
+	submission.testCaseText = inputLines[failedIndex]
+	submission.save()
+
+def handleException(result):
+	raise NotImplementedError("We don't know what to do here. No clue.")
 
 def parseHackerEarthResult(result):
 	# TODO(Rad), dump result to a logger / analytics
@@ -148,15 +175,6 @@ def test_url(request):
 	print "Request came"
 	# q.enqueue(count_words_at_url, 'http://heroku.com')
 	return HttpResponse("API Response Received")
-
-
-
-def postSubmissionToEngine(submissionId):
-	submission = Submission.objects.get(id=submissionId)
-	problemId = submission.problem_id
-	lang = submission.language
-	userSource = submission.source
-	fullSourceCode = prepareSourceCode(problemId, lang, userSource)
 
 
 def prepareSourceCode(problemId, lang, userSource):
@@ -224,7 +242,7 @@ def create_submission(request):
 	postSubmissionToEngine(s)
 	return HttpResponse(json.dumps({'submission_id': s.id}), 'application/json')
 
-	# run_id = Submission.objects.count()+1
+	# run_id = Submission.objects.count() + 1
 	# user_id = 1
 	# problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))
 	# source_code = request.POST["source_code"]
