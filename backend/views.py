@@ -69,13 +69,46 @@ def getOutputData(problemId, isSample=False):
 	outputSource = open(outputSourceFileLocation).read()
 	return outputSource
 
+	# PENDING = EnumValue("PENDING", "Pending")
+	# CE      = EnumValue("CE", "Compilation Error")
+	# AC      = EnumValue("AC", "Correct Answer")
+	# WA      = EnumValue("WA", "Wrong Answer")
+	# TLE     = EnumValue("TLE", "Time Limit Exceeded")
+	# MLE     = EnumValue("MLE", "Memory Limit Exceeded")
+	# OTHER   = EnumValue("OTHER", "Reason Not Yet found")
+
 def handleGeneralSubmission(result, submission):
 	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
 	obtainedOutput = result.output
-	0. read output file
-	1. Handle wrong answer
-	2. handle correct answer
 
+	eLines = expectedOutput.split("\n")
+	oLines = obtainedOutput.split("\n")
+
+	failed = False
+	failedIndex = -1
+	expectedLine = None
+	obtainedLine = None
+	for i, (expected, obtained) in enumerate(zip(eLines, oLines)):
+		if expected == obtained:
+			continue
+		else:
+			failed=True
+			failedIndex = i
+			expectedLine = expected
+			obtainedLine = obtained
+			break
+
+	if failed:
+		submission.status = SubmissionStatus.WA
+		submission.time_used = result.time_used
+		submission.memory_used = result.memory_used
+		submission.failed_test_case_num = failedIndex
+		submission.save()
+	else:
+		submission.status = SubmissionStatus.AC
+		submission.time_used = result.time_used
+		submission.memory_used = result.memory_used
+		submission.save()
 
 def parseHackerEarthResult(result):
 	# TODO(Rad), dump result to a logger / analytics
