@@ -8,15 +8,37 @@ from backend.enums import ProblemCategory, ProblemDifficulty, LanguageName, Subm
 class Company(models.Model):
 	name = models.CharField(max_length=255, null=False)
 
+	def __unicode__(self):
+		return self.name
+
 class College(models.Model):
 	name = models.CharField(max_length=255, null=False)
 
+	def __unicode__(self):
+		return self.name
+
+class NoDeleteQuerySet(models.QuerySet):
+	def delete(self, *args, **kwargs):
+		print "Dont delete problems :-("
+		pass
+
+class NoDeleteManager(models.Manager):
+	def get_query_set(self):
+		return NoDeleteQuerySet(self.model, using=self._db)
+
 class Problem(models.Model):
+	id = models.IntegerField(primary_key=True)
+
 	name = models.CharField(max_length=255)
 	category = models.CharField(max_length=255, choices=ProblemCategory.choices())
 	difficulty = models.CharField(max_length=255, choices=ProblemDifficulty.choices())
 
 	companies = models.ManyToManyField(Company, related_name='problems')
+	timeLimit = models.PositiveIntegerField(verbose_name="TimeLimit", null=False, default=1)
+	memoryLimit = models.PositiveIntegerField(verbose_name="Memory limit in KB", null=False, default=256*1024)
+
+	def __unicode__(self):
+		return "[{}: {}]".format(self.name, self.difficulty)
 
 	@property
 	def url(self):
@@ -44,9 +66,9 @@ class Submission(models.Model):
 	language  = models.CharField(max_length=255, choices=LanguageName.choices())
 	source    = models.TextField(verbose_name='source code')
 	isSample  = models.BooleanField(verbose_name='Compile and run sample tests or not', default=False)
-	status    = models.CharField(max_length=255, 
+	status    = models.CharField(max_length=255,
 					choices=SubmissionStatus.choices(), default=SubmissionStatus.PENDING, null=True)
-	
+
 	originalCompilerLog = models.TextField(default=None, null=True, verbose_name="Compiler log returned from hacker earth api")
 	compilerLog = models.TextField(default=None, null=True, verbose_name="Compiler log lines modified by our util function")
 
@@ -68,14 +90,14 @@ class Draft(models.Model):
 
 
 # Driver functions for the problems
-#      
+#
 # Part1: cHeaders
 #     #include <stdio.h>
 #     #include <string.h>
 #     struct node * {
-#	  blah 
+#	  blah
 #     }
-# 
+#
 # Part2: cUserSkeleton
 #      skeleton for user
 #      void add(int a, int b) {
@@ -93,6 +115,12 @@ class ProblemFunction(models.Model):
 	header = models.TextField()
 	skeleton = models.TextField()
 	footer = models.TextField()
+
+	class Meta:
+		unique_together = (('problem', 'language',),)
+
+	def __unicode__(self):
+		return "{}: {}".format(self.language, self.problem.name)
 
 # class Submission(models.Model):
 # 	run_id = models.IntegerField(primary_key=True)
