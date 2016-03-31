@@ -7,7 +7,7 @@ from backend.views import *
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', home),
 	url(r'^home/$',home),
     # Examples:
@@ -19,13 +19,9 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^test_url/', test_url),
-    url(r'^submit/',submit),
+    url(r'^submit/',create_submission),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^get_problems_by_type/',get_problems_by_type),
-    url(r'^problem/(\d+)/',problem),
-    url(r'^submissions/(\d+)/',submissions),
-    url(r'^submissions/my/$',getmysubmissions),
+    url(r'^problem/(?P<problem_id>(\d+))/',problem_page),
     url(r'^compile_and_test/',compile_and_test),
-    url(r'^get_compilation_result/',get_compilation_result),
-    url(r'^get_compilation_status/',get_compilation_status),
-)
+    url(r'^get_submission_status/', get_submission_status),
+]

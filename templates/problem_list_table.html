@@ -1,0 +1,55 @@
+
+<div class="page-content container-fluid">
+    <div class="col-xs-12">
+        <div class="row">
+
+        <div class="col-xs-12 col-xlg-12 col-md-12 col-sm-height">
+          <div class="panel panel-bordered">
+            <div class="panel-heading">
+              <h3 class="panel-title text-center">List of Problems</h3>
+            </div>
+
+            <div class="panel-body">
+            <div class="example table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Status</th>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Difficulty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for problem in problems %}
+                        <tr>
+                          <td><i style="color:green" class="icon wb-check" ></i></td>
+                          <td>{{ problem.id }}</td>
+                          <td>
+                            <a href="/problem/{{problem.id}}/">
+                              {{ problem.title }}
+                            </a>
+                          </td>
+                          {% if problem.difficulty == "HARD" %}
+                            <td><span class="label label-danger">Hard</span></td>
+                          {% elif problem.difficulty == "EASY" %}
+                            <td><span class="label label-success">Easy</span></td>
+                          {% else %}
+                            <td><span class="label label-warning">Medium</span></td>
+                          {% endif %}
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+<!-- End Page Content -->
+  </div>
+</div>

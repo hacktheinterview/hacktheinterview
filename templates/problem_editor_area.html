@@ -3,33 +3,38 @@
     <div class="panel-heading">
       <div class="panel-title">
         <div class="btn-group vertical-align-middle">
-          <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1" data-toggle="dropdown" aria-expanded="false">C (gcc-4.8)
+          <button type="button" id="selected-language" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1" data-toggle="dropdown" aria-expanded="false">
+              {{recentSubmission.language}}
             <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">C++11 (gcc-4.8)</a></li>
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">Python (python-2.7)</a></li>
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">Java 8 (oracle-jdk-1.8)</a></li>
+
+          <ul id="language-select-menu" class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
+              <li class="language-select-menu-item" value="1"><a href="javascript:void(0)">C (gcc-4.8)</a></li>
+              <li class="language-select-menu-item" value="2"><a href="javascript:void(0)">C++11 (gcc-4.8)</a></li>
+              <li class="language-select-menu-item" value="3"><a href="javascript:void(0)">Python (python-2.7)</a></li>
+              <li class="language-select-menu-item" value="4"><a href="javascript:void(0)">Java 8 (oracle-jdk-1.8)</a></li>
+              <li class="language-select-menu-item" value="5"><a href="javascript:void(0)">Javascript</a></li>
           </ul>
+
         </div>
         <div class="pull-right btn-group vertical-align-middle">
-          <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1" data-toggle="dropdown" aria-expanded="false">Monokai
-            <span class="caret"></span>
+          <button type="button" class="btn btn-default dropdown-toggle"
+                id="exampleAnimationDropdown1" data-toggle="dropdown" aria-expanded="false">
+                Theme <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">White Theme</a></li>
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">Green Theme</a></li>
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">Monokai</a></li>
-            <li role="presentation"><a href="javascript:void(0)" role="menuitem">Lime Light</a></li>
+          <ul id="theme-dropdown-menu" class="dropdown-menu">
+            <li role="presentation"><a href="javascript:void(0)" id="twilight">Twilight</a></li>
+            <li role="presentation"><a href="javascript:void(0)" id="monokai">Monokai</a></li>
+            <li role="presentation"><a href="javascript:void(0)" id="chrome">Chrome</a></li>
+            <li role="presentation"><a href="javascript:void(0)" id="xcode">X-Code</a></li>
+            <li role="presentation"><a href="javascript:void(0)" id="crimson_editor">Crimson editor</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="panel-body" style="padding:0;">
       <div style="min-width:100%;">
-        <pre class="ace-editor" id="c_editor" data-plugin="ace" data-mode="javascript" style="margin:0; min-height: 400px; padding: 0;">
-
-        </pre>
+          <pre class="ace-editor" id="editor" data-plugin="ace" data-mode="javascript" style="margin:0; min-height: 400px; padding: 0;">{{recentSubmission.source}}</pre>
       </div>
     </div>
     <div class="panel-footer">
@@ -38,8 +43,8 @@
         <button type="button" class="btn btn-danger btn-default animation-hover animation-scale">Reset</button>
       </div>
       <div class="pull-right btn-group vertical-align-middle " aria-label="Basic example" role="group">
-        <button type="button" class="btn btn-primary animation-hover animation-scale btn-default">&nbsp;&nbsp;Test&nbsp;&nbsp;</button>
-        <button type="button" class="btn btn-danger  animation-hover animation-scale btn-default">Submit</button>
+        <button type="button" id="compile_and_test" class="btn btn-primary animation-hover animation-scale btn-default">&nbsp;&nbsp;Test&nbsp;&nbsp;</button>
+        <button type="button" id="submit_solution" class="btn btn-danger  animation-hover animation-scale btn-default">Submit</button>
       </div>
     </div>
   </div>

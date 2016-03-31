@@ -16,6 +16,9 @@ import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+HACKER_EARTH_API_KEY = "e498b873dffdcb7c95e1bc1f7e133e3bc4a67a7c"
+
 # TEMPLATE_DIRS = (PROJECT_ROOT,)
 
 # print TEMPLATE_DIRS
@@ -60,7 +63,7 @@ TEMPLATES = (
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [PROJECT_ROOT],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
