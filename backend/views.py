@@ -347,7 +347,14 @@ def problem(request,offset):
 
 def problem_page(request, problem_id=1):
 	print problem_id
-	return render_to_response("templates/problem_page.html")
+	# Check if problem exists, else return 404
+	problem = Problem.objects.get(id=problem_id)
+	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
+	return render_to_response("templates/problem_page.html", {
+		"problem": problem,
+		"problem_content_url":problem_content_url,
+	})
+
 
 def home(request):
 	allProblems = Problem.objects.all()

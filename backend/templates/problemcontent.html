@@ -41,18 +41,20 @@
 	</h3>
 
 	{% include 'problem_text.html' %}
-	
+
 	<hr>
 
 	<div class="tabbable" id="code_editor">
-	    <ul class="nav nav-tabs" id="language_tabs">
+		<ul class="nav nav-tabs" id="language_tabs">
 	        <li class="active" id="C">
 	            <a data-toggle="tab" href="#c_editor_container">C</a>
 	        </li>
 	        <li id="CPP">
 	            <a data-toggle="tab" href="#cpp_editor_container">C++</a>
 	        </li>
-	    </ul> <!-- #language_tabs -->
+	    </ul>
+
+		<!-- #language_tabs -->
 	    <div class="tab-content" id="code_editors">
 	        <div class="tab-pane active code_editor_container" id="c_editor_container">
 	            <pre class="code_editor" id="c_editor">{{problem.problem_code_c}}</pre>
@@ -71,13 +73,13 @@
 				<a href="#" id="submit_code">Submit</a>
 			</li>
 		</ul>
-	
+
 	<i id="loading_spinner" class="icon-spinner icon-spin blue bigger-200"></i>
 
 	<hr>
 
 	<div id="compilation_result" style="margin-top:12px">
-	    
+
 	</div>
 
 </div>
