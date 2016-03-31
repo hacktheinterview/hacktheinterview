@@ -2,7 +2,7 @@ import json
 import os
 from django.contrib.auth.models import User
 
-from backend.models import Problem, Company, Candidate, ProblemFunction
+from backend.models import Problem, Company, Candidate, ProblemFunction, College
 from backend.enums import ProblemSubCategory, ProblemCategory, ProblemDifficulty, LanguageName
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP
 from hacktheinterview.settings import PROJECT_ROOT
@@ -17,7 +17,6 @@ def masterSeeder():
 def seedCandidate():
 	user = seedUser()
 	return Candidate.objects.create(college=seedCollege(), company=seedCompany(), user=user)
-
 
 def seedUser():
 	lastUserId = User.objects.last().id if User.objects.last() else -1

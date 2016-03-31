@@ -13,12 +13,13 @@ from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 
 from backend.runner import Runner
-from backend.enums import LanguageName
+from backend.enums import LanguageName, SubmissionStatus
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP, PROBLEM_ROOT_DIR
 from backend.utils.source_utils import createFullSourceCode
-from backend.models import Problem
+from backend.models import Problem, Submission
 
 from hackerearth.api_handlers import HackerEarthAPI
+from hackerearth.result import RunResult
 from hackerearth.parameters import RunAPIParameters, SupportedLanguages, CompileAPIParameters
 from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
@@ -37,21 +38,27 @@ def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 
 def getHeaderSource(problemId, lang):
 	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, headerSourceFileName)
+	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), headerSourceFileName)
 	headerSource = open(headerSourceFileLocation).read()
 	return headerSource
 
 def getFooterSource(problemId, lang):
 	footerSourceFileName = "footer" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, footerSourceFileName)
+	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), footerSourceFileName)
 	footerSource = open(footerSourceFileLocation).read()
 	return footerSource
 
 def getSkeletonSource(problemId, lang):
 	skeletonSourceFileName = "skeleton" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	skeletonSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, skeletonSourceFileName)
+	skeletonSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), skeletonSourceFileName)
 	skeletonSource = open(skeletonSourceFileLocation).read()
 	return skeletonSource
+
+def getAdminSolutionSource(problemId, lang):
+	solutionSourceFileName = "solution" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	solutionSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), solutionSourceFileName)
+	solutionSource = open(solutionSourceFileLocation).read()
+	return solutionSource
 
 def handleCompilationError(result, submission):
 	if submission.language in [LanguageName.C, LanguageName.CPP] :
@@ -67,14 +74,14 @@ def handleCompilationError(result, submission):
 
 def getInputData(problemId, isSample=False):
 	inputSourceFileName = "input.txt"
-	inputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, inputSourceFileName)
+	inputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), inputSourceFileName)
 	inputSource = open(inputSourceFileLocation).read()
 	return inputSource
 
 
 def getOutputData(problemId, isSample=False):
 	outputSourceFileName = "output_sample.txt" if isSample else "output.txt"
-	outputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, outputSourceFileName)
+	outputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), outputSourceFileName)
 	outputSource = open(outputSourceFileLocation).read()
 	return outputSource
 
@@ -125,7 +132,6 @@ def handleGeneralSubmission(result, submission):
 		submission.memoryUsed = result.memory_used
 		submission.save()
 
-
 # May be show wrong answer while doing the comparison and if comparison is ok, then show RTE?
 def handleRunTimeError(result, submission):
 	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
@@ -166,14 +172,15 @@ def handleException(result):
 def parseHackerEarthResult(result):
 	# TODO(Rad), dump result to a logger / analytics
 	# Verify whether compile_status is ok or not.
-	subission = result.id
-	if result['status'] == 'CE':
+	submission = Submission.objects.get(id=result.id)
+
+	if result.status == 'CE':
 		handleCompilationError(result, submission)
-	elif result['status'] == 'OK':
+	elif result.status == 'AC':
 		handleGeneralSubmission(result, submission)
-	elif result['status'] == 'RE':
+	elif result.status == 'RE':
 		handleRunTimeError(result, submission)
-	elif result['status'] == 'TLE':
+	elif result.status == 'TLE':
 		handleTimeLimitExceeded(result, submission)
 	else:
 		handleException(result)
@@ -182,22 +189,23 @@ def parseHackerEarthResult(result):
 @csrf_exempt
 def test_url(request):
 	payload = request.POST.get('payload', '')
-	payload = json.loads(payload)
+	result = RunResult(payload)
 
 	print "Request came"
-	# q.enqueue(count_words_at_url, 'http://heroku.com')
+	print result.__dict__
+	parseHackerEarthResult(result)
 	return HttpResponse("API Response Received")
 
 
 def prepareSourceCode(problemId, lang, userSource):
 	# Validate whether problem id is correct or not
 	# Validate language
-	headerSourceFileName = "header." + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, headerSourceFileName)
+	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), headerSourceFileName)
 	headerSource = open(headerSourceFileLocation).read()
 
-	footerSourceFileName = "footer." + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, footerSourceFileName)
+	footerSourceFileName = "footer" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), footerSourceFileName)
 	footerSource = open(footerSourceFileLocation).read()
 
 	fullSourceCode = createFullSourceCode(headerSource, userSource, footerSource)
@@ -209,8 +217,7 @@ def getProblemLimits(problemId):
 		'memory_limit': 1024 * 1024,
 	}
 
-def postSubmissionToEngine(submissionId):
-	submission = Submission.objects.get(id=submissionId)
+def postSubmissionToEngine(submission):
 	userSource = submission.source
 	lang = submission.language
 	isSample = submission.isSample
@@ -224,26 +231,26 @@ def postSubmissionToEngine(submissionId):
 		client_secret=HACKER_EARTH_API_KEY,
 		source=fullSource,
 		lang=hackerEarthLanguage,
-		program_input=inputSource,
+		program_input=fullSource,
 		time_limit=limits['time_limit'],
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
+		callback='https://geazwgktsi.localtunnel.me/test_url/',
+		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
 
 	api = HackerEarthAPI(run_params)
 	r = api.run()
-	print r.__dict__
 
-@csrf_exempt
-def create_submission(request):
-	user_source_code = "print x"
-	problem = Problem.objects.get(id=1)
+#@csrf_exempt
+def create_submission():
+	problemId = 1
 	language = LanguageName.C_PLUS_PLUS
+	user_source_code = getAdminSolutionSource(problemId, language)
+	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.get(id=1)
-
 
 	s = Submission.objects.create(
 		problem=problem,
@@ -254,26 +261,21 @@ def create_submission(request):
 	postSubmissionToEngine(s)
 	return HttpResponse(json.dumps({'submission_id': s.id}), 'application/json')
 
-	# run_id = Submission.objects.count() + 1
-	# user_id = 1
-	# problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))
-	# source_code = request.POST["source_code"]
-	# submission_time = datetime.datetime.now()
-	# language = request.POST["language"]
-	# language = language.upper()
-	# status = "QUEUED"
-	# compiler_error_log= " "
-	# time_taken = -1
-	# exit_code = 100000
-	# print problem
-	# s= Submission(run_id=run_id,user_id=user_id,problem=problem,source_code=source_code,submission_time=submission_time,
-	# 	status=status,language=language,compiler_error_log=compiler_error_log,time_taken=time_taken,
-	# 	exit_code=exit_code,issubmission=True)
-	# s.save()
-	# redirect_url = "/submissions/%s" % str(run_id)
-	# print redirect_url
-	# return HttpResponse(simplejson.dumps({'redirect_url':redirect_url}), 'application/json')
+def get_submission_status(request):
+	return HttpResponse("Rad is the best")
 
+def home(request):
+	allProblems = Problem.objects.all()
+	problems = []
+	for problem in allProblems:
+		tmpProblem = {
+			'difficulty': problem.difficulty,
+			'title': problem.title,
+			'id': problem.id
+		}
+		problems.append(tmpProblem)
+		print problems
+	return render_to_response("templates/problem_list.html", {"problems": problems})
 
 @csrf_exempt
 def compile_and_test(request):
@@ -295,68 +297,6 @@ def compile_and_test(request):
 	s.save()
 	return HttpResponse(simplejson.dumps({'run_id':run_id}), 'application/json')
 
-def get_compilation_status(request):
-	run_id = request.GET["run_id"]
-	rows = list(Submission.objects.filter(run_id=run_id))
-
-	if len(rows) == 0:
-		return HttpResponse('not found')
-
-	row = rows[0]
-
-	return HttpResponse(simplejson.dumps({'status':row.status}), 'application/json')
-
-
-def get_compilation_result(request):
-	run_id = request.GET["run_id"]
-	rows = list(Submission.objects.filter(run_id=run_id))
-
-	if len(rows) == 0:
-		return HttpResponse('not found')
-
-	row = rows[0]
-
-	submission = dict()
-
-	submission['status'] = row.status
-	submission['compilation_log'] = row.compiler_error_log
-	submission['unitrun_results'] = list(Submission_unitrun.objects.filter(Submission=row))
-
-	return render_to_response('compilation_results.html', submission)
-
-def submissions(request, offset):
-	run_id = int(offset)
-	submissions = list(Submission.objects.filter(run_id=run_id))
-
-	if len(submissions) == 0:
-		return Http404()
-
-	submission = submissions[0]
-
-	unitruns = list(Submission_unitrun.objects.filter(Submission = submission))
-
-	return render_to_response("submissions.html", { 'submission': submission, 'unitruns': unitruns })
-
-def problem(request,offset):
-	problem_no = int(offset)
-	rows = list(Problem.objects.filter(problem_id=problem_no))
-	if len(rows) == 0 :
-		return render_to_response("404.html");
-	row = rows[0]
-	q = dict()
-	q["title"] = row.title
-	q["difficulty"] = row.difficulty*100
-	q["content"] = row.content
-	q["problem_id"] = row.problem_id
-	rows = list(Problem_Functions.objects.filter(problem_id=problem_no))
-	if len(rows) > 0:
-		row = rows[0]
-		q["problem_code_c"] = row.c_code
-		q["problem_code_cpp"] = row.cpp_code
-		q["problem_code_java"] = row.java_code
-
-	return render_to_response("problem.html",{"problem":q})
-
 def getRecentSubmission(problem_id):
 	return None
 
@@ -375,40 +315,3 @@ def problem_page(request, problem_id=1):
 		"problem_content_url":problem_content_url,
 		"recentSubmission": recentSubmission
 	})
-
-
-def home(request):
-	allProblems = Problem.objects.all()
-	problems = []
-	for problem in allProblems:
-		tmpProblem = {
-			'difficulty': problem.difficulty,
-			'title': problem.title,
-			'id': problem.id
-		}
-		problems.append(tmpProblem)
-	print problems
-	return render_to_response("templates/problem_list.html", {"problems": problems})
-
-def get_problems_by_type(request):
-	type = request.GET['type']
-	type = "LIST"
-	rows  = list(Problem.objects.filter(types__contains=type))
-	questions = []
-	os.system("sleep 1")
-	for row in rows:
-		q = dict()
-		print row.title
-		q["title"] = row.title
-		q["difficulty"] = row.difficulty * 100
-		q["previewtext"] = row.previewtext
-		q["totalsubmission"] = row.totalsubmission
-
-		if row.totalsubmission == 0:
-			q["accuracy"] = 0
-		else:
-			q["accuracy"] = ((row.passedsubmissions*100)/row.totalsubmission)
-
-		questions.append(q)
-
-	return render_to_response("problem_list.html", {"problems":questions})

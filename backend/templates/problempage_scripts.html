@@ -6,6 +6,7 @@
 		$("#output_div").hide();
 		$("#loading_spinner").hide();
 	});
+
 	$("#submit_code").click(ace.click_event, function() {
 		bootbox.confirm("Are you sure you want to submit ?", function(result) {
 			if(result) {
@@ -42,8 +43,8 @@
 		var post_data = {"source_code":source_code, "language":language,"problem_id":problem_id};
 		$.post("/compile_and_test/", post_data, function(result_data){
 			var run_id = result_data["run_id"];
-			bootbox.alert(run_id);		
-			
+			bootbox.alert(run_id);
+
 			var interval = setInterval(function(){poll_compilation()}, 1000);
 			function poll_compilation() {
 				console.log("polling... ");
@@ -57,7 +58,7 @@
 						$.get("/get_compilation_result", {'run_id' : run_id}, function(compilation_result_data){
 							$("#compilation_result").html(compilation_result_data);
 						});
-						$("#compile_and_test").removeAttr('disabled');	
+						$("#compile_and_test").removeAttr('disabled');
 						$("#loading_spinner").hide();
 					}
 				});
@@ -66,5 +67,3 @@
 		});
 	});
 </script>
-
-		

@@ -19,6 +19,44 @@ $(document).ready(function() {
 
 });
 
+$("#compile_and_test").click(function() {
+    var language = 1;
+    var source_code = editor.getValue();
+    var problem_id = 1;
+
+    // if(language === "C")
+    //     source_code = c_editor.getValue();
+    // else if(language === "CPP")
+    //     source_code = cpp_editor.getValue();
+
+    // $("#compile_and_test").attr("disabled", "disabled");
+    // $("#loading_spinner").show();
+
+    var post_data = {"source_code": source_code, "language": language, "problem_id": problem_id};
+
+    $.post("/compile_and_test/", post_data, function(result_data) {
+        var interval = setInterval(function(){poll_compilation()}, 1000);
+        function poll_compilation() {
+            console.log("polling... ");
+            $.get("/get_compilation_status/", {'run_id' : run_id}, function(compilation_status_data){
+                console.log(compilation_status_data);
+                //clearInterval(interval);
+                if(compilation_status_data["status"] != "QUEUED"){
+                    clearInterval(interval);
+                    $("#compilation_result").show();
+
+                    $.get("/get_compilation_result", {'run_id' : run_id}, function(compilation_result_data){
+                        $("#compilation_result").html(compilation_result_data);
+                    });
+                    $("#compile_and_test").removeAttr('disabled');
+                    $("#loading_spinner").hide();
+                }
+            });
+        }
+    });
+});
+
+
 $(".language-select-menu-item").on("click", function() {
     var selText = $(this).text();
     $(this).parents('.btn-group').find('#selected-language').html(selText+' <span class="caret"></span>');
