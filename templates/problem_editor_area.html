@@ -3,14 +3,19 @@
     <div class="panel-heading">
       <div class="panel-title">
         <div class="btn-group vertical-align-middle">
-          <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1" data-toggle="dropdown" aria-expanded="false">C (gcc-4.8)
+          <button type="button" id="selected-language" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1" data-toggle="dropdown" aria-expanded="false">
+              {{recentSubmission.language}}
             <span class="caret"></span>
           </button>
-          <ul class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
-            <li><a href="#">C++11 (gcc-4.8)</a></li>
-            <li><a href="#">Python (python-2.7)</a></li>
-            <li><a href="#">Java 8 (oracle-jdk-1.8)</a></li>
+
+          <ul id="language-select-menu" class="dropdown-menu" aria-labelledby="exampleAnimationDropdown1" role="menu">
+              <li class="language-select-menu-item" value="1"><a href="javascript:void(0)">C (gcc-4.8)</a></li>
+              <li class="language-select-menu-item" value="2"><a href="javascript:void(0)">C++11 (gcc-4.8)</a></li>
+              <li class="language-select-menu-item" value="3"><a href="javascript:void(0)">Python (python-2.7)</a></li>
+              <li class="language-select-menu-item" value="4"><a href="javascript:void(0)">Java 8 (oracle-jdk-1.8)</a></li>
+              <li class="language-select-menu-item" value="5"><a href="javascript:void(0)">Javascript</a></li>
           </ul>
+
         </div>
         <div class="pull-right btn-group vertical-align-middle">
           <button type="button" class="btn btn-default dropdown-toggle"
@@ -29,9 +34,7 @@
     </div>
     <div class="panel-body" style="padding:0;">
       <div style="min-width:100%;">
-        <pre class="ace-editor" id="c_editor" data-plugin="ace" data-mode="javascript" style="margin:0; min-height: 400px; padding: 0;">
-
-        </pre>
+          <pre class="ace-editor" id="editor" data-plugin="ace" data-mode="javascript" style="margin:0; min-height: 400px; padding: 0;">{{recentSubmission.source}}</pre>
       </div>
     </div>
     <div class="panel-footer">

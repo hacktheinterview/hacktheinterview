@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from backend.runner import Runner
 from backend.enums import LanguageName
-from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP
+from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP, PROBLEM_ROOT_DIR
 from backend.utils.source_utils import createFullSourceCode
 from backend.models import Problem
 
@@ -36,10 +36,22 @@ def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 	return output_log
 
 def getHeaderSource(problemId, lang):
-	headerSourceFileName = "header." + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
 	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, headerSourceFileName)
 	headerSource = open(headerSourceFileLocation).read()
 	return headerSource
+
+def getFooterSource(problemId, lang):
+	footerSourceFileName = "footer" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, footerSourceFileName)
+	footerSource = open(footerSourceFileLocation).read()
+	return footerSource
+
+def getSkeletonSource(problemId, lang):
+	skeletonSourceFileName = "skeleton" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	skeletonSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, problemId, skeletonSourceFileName)
+	skeletonSource = open(skeletonSourceFileLocation).read()
+	return skeletonSource
 
 def handleCompilationError(result, submission):
 	if submission.language in [LanguageName.C, LanguageName.CPP] :
@@ -345,14 +357,23 @@ def problem(request,offset):
 
 	return render_to_response("problem.html",{"problem":q})
 
+def getRecentSubmission(problem_id):
+	return None
+
+
 def problem_page(request, problem_id=1):
 	print problem_id
 	# Check if problem exists, else return 404
 	problem = Problem.objects.get(id=problem_id)
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
+	recentSubmission = {
+		"language": "C (gcc-4.8)",
+		"source": getSkeletonSource(problem_id, LanguageName.C)
+	}
 	return render_to_response("templates/problem_page.html", {
 		"problem": problem,
 		"problem_content_url":problem_content_url,
+		"recentSubmission": recentSubmission
 	})
 
 
