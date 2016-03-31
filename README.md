@@ -28,6 +28,12 @@ Set default encoding to UTF-8 and timezone to UTC which Django expects.
     ALTER ROLE hack_user SET default_transaction_isolation TO 'read committed';
     ALTER ROLE hack_user SET timezone TO 'UTC';
 
+Misc Set up:
+
+To redirect callbacks from HackerEarth to local machine, install localtunnel using the following guide
+
+    https://localtunnel.me/
+
 Go to project root and run the following to run the web-server locally
 
     heroku local -p 5767
