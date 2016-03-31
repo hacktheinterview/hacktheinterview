@@ -29,7 +29,7 @@ class NoDeleteManager(models.Manager):
 class Problem(models.Model):
 	id = models.IntegerField(primary_key=True)
 
-	name = models.CharField(max_length=255)
+	title = models.CharField(max_length=255)
 	category = models.CharField(max_length=255, choices=ProblemCategory.choices())
 	difficulty = models.CharField(max_length=255, choices=ProblemDifficulty.choices())
 

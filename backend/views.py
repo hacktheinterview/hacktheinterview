@@ -16,6 +16,7 @@ from backend.runner import Runner
 from backend.enums import LanguageName
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP
 from backend.utils.source_utils import createFullSourceCode
+from backend.models import Problem
 
 from hackerearth.api_handlers import HackerEarthAPI
 from hackerearth.parameters import RunAPIParameters, SupportedLanguages, CompileAPIParameters
@@ -230,7 +231,7 @@ def create_submission(request):
 	problem = Problem.objects.get(id=1)
 	language = LanguageName.C_PLUS_PLUS
 	candidate = Candidate.objects.get(id=1)
-	
+
 
 	s = Submission.objects.create(
 		problem=problem,
@@ -344,27 +345,22 @@ def problem(request,offset):
 
 	return render_to_response("problem.html",{"problem":q})
 
-def home(request):
-	type = "LIST"
+def problem_page(request, problem_id=1):
+	print problem_id
 	return render_to_response("templates/problem_page.html")
 
-	# rows  = list(Problem.objects.filter(types__contains=type))
-	# problems = []
-	# for row in rows:
-	# 	q = dict()
-	# 	print row.title
-	# 	q["title"] = row.title
-	# 	q["difficulty"] = row.difficulty * 100
-	# 	q["previewtext"] = row.previewtext
-	# 	q["totalsubmission"] = row.totalsubmission
-	# 	q["problem_id"] = row.problem_id
-	# 	if row.totalsubmission == 0:
-	# 		q["accuracy"] = 0
-	# 	else:
-	# 		q["accuracy"] = ((row.passedsubmissions*100)/row.totalsubmission)
-	# 	problems.append(q)
-
-	# return render_to_response("home.html",locals())
+def home(request):
+	allProblems = Problem.objects.all()
+	problems = []
+	for problem in allProblems:
+		tmpProblem = {
+			'difficulty': problem.difficulty,
+			'title': problem.title,
+			'id': problem.id
+		}
+		problems.append(tmpProblem)
+	print problems
+	return render_to_response("templates/problem_list.html", {"problems": problems})
 
 def get_problems_by_type(request):
 	type = request.GET['type']

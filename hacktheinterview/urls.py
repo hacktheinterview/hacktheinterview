@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^submit/',create_submission),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^get_problems_by_type/',get_problems_by_type),
-    url(r'^problem/(\d+)/',problem),
+    url(r'^problem/(?P<problem_id>(\d+))/',problem_page),
     url(r'^submissions/(\d+)/',submissions),
     url(r'^compile_and_test/',compile_and_test),
     url(r'^get_compilation_result/',get_compilation_result),
