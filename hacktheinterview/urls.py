@@ -19,7 +19,7 @@ urlpatterns = [
 
     # Uncomment the next line to enable the admin:
     url(r'^test_url/', test_url),
-    url(r'^submit/',create_submission),
+    url(r'^create_submission/',create_submission),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^problem/(?P<problem_id>(\d+))/',problem_page),
     url(r'^compile_and_test/',compile_and_test),

@@ -29,7 +29,7 @@ class LanguageName(ModelChoicesEnum):
 
 
 class SubmissionStatus(ModelChoicesEnum):
-	PENDING = EnumValue("PENDING", "Pending")
+	QUEUED  = EnumValue("QE", "Queued")
 	CE      = EnumValue("CE", "Compilation Error")
 	AC      = EnumValue("AC", "Correct Answer")
 	WA      = EnumValue("WA", "Wrong Answer")
