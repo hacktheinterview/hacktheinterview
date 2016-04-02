@@ -42,7 +42,7 @@ class Solution:
 
         current = head
         nextNode = current.next
-        reversedHead = reverseList(nextNode)
+        reversedHead = self.reverseList(nextNode)
         nextNode.next = current
         current.next = None
         return reversedHead
@@ -78,12 +78,17 @@ def printLinkedList(head):
     print output
 
 if __name__ == "__main__":
-    l = LinkedList()
-    for i in range(10):
-        l.addNodeToEnd(i)
-    l.printLinkedList()
+    test_cases = int(raw_input())
+    for i in range(test_cases):
+        L = LinkedList()
+        lineItems = [int(l) for l in raw_input().split(" ")]
+        nodes = lineItems[0]
+        lineItems = lineItems[1:]
 
-    s = Solution()
-    reversedHead = s.reverseList(l.head)
-    l.head = reversedHead
-    l.printLinkedList()
+        for elem in lineItems:
+            L.addNodeToEnd(elem)
+
+        s = Solution()
+        reversedHead = s.reverseList(L.head)
+        L.head = reversedHead
+        L.printLinkedList()

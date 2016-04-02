@@ -1,4 +1,5 @@
 import os
+import re
 import datetime
 import json
 import simplejson
@@ -24,12 +25,11 @@ from hackerearth.result import RunResult
 from hackerearth.parameters import RunAPIParameters, SupportedLanguages, CompileAPIParameters
 from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
-
 def editPythonErrorLog(errorLog, no_of_lines_to_subtract):
 	def repl(m):
-		return " File {}, line {}, in {}".format(m.group(1), m.group(2), m.group(3))
+		return "{}File {}, line {}".format(m.group(1), m.group(2), str(int(m.group(3)) - no_of_lines_to_subtract))
 
-	return re.sub(" File (.*), line (\d+), in (.*)", repl, errorLog, flags=re.MULTILINE)
+	return re.sub("(.*)File (.*), line (\d+)", repl, errorLog, flags=re.MULTILINE)
 
 def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 	# Refer http://stackoverflow.com/questions/18022124/parsing-gcc-error-log
@@ -107,6 +107,7 @@ def handleCompilationError(result, submission):
 		submission.originalCompilerErrorLog = result.compile_status
 		submission.compilerErrorLog = compilationErrorLog
 		submission.save()
+
 	elif submission.language == LanguageName.JAVA:
 		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
 		print "linesToSubtract :", linesToSubtract
@@ -118,6 +119,19 @@ def handleCompilationError(result, submission):
 		submission.originalCompilerErrorLog = result.compile_status
 		submission.compilerErrorLog = compilationErrorLog
 		submission.save()
+
+	elif submission.language == LanguageName.PYTHON:
+		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+		print "linesToSubtract :", linesToSubtract
+		compilationErrorLog = editPythonErrorLog(result.compile_status, linesToSubtract)
+		print "Changed Compiler Log"
+		print compilationErrorLog
+		# save metadata information in the submission
+		submission.status = SubmissionStatus.CE
+		submission.originalCompilerErrorLog = result.compile_status
+		submission.compilerErrorLog = compilationErrorLog
+		submission.save()
+
 	else:
 		raise NotImplementedError("Not implemented for other languages")
 
@@ -181,6 +195,8 @@ def handleGeneralSubmission(result, submission):
 		submission.save()
 
 # May be show wrong answer while doing the comparison and if comparison is ok, then show RTE?
+# TODO(Rad). This will throw error when users print more than #testcases
+# Handle that condition.
 def handleRunTimeError(result, submission):
 	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
 	obtainedOutput = result.output
@@ -285,7 +301,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://bntbsixutd.localtunnel.me/test_url/',
+		callback='https://lenayivmfr.localtunnel.me/test_url/',
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
@@ -301,7 +317,7 @@ def create_submission(request):
 	isSample = request.POST.get('isSample')
 
 	problemId = 1
-	language = LanguageName.CPP
+	language = LanguageName.PYTHON
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.get(id=1)
@@ -420,8 +436,8 @@ def problem_page(request, problem_id=1):
 	problem = Problem.objects.get(id=problem_id)
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
-		"language": "C++11 (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, LanguageName.CPP)
+		"language": "Python (python-2.7)",
+		"source": getSkeletonSource(problem_id, LanguageName.PYTHON)
 	}
 
 	return render_to_response("templates/problem_page.html", {
