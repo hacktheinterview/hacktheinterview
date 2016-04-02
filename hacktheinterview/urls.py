@@ -22,6 +22,5 @@ urlpatterns = [
     url(r'^create_submission/',create_submission),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^problem/(?P<problem_id>(\d+))/',problem_page),
-    url(r'^compile_and_test/',compile_and_test),
     url(r'^get_submission_status/', get_submission_status),
 ]
