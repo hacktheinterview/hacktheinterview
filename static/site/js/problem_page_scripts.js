@@ -1,12 +1,13 @@
 $(document).ready(function() {
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode("ace/mode/python");
+    editor.getSession().setMode("ace/mode/c_cpp");
     editor.setShowPrintMargin(false);
     editor.getSession().setUseWrapMode(true);
     editor.getSession().setUseWorker(false);
     document.getElementById('editor').style.fontSize = '15px';
 
+    $("#default_compilation_status_area").hide();
     // var notes_editor = ace.edit("notes-editor");
     // notes_editor.setTheme("ace/theme/solarized_light");
     // notes_editor.getSession().setMode("ace/mode/text");
@@ -30,6 +31,8 @@ $("#compile_and_test").click(function() {
         "problem_id": problem_id,
         "isSample": false,
     };
+    // Show submission status area
+    $("#default_compilation_status_area").show();
     $("#submission_status_area").html("");
     $.post("/create_submission/", post_data, function(result_data) {
         submission_id = result_data.submission_id;
@@ -38,7 +41,7 @@ $("#compile_and_test").click(function() {
             console.log("polling... ");
             $.get("/get_submission_status/", {'submission_id' : submission_id}, function(submission_status){
                 console.log(submission_status);
-
+                $("#default_compilation_status_area").hide();
                 if (submission_status["status"] != "QE") {
                     clearInterval(interval);
                 }

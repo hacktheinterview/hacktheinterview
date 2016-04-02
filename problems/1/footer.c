@@ -1,11 +1,11 @@
-void addNodeToEnd(ListNode*& head, int val) {
+void addNodeToEnd(ListNode** head, int val) {
 	ListNode* tmp = (ListNode*) malloc(sizeof(ListNode));
 	tmp->val = val;
-	if (head == NULL) {
-		head = tmp;
-		head->next = NULL;
+	if (*head == NULL) {
+		*head = tmp;
+		(*head)->next = NULL;
 	} else {
-		ListNode* tail = head;
+		ListNode* tail = *head;
 		while (tail->next != NULL) {
 			tail = tail->next;
 		}
@@ -15,6 +15,7 @@ void addNodeToEnd(ListNode*& head, int val) {
 
 void printLinkedList(ListNode* head) {
 	if (!head) {
+		printf("\n");
 		return;
 	}
 	ListNode* tmp = head;
@@ -30,13 +31,13 @@ int main() {
 	scanf("%d", &testcases);
 	int t = 0;
 	for (t = 0; t < testcases; t++) {
-		int n; 
+		int n;
 		scanf("%d", &n);
 		ListNode* head = NULL;
 		for (int i = 0; i < n; i++) {
-			int x; 
+			int x;
 			scanf("%d", &x);
-			addNodeToEnd(head, x);
+			addNodeToEnd(&head, x);
 		}
 
 		ListNode* reversedHead = reverseList(head);
