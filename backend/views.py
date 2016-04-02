@@ -267,7 +267,8 @@ def create_submission(request):
 	isSample = request.POST.get('isSample')
 
 	problemId = 1
-	language = LanguageName.CPP
+	language = LanguageName.JAVA
+	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.get(id=1)
 
@@ -329,26 +330,6 @@ def home(request):
 		print problems
 	return render_to_response("templates/problem_list.html", {"problems": problems})
 
-@csrf_exempt
-def compile_and_test(request):
-	# insert source code
-	run_id = Submission.objects.count() +1
-	user_id = 1
-	problem = Problem.objects.get(problem_id=int(request.POST["problem_id"]))
-	source_code = request.POST["source_code"]
-	submission_time = datetime.datetime.now()
-	language = request.POST["language"]
-	language = language.upper()
-	status = "QUEUED"
-	compiler_error_log= " "
-	time_taken = -1
-	exit_code = 100000
-	s= Submission(run_id=run_id,user_id=user_id,problem=problem,source_code=source_code,submission_time=submission_time,
-		status=status,language=language,compiler_error_log=compiler_error_log,time_taken=time_taken,
-		exit_code=exit_code,issubmission=False)
-	s.save()
-	return HttpResponse(simplejson.dumps({'run_id':run_id}), 'application/json')
-
 def getRecentSubmission(problem_id):
 	return None
 
@@ -359,9 +340,10 @@ def problem_page(request, problem_id=1):
 	problem = Problem.objects.get(id=problem_id)
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
-		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, LanguageName.CPP)
+		"language": "Java 8 (oracle-jdk-1.8)",
+		"source": getSkeletonSource(problem_id, LanguageName.JAVA)
 	}
+
 	return render_to_response("templates/problem_page.html", {
 		"problem": problem,
 		"problem_content_url":problem_content_url,

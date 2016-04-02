@@ -8,10 +8,10 @@ from hackerearth.api_handlers import HackerEarthAPI
 
 client_secret = '0a7f0101e5cc06e4417a3addeb76164680ac83a4'
 
-source = open('hackerearth/reverse_linked_list.cpp', 'r').read()
+source = open('hackerearth/Solution.java', 'r').read()
 input_source = open('hackerearth/input.txt', 'r').read()
 
-lang = SupportedLanguages.CPP
+lang = SupportedLanguages.JAVA
 compressed = 0
 html = 0
 print source
@@ -22,7 +22,7 @@ params = RunAPIParameters(async=0,
         	lang=lang,
 			compressed=1,
 			id=random.randint(12123,123123),
-			program_input=input_source,
+			#program_input=input_source,
 			#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/'
 	)
 
