@@ -22,7 +22,7 @@ class ProblemDifficulty(ModelChoicesEnum):
 
 class LanguageName(ModelChoicesEnum):
 	C                = EnumValue("C", "C")
-	C_PLUS_PLUS      = EnumValue("C++", "C++")
+	CPP      = EnumValue("C++", "C++")
 	JAVA             = EnumValue("JAVA", "Java")
 	PYTHON           = EnumValue("PYTHON", "Python")
 	JAVASCRIPT       = EnumValue("JAVASCRIPT", "Javascript")

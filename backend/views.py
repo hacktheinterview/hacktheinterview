@@ -26,15 +26,19 @@ from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
 def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 	# Refer http://stackoverflow.com/questions/18022124/parsing-gcc-error-log
+	# In function `main':\n(.text.startup+0x7c): undefined reference to `Solution::reverseList(ListNode*)'\n error: ld returned 1 exit status\n\n
+	print compilerLog
+	print no_of_lines_to_subtract
 	lines = compilerLog.split("\n")
 	output_log = ""
 	for line in lines:
 		items = line.split(":")
-		if len(items) > 2:
-			items[0] = str(int(items[1]) - no_of_lines_to_subtract)
-			output_log += ":".join(items)
+		if len(items) >= 4 and ("error" in line or "warning" in line):
+			items[0] = str(int(items[0]) - no_of_lines_to_subtract)
+			output_log += ":".join(items) + "\n"
 		else:
 			output_log += line
+
 	return output_log
 
 def getHeaderSource(problemId, lang):
@@ -61,14 +65,23 @@ def getAdminSolutionSource(problemId, lang):
 	solutionSource = open(solutionSourceFileLocation).read()
 	return solutionSource
 
+def countLinesInHeaderSource(problemId, lang):
+	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), headerSourceFileName)
+	headerLines = sum(1 for line in open(headerSourceFileLocation))
+	return headerLines
+
 def handleCompilationError(result, submission):
-	if submission.language in [LanguageName.C, LanguageName.CPP] :
-		linesToSubtract = len(getHeaderSource(problem.id, submission.language)) + 2
+	if submission.language in [LanguageName.C, LanguageName.CPP]:
+		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+		print "linesToSubtract :", linesToSubtract
 		compilationErrorLog = editGccCompilerLog(result.compile_status, linesToSubtract)
+		print "Changed Compiler Log"
+		print compilationErrorLog
 		# save metadata information in the submission
 		submission.status = SubmissionStatus.CE
-		submission.originalCompilerLog = result.compile_status
-		submission.compilerLog = compilationErrorLog
+		submission.originalCompilerErrorLog = result.compile_status
+		submission.compilerErrorLog = compilationErrorLog
 		submission.save()
 	else:
 		raise NotImplementedError("Not implemented for other languages")
@@ -238,7 +251,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://bxmasgkxjn.localtunnel.me/test_url/',
+		callback='https://ekqgvgjmph.localtunnel.me/test_url/',
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
@@ -251,10 +264,10 @@ def create_submission(request):
 	problem_id = request.POST.get('problem_id')
 	user_source_code = request.POST.get('source_code')
 	language = request.POST.get('language')
+	isSample = request.POST.get('isSample')
 
 	problemId = 1
-	language = LanguageName.C_PLUS_PLUS
-	user_source_code = getAdminSolutionSource(problemId, language)
+	language = LanguageName.CPP
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.get(id=1)
 
@@ -347,7 +360,7 @@ def problem_page(request, problem_id=1):
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, LanguageName.C)
+		"source": getSkeletonSource(problem_id, LanguageName.CPP)
 	}
 	return render_to_response("templates/problem_page.html", {
 		"problem": problem,
