@@ -56,9 +56,42 @@
         </div>
         <div class="panel-body">
             Your solution has taken far more time to solve this test case.
-          <div><pre>{{ submissionStatus.testCaseContent }}</pre>
+          <div><pre>{{ submissionStatus.inputTestCaseContent }}</pre>
         </div>
       </div>
     </div>
 
+{% endif %}
+
+
+{% if submissionStatus.status == 'WA' %}
+<div class="col-xs-12 col-xlg-9 col-md-9">
+  <div class="panel panel-bordered">
+    <div class="panel-heading">
+      <h3 class="panel-title"><span class="text-danger">Failed Test Case.</span></h3>
+      <div class="panel-actions">
+        <a class="" data-toggle="panel-collapse" href="#">
+          <i style="color:red" class="icon wb-close"></i>
+        </a>
+      </div>
+    </div>
+    <div class="panel-body">
+        <ul class="list-group list-group-bordered">
+            <li class="list-group-item">
+                Your solution has failed for the following test case
+                <pre>{{ submissionStatus.inputTestCaseContent }}</pre>
+            </li>
+
+            <li class="list-group-item">
+                EXPECTED OUTPUT
+                <pre>{{ submissionStatus.expectedOutputTestCaseContent }}</pre>
+            </li>
+            <li class="list-group-item">
+                YOUR OUTPUT
+                <pre>{{ submissionStatus.obtainedOutputTestCaseContent }}</pre>
+            </li>
+        </ul>
+    </div>
+  </div>
+</div>
 {% endif %}
