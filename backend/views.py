@@ -188,7 +188,7 @@ def handleRunTimeError(result, submission):
 
 	submission.status = SubmissionStatus.RTE
 	submission.failedCase = failedCase
-	submission.testCaseText = inputLines[failedIndex]
+	submission.testCaseText = inputLines[failedCase]
 	submission.save()
 
 def handleTimeLimitExceeded(result, submission):
@@ -205,7 +205,7 @@ def handleTimeLimitExceeded(result, submission):
 
 	submission.status = SubmissionStatus.TLE
 	submission.failedCase = failedCase
-	submission.testCaseText = inputLines[failedIndex]
+	submission.testCaseText = inputLines[failedCase]
 	submission.save()
 
 def handleException(result):
@@ -295,7 +295,7 @@ def create_submission(request):
 	isSample = request.POST.get('isSample')
 
 	problemId = 1
-	language = LanguageName.JAVA
+	language = LanguageName.CPP
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.get(id=1)
@@ -328,11 +328,44 @@ def prepareSubmissionStatus(submission_id):
 	elif submission.status == 'AC':
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
+
+	elif submission.status == 'TLE':
+		submissionStatus['testCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+			submission.failedCase, submission.isSample)
+		htmlContent = render_to_string("templates/submission_status.html",
+				{'submissionStatus': submissionStatus})
 	elif submission.status == 'WA':
 		pass
 
 	submissionStatus['htmlContent'] = htmlContent
 	return submissionStatus
+
+# def printInputTestCase(problem, testCaseNum):
+#
+
+def inputLineToLinkedList(failedInputLine):
+	inputItems = [int(x) for x in failedInputLine.split(" ")]
+	numNodes = inputItems[0]
+	nodes = inputItems[1:]
+	displayMsg = ""
+
+	for i in xrange(numNodes):
+		if i == numNodes - 1:
+			displayMsg += "{}".format(nodes[i])
+		else:
+			displayMsg += "{} -> ".format(nodes[i])
+	if displayMsg == "":
+		displayMsg = "Empty Linked List"
+	return displayMsg
+
+def printInputTestCaseLinkedList(problem_id, testCaseNum, isSample):
+	inputSource = getInputData(problem_id, isSample)
+	inputLines = inputSource.split("\n")
+	inputLines = inputLines[1:]
+
+	failedInputLine = inputLines[testCaseNum - 1]
+	printableContent = inputLineToLinkedList(failedInputLine)
+	return printableContent
 
 def get_submission_status(request):
 	submission_id = request.GET.get('submission_id')
@@ -368,8 +401,8 @@ def problem_page(request, problem_id=1):
 	problem = Problem.objects.get(id=problem_id)
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
-		"language": "Java 8 (oracle-jdk-1.8)",
-		"source": getSkeletonSource(problem_id, LanguageName.JAVA)
+		"language": "C++11 (gcc-4.8)",
+		"source": getSkeletonSource(problem_id, LanguageName.CPP)
 	}
 
 	return render_to_response("templates/problem_page.html", {

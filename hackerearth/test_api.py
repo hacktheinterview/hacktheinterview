@@ -8,7 +8,7 @@ from hackerearth.api_handlers import HackerEarthAPI
 
 client_secret = '0a7f0101e5cc06e4417a3addeb76164680ac83a4'
 
-source = open('hackerearth/Solution.java', 'r').read()
+source = open('hackerearth/Main.java', 'r').read()
 input_source = open('hackerearth/input.txt', 'r').read()
 
 lang = SupportedLanguages.JAVA
