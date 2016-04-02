@@ -302,7 +302,6 @@ def postSubmissionToEngine(submission):
 		async=1,
 		id=submission.id,
 		callback='https://lenayivmfr.localtunnel.me/test_url/',
-		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
 
