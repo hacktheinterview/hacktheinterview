@@ -24,6 +24,13 @@ from hackerearth.result import RunResult
 from hackerearth.parameters import RunAPIParameters, SupportedLanguages, CompileAPIParameters
 from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
+
+def editPythonErrorLog(errorLog, no_of_lines_to_subtract):
+	def repl(m):
+		return " File {}, line {}, in {}".format(m.group(1), m.group(2), m.group(3))
+
+	return re.sub(" File (.*), line (\d+), in (.*)", repl, errorLog, flags=re.MULTILINE)
+
 def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 	# Refer http://stackoverflow.com/questions/18022124/parsing-gcc-error-log
 	# In function `main':\n(.text.startup+0x7c): undefined reference to `Solution::reverseList(ListNode*)'\n error: ld returned 1 exit status\n\n
@@ -278,7 +285,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://alvsuvkmtj.localtunnel.me/test_url/',
+		callback='https://bntbsixutd.localtunnel.me/test_url/',
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)

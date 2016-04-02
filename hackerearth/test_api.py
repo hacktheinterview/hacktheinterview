@@ -8,10 +8,10 @@ from hackerearth.api_handlers import HackerEarthAPI
 
 client_secret = '0a7f0101e5cc06e4417a3addeb76164680ac83a4'
 
-source = open('hackerearth/Main.java', 'r').read()
+source = open('hackerearth/Solution.py', 'r').read()
 input_source = open('hackerearth/input.txt', 'r').read()
 
-lang = SupportedLanguages.JAVA
+lang = SupportedLanguages.PYTHON
 compressed = 0
 html = 0
 print source
@@ -31,9 +31,9 @@ print params.__dict__
 
 api = HackerEarthAPI(params)
 
-# print 'Compiling code..'
-# r = api.compile()
-# print r.__dict__
+print 'Compiling code..'
+r = api.compile()
+print r.__dict__
 
 print '\nRunning code...'
 r = api.run()
