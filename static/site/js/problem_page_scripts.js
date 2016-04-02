@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode("ace/mode/javascript");
+    editor.getSession().setMode("ace/mode/python");
     editor.setShowPrintMargin(false);
     editor.getSession().setUseWrapMode(true);
     editor.getSession().setUseWorker(false);
@@ -33,7 +33,7 @@ $("#compile_and_test").click(function() {
     $("#submission_status_area").html("");
     $.post("/create_submission/", post_data, function(result_data) {
         submission_id = result_data.submission_id;
-        var interval = setInterval(function(){poll_submission()}, 1000);
+        var interval = setInterval(function(){poll_submission()}, 1500);
         function poll_submission() {
             console.log("polling... ");
             $.get("/get_submission_status/", {'submission_id' : submission_id}, function(submission_status){
