@@ -85,7 +85,7 @@ def seedAllProblems():
 			for company in companies:
 				problem.companies.add(company)
 
-		languages = [LanguageName.C, LanguageName.C_PLUS_PLUS]
+		languages = [LanguageName.C, LanguageName.CPP]
 
 		for lang in languages:
 			langExtension = LANGUAGE_FILE_EXTENSION_MAP.get(lang)

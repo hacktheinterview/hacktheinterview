@@ -23,3 +23,22 @@
       </div>
     </div>
 {% endif %}
+
+{% if submissionStatus.status == 'CE' %}
+    <div class="col-xs-12 col-xlg-9 col-md-9">
+      <div class="panel panel-bordered">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-danger">Compilation Error</span></h3>
+          <div class="panel-actions">
+            <a class="" data-toggle="panel-collapse" href="#">
+              <i style="color:red" class="icon wb-alert-circle"></i>
+            </a>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div><pre>{{ submissionStatus.compilerErrorLog }}</div>
+        </div>
+      </div>
+    </div>
+
+{% endif %}
