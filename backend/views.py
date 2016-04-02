@@ -71,11 +71,39 @@ def countLinesInHeaderSource(problemId, lang):
 	headerLines = sum(1 for line in open(headerSourceFileLocation))
 	return headerLines
 
+
+def editJAVACompilerLog(compilerLog, no_of_lines_to_subtract):
+	print compilerLog
+	print no_of_lines_to_subtract
+	lines = compilerLog.split("\n")
+	output_log = ""
+	for line in lines:
+		items = line.split(":")
+		if len(items) >= 2 and ("error" in line):
+			items[0] = str(int(items[0]) - no_of_lines_to_subtract)
+			output_log += ":".join(items) + "\n"
+		else:
+			output_log += line
+
+	return output_log
+
+
 def handleCompilationError(result, submission):
 	if submission.language in [LanguageName.C, LanguageName.CPP]:
 		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
 		print "linesToSubtract :", linesToSubtract
 		compilationErrorLog = editGccCompilerLog(result.compile_status, linesToSubtract)
+		print "Changed Compiler Log"
+		print compilationErrorLog
+		# save metadata information in the submission
+		submission.status = SubmissionStatus.CE
+		submission.originalCompilerErrorLog = result.compile_status
+		submission.compilerErrorLog = compilationErrorLog
+		submission.save()
+	elif submission.language == LanguageName.JAVA:
+		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+		print "linesToSubtract :", linesToSubtract
+		compilationErrorLog = editJAVACompilerLog(result.compile_status, linesToSubtract)
 		print "Changed Compiler Log"
 		print compilationErrorLog
 		# save metadata information in the submission
@@ -251,7 +279,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://ekqgvgjmph.localtunnel.me/test_url/',
+		callback='https://alvsuvkmtj.localtunnel.me/test_url/',
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
