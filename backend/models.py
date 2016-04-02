@@ -67,10 +67,10 @@ class Submission(models.Model):
 	source    = models.TextField(verbose_name='source code')
 	isSample  = models.BooleanField(verbose_name='Compile and run sample tests or not', default=False)
 	status    = models.CharField(max_length=255,
-					choices=SubmissionStatus.choices(), default=SubmissionStatus.PENDING, null=True)
+					choices=SubmissionStatus.choices(), default=SubmissionStatus.QUEUED, null=True)
 
-	originalCompilerLog = models.TextField(default=None, null=True, verbose_name="Compiler log returned from hacker earth api")
-	compilerLog = models.TextField(default=None, null=True, verbose_name="Compiler log lines modified by our util function")
+	originalCompilerErrorLog = models.TextField(default=None, null=True, verbose_name="Compiler log returned from hacker earth api")
+	compilerErrorLog = models.TextField(default=None, null=True, verbose_name="Compiler log lines modified by our util function")
 
 	timeUsed = models.DecimalField(default=0.00, null=True, max_digits=2, decimal_places=2, verbose_name="Time taken by the program")
 	memoryUsed = models.PositiveIntegerField(default=0, null=True, verbose_name="Memory used by the program in kilo bytes")

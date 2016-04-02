@@ -1,0 +1,25 @@
+{% if submissionStatus.status == 'QE' %}
+    <div class="col-xs-12 col-xlg-9 col-md-9">
+      <div class="panel panel-bordered">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-warning">Compiling and running your solution..</span></h3>
+          <div class="panel-actions">
+            <span class="text-warning"><i style="" class="fa fa-spinner fa-spin" ></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endif %}
+
+{% if submissionStatus.status == 'AC' %}
+    <div class="col-xs-12 col-xlg-9 col-md-9">
+      <div class="panel panel-bordered">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-success">All test cases passed.</span></h3>
+          <div class="panel-actions">
+            <i style="color:green" class="icon wb-check"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endif %}

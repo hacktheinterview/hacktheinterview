@@ -9,14 +9,15 @@ from rq import Queue
 from worker import conn
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 
 from backend.runner import Runner
 from backend.enums import LanguageName, SubmissionStatus
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP, PROBLEM_ROOT_DIR
 from backend.utils.source_utils import createFullSourceCode
-from backend.models import Problem, Submission
+from backend.models import Problem, Submission, Candidate
 
 from hackerearth.api_handlers import HackerEarthAPI
 from hackerearth.result import RunResult
@@ -219,6 +220,7 @@ def getProblemLimits(problemId):
 
 def postSubmissionToEngine(submission):
 	userSource = submission.source
+	problemId = submission.problem.id
 	lang = submission.language
 	isSample = submission.isSample
 	fullSource = prepareSourceCode(problemId, lang, userSource)
@@ -231,12 +233,12 @@ def postSubmissionToEngine(submission):
 		client_secret=HACKER_EARTH_API_KEY,
 		source=fullSource,
 		lang=hackerEarthLanguage,
-		program_input=fullSource,
+		program_input=inputText,
 		time_limit=limits['time_limit'],
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://geazwgktsi.localtunnel.me/test_url/',
+		callback='https://bxmasgkxjn.localtunnel.me/test_url/',
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
 		compressed=0,
 	)
@@ -244,8 +246,12 @@ def postSubmissionToEngine(submission):
 	api = HackerEarthAPI(run_params)
 	r = api.run()
 
-#@csrf_exempt
-def create_submission():
+@csrf_exempt
+def create_submission(request):
+	problem_id = request.POST.get('problem_id')
+	user_source_code = request.POST.get('source_code')
+	language = request.POST.get('language')
+
 	problemId = 1
 	language = LanguageName.C_PLUS_PLUS
 	user_source_code = getAdminSolutionSource(problemId, language)
@@ -257,12 +263,45 @@ def create_submission():
 		candidate=candidate,
 		language=language,
 		source=user_source_code,
+		status=SubmissionStatus.QUEUED,
 	)
 	postSubmissionToEngine(s)
 	return HttpResponse(json.dumps({'submission_id': s.id}), 'application/json')
 
+def prepareSubmissionStatus(submission_id):
+	submission = Submission.objects.get(id=submission_id)
+	submissionStatus = {}
+	submissionStatus['status'] = submission.status
+	htmlContent = None
+
+	if submission.status == 'QE':
+		htmlContent = render_to_string("templates/submission_status.html",
+				{'submissionStatus': submissionStatus})
+		pass
+	elif submission.status == 'CE':
+		submissionStatus['compilerErrorLog'] = submission.compilerErrorLog
+		htmlContent = render_to_string("templates/submission_status.html",
+				{'submissionStatus': submissionStatus})
+
+	elif submission.status == 'AC':
+		htmlContent = render_to_string("templates/submission_status.html",
+				{'submissionStatus': submissionStatus})
+	elif submission.status == 'WA':
+		pass
+
+	submissionStatus['htmlContent'] = htmlContent
+	return submissionStatus
+
 def get_submission_status(request):
-	return HttpResponse("Rad is the best")
+	submission_id = request.GET.get('submission_id')
+	if not Submission.objects.filter(id=submission_id).exists():
+		return HttpResponse("Error baby")
+
+	submissionStatus = prepareSubmissionStatus(submission_id)
+	return JsonResponse({
+		'status': submissionStatus['status'],
+		'htmlContent': submissionStatus['htmlContent']
+	})
 
 def home(request):
 	allProblems = Problem.objects.all()

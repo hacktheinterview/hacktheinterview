@@ -21,36 +21,28 @@ $(document).ready(function() {
 
 $("#compile_and_test").click(function() {
     var language = 1;
+    var editor = ace.edit("editor");
     var source_code = editor.getValue();
     var problem_id = 1;
-
-    // if(language === "C")
-    //     source_code = c_editor.getValue();
-    // else if(language === "CPP")
-    //     source_code = cpp_editor.getValue();
-
-    // $("#compile_and_test").attr("disabled", "disabled");
-    // $("#loading_spinner").show();
-
-    var post_data = {"source_code": source_code, "language": language, "problem_id": problem_id};
-
-    $.post("/compile_and_test/", post_data, function(result_data) {
-        var interval = setInterval(function(){poll_compilation()}, 1000);
-        function poll_compilation() {
+    var post_data = {
+        "source_code": source_code,
+        "language": language,
+        "problem_id": problem_id,
+        "isSample": false,
+    };
+    $("#submission_status_area").html("");
+    $.post("/create_submission/", post_data, function(result_data) {
+        submission_id = result_data.submission_id;
+        var interval = setInterval(function(){poll_submission()}, 1000);
+        function poll_submission() {
             console.log("polling... ");
-            $.get("/get_compilation_status/", {'run_id' : run_id}, function(compilation_status_data){
-                console.log(compilation_status_data);
-                //clearInterval(interval);
-                if(compilation_status_data["status"] != "QUEUED"){
-                    clearInterval(interval);
-                    $("#compilation_result").show();
+            $.get("/get_submission_status/", {'submission_id' : submission_id}, function(submission_status){
+                console.log(submission_status);
 
-                    $.get("/get_compilation_result", {'run_id' : run_id}, function(compilation_result_data){
-                        $("#compilation_result").html(compilation_result_data);
-                    });
-                    $("#compile_and_test").removeAttr('disabled');
-                    $("#loading_spinner").hide();
+                if (submission_status["status"] != "QE") {
+                    clearInterval(interval);
                 }
+                $("#submission_status_area").html(submission_status.htmlContent);
             });
         }
     });
