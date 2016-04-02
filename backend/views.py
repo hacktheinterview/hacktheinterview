@@ -143,7 +143,7 @@ def handleGeneralSubmission(result, submission):
 	oLines = obtainedOutput.split("\n")
 
 	failed = False
-	failedIndex = -1
+	failedIndex = 0
 	expectedLine = None
 	obtainedLine = None
 	for i, (expected, obtained) in enumerate(zip(eLines, oLines)):
@@ -151,7 +151,7 @@ def handleGeneralSubmission(result, submission):
 			continue
 		else:
 			failed=True
-			failedIndex = i
+			failedIndex = i + 1
 			expectedLine = expected
 			obtainedLine = obtained
 			break
@@ -159,7 +159,6 @@ def handleGeneralSubmission(result, submission):
 	if failed:
 		inputSource = getInputData(submission.problem.id, submission.isSample)
 		inputLines = inputSource.split("\n")
-		inputLines = inputLines[1:]
 		submission.status = SubmissionStatus.WA
 		submission.timeUsed = result.time_used
 		submission.memoryUsed = result.memory_used
@@ -330,7 +329,7 @@ def prepareSubmissionStatus(submission_id):
 				{'submissionStatus': submissionStatus})
 
 	elif submission.status == 'TLE':
-		submissionStatus['testCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
 			submission.failedCase, submission.isSample)
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
@@ -338,10 +337,9 @@ def prepareSubmissionStatus(submission_id):
 		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
 			submission.failedCase, submission.isSample)
 
-		submissionStatus['expectedOutputTestCaseContent'] = printExpectedOutputTestCaseLinkedList(submission.problem.id,
-				submission.failedCase, submission.isSample)
+		submissionStatus['expectedOutputTestCaseContent'] = submission.expected
 
-		submissionStatus['obtainedOutputTestCaseContent'] = submission.testCaseText
+		submissionStatus['obtainedOutputTestCaseContent'] = submission.obtained
 
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
