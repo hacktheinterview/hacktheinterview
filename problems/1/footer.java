@@ -16,15 +16,16 @@ public class Main {
 
     public static void printLinkedList(ListNode head) {
         if (head == null) {
-		return;
-	}
+            System.out.println();
+            return;
+        }
 
-	ListNode tmp = head;
-	while(tmp.next != null) {
-            System.out.print(tmp.val);
-            System.out.print(" -> ");
-		tmp = tmp.next;
-	}
+    	ListNode tmp = head;
+    	while(tmp.next != null) {
+                System.out.print(tmp.val);
+                System.out.print(" -> ");
+    		tmp = tmp.next;
+    	}
 
         System.out.println(tmp.val);
     }

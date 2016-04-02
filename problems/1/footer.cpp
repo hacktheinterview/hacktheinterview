@@ -14,6 +14,7 @@ void addNodeToEnd(ListNode*& head, int val) {
 
 void printLinkedList(ListNode* head) {
 	if (!head) {
+		cout << endl;
 		return;
 	}
 	ListNode* tmp = head;

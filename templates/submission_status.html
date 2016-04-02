@@ -36,7 +36,27 @@
           </div>
         </div>
         <div class="panel-body">
-          <div><pre>{{ submissionStatus.compilerErrorLog }}</div>
+          <div><pre>{{ submissionStatus.compilerErrorLog }}</pre>
+        </div>
+      </div>
+    </div>
+
+{% endif %}
+
+{% if submissionStatus.status == 'TLE' %}
+    <div class="col-xs-12 col-xlg-9 col-md-9">
+      <div class="panel panel-bordered">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-danger">Time Limit Exceeded ..</span></h3>
+          <div class="panel-actions">
+            <a class="" data-toggle="panel-collapse" href="#">
+              <i style="color:red" class="icon wb-bell"></i>
+            </a>
+          </div>
+        </div>
+        <div class="panel-body">
+            Your solution has taken far more time to solve this test case.
+          <div><pre>{{ submissionStatus.testCaseContent }}</pre>
         </div>
       </div>
     </div>
