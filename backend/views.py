@@ -335,13 +335,27 @@ def prepareSubmissionStatus(submission_id):
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
 	elif submission.status == 'WA':
+		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+			submission.failedCase, submission.isSample)
+
+		submissionStatus['expectedOutputTestCaseContent'] = printExpectedOutputTestCaseLinkedList(submission.problem.id,
+				submission.failedCase, submission.isSample)
+
+		submissionStatus['obtainedOutputTestCaseContent'] = submission.testCaseText
+
+		htmlContent = render_to_string("templates/submission_status.html",
+				{'submissionStatus': submissionStatus})
+
 		pass
 
 	submissionStatus['htmlContent'] = htmlContent
 	return submissionStatus
 
-# def printInputTestCase(problem, testCaseNum):
-#
+def printExpectedOutputTestCaseLinkedList(problem_id, testCaseNum, isSample):
+	outputSource = getOutputData(problem_id, isSample)
+	outputLines = outputSource.split("\n")
+	failedLine = outputLines[testCaseNum - 1]
+	return failedLine
 
 def inputLineToLinkedList(failedInputLine):
 	inputItems = [int(x) for x in failedInputLine.split(" ")]
