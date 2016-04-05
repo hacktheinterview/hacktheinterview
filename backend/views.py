@@ -31,6 +31,12 @@ def editPythonErrorLog(errorLog, no_of_lines_to_subtract):
 
 	return re.sub("(.*)File (.*), line (\d+)", repl, errorLog, flags=re.MULTILINE)
 
+def editJavaStackTrace(javaExceptionLog, no_of_lines_to_subtract):
+	def repl(m):
+		return "(Solution.java:{})".format(str(int(m.group(1)) - no_of_lines_to_subtract))
+
+	return re.sub("\(Solution\.java:(\d+)\)", repl, javaExceptionLog, flags=re.MULTILINE)
+
 def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 	# Refer http://stackoverflow.com/questions/18022124/parsing-gcc-error-log
 	# In function `main':\n(.text.startup+0x7c): undefined reference to `Solution::reverseList(ListNode*)'\n error: ld returned 1 exit status\n\n
@@ -197,6 +203,7 @@ def handleGeneralSubmission(result, submission):
 # May be show wrong answer while doing the comparison and if comparison is ok, then show RTE?
 # TODO(Rad). This will throw error when users print more than #testcases
 # Handle that condition.
+# TODO(Rad) Front end expose more information for Run time Error
 def handleRunTimeError(result, submission):
 	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
 	obtainedOutput = result.output
@@ -211,6 +218,14 @@ def handleRunTimeError(result, submission):
 	submission.status = SubmissionStatus.RTE
 	submission.failedCase = failedCase
 	submission.testCaseText = inputLines[failedCase]
+	# status_detail has signal info like SIGFPE, SIGSEGV etc..
+	submission.statusDetail = result.status_detail
+
+	if submission.language == LanguageName.JAVA:
+		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+		stderr = editJavaStackTrace(result.stderr, linesToSubtract)
+		
+	submission.stderr = result.stderr
 	submission.save()
 
 def handleTimeLimitExceeded(result, submission):
@@ -301,7 +316,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://fqqvlysrza.localtunnel.me/test_url/',
+		callback='https://wiqghnqpob.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -355,6 +370,13 @@ def prepareSubmissionStatus(submission_id):
 			submission.failedCase, submission.isSample)
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
+
+	elif submission.status == 'RTE':
+		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+			submission.failedCase, submission.isSample)
+		htmlContent = render_to_string("templates/submission_status.html",
+				{'submissionStatus': submissionStatus})
+
 	elif submission.status == 'WA':
 		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
 			submission.failedCase, submission.isSample)

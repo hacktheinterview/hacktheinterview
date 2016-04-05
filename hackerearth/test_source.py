@@ -1,6 +1,5 @@
-while True:
-	x = 1
-
+a = []
+print a[10]
 print 'Hello World in English...'
 print 'Hello World\n'
 

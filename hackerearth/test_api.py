@@ -8,10 +8,10 @@ from hackerearth.api_handlers import HackerEarthAPI
 
 client_secret = '0a7f0101e5cc06e4417a3addeb76164680ac83a4'
 
-source = open('hackerearth/Solution.py', 'r').read()
-input_source = open('hackerearth/input.txt', 'r').read()
+source = open('TestSource.java', 'r').read()
+input_source = open('input.txt', 'r').read()
 
-lang = SupportedLanguages.PYTHON
+lang = SupportedLanguages.JAVA
 compressed = 0
 html = 0
 print source
