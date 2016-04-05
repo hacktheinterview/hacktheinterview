@@ -94,16 +94,15 @@ public class Main {
 
             int numNodes2 = Integer.parseInt(inputItems[x]);
             LinkedList L2 = new LinkedList();
+            x = x + 1;
             for (; x < inputItems.length; x++) {
                 L2.addNodeToEnd(Integer.parseInt(inputItems[x]));
             }
 
-            L1.printLinkedList();
-            L2.printLinkedList();
             Solution s = new Solution();
             ListNode mergedHead = s.mergeTwoSortedLinkedLists(L1.head, L2.head);
-            // L1.head = mergedHead;
-            // L1.printLinkedList();
+            L1.head = mergedHead;
+            L1.printLinkedList();
         }
 
     }
