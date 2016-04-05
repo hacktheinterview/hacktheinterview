@@ -224,7 +224,7 @@ def handleRunTimeError(result, submission):
 	if submission.language == LanguageName.JAVA:
 		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
 		stderr = editJavaStackTrace(result.stderr, linesToSubtract)
-		
+
 	submission.stderr = result.stderr
 	submission.save()
 
@@ -316,7 +316,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://wiqghnqpob.localtunnel.me/test_url/',
+		callback='https://hjxzkfdtfq.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -330,11 +330,11 @@ def create_submission(request):
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
 
-	problemId = 1
+	problemId = 2
 	language = LanguageName.C
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
-	candidate = Candidate.objects.get(id=1)
+	candidate = Candidate.objects.get(id=3)
 
 	s = Submission.objects.create(
 		problem=problem,
@@ -366,19 +366,19 @@ def prepareSubmissionStatus(submission_id):
 				{'submissionStatus': submissionStatus})
 
 	elif submission.status == 'TLE':
-		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id,
 			submission.failedCase, submission.isSample)
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
 
 	elif submission.status == 'RTE':
-		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id,
 			submission.failedCase, submission.isSample)
 		htmlContent = render_to_string("templates/submission_status.html",
 				{'submissionStatus': submissionStatus})
 
 	elif submission.status == 'WA':
-		submissionStatus['inputTestCaseContent'] = printInputTestCaseLinkedList(submission.problem.id,
+		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id,
 			submission.failedCase, submission.isSample)
 
 		submissionStatus['expectedOutputTestCaseContent'] = submission.expected
@@ -414,13 +414,56 @@ def inputLineToLinkedList(failedInputLine):
 		displayMsg = "Empty Linked List"
 	return displayMsg
 
-def printInputTestCaseLinkedList(problem_id, testCaseNum, isSample):
-	inputSource = getInputData(problem_id, isSample)
-	inputLines = inputSource.split("\n")
-	inputLines = inputLines[1:]
+def inputLineToTwoLinkedLists(failedInputLine):
+	inputItems = [int(x) for x in failedInputLine.split(" ")]
+	numNodes1 = inputItems[0]
+	nodes1 = inputItems[1:(numNodes1 + 1)]
+	numNodes2 = inputItems[numNodes1 + 1]
+	nodes2 = inputItems[numNodes1 + 2:]
+	displayMsg = ""
 
-	failedInputLine = inputLines[testCaseNum - 1]
-	printableContent = inputLineToLinkedList(failedInputLine)
+	displayMsg1 = "List 1 => "
+	for i in xrange(numNodes1):
+		if i == numNodes1 - 1:
+			displayMsg1 += "{}".format(nodes1[i])
+		else:
+			displayMsg1 += "{} -> ".format(nodes1[i])
+	if displayMsg1 == "":
+		displayMsg1 = "List 1 => Empty. "
+
+	displayMsg2 = "List 2 => "
+	for i in xrange(numNodes2):
+		if i == numNodes2 - 1:
+			displayMsg2 += "{}".format(nodes2[i])
+		else:
+			displayMsg2 += "{} -> ".format(nodes2[i])
+
+	if displayMsg2 == "":
+		displayMsg2 = "List 2 => Empty. "
+
+	displayMsg = displayMsg1 + "\n" + displayMsg2
+	return displayMsg
+
+def printInputTestCase(problem_id, testCaseNum, isSample):
+	printableContent = None
+	if problem_id == 1:
+		inputSource = getInputData(problem_id, isSample)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToLinkedList(failedInputLine)
+
+	elif problem_id == 2:
+		inputSource = getInputData(problem_id, isSample)
+		print inputSource
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		print failedInputLine
+		printableContent = inputLineToTwoLinkedLists(failedInputLine)
+
 	return printableContent
 
 def get_submission_status(request):
