@@ -38,11 +38,11 @@ class Problem(models.Model):
 	memoryLimit = models.PositiveIntegerField(verbose_name="Memory limit in KB", null=False, default=256*1024)
 
 	def __unicode__(self):
-		return "[{}: {}]".format(self.name, self.difficulty)
+		return "[{}: {}]".format(self.title, self.difficulty)
 
 	@property
 	def url(self):
-		return self.name.lower().strip().replace(" ", "-")
+		return self.title.lower().strip().replace(" ", "-")
 
 
 class TestCase(models.Model):
