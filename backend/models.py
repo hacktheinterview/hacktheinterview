@@ -79,6 +79,9 @@ class Submission(models.Model):
 	expected = models.TextField(default=None, null=True, verbose_name="Expected outcome for failed test case")
 	obtained = models.TextField(default=None, null=True, verbose_name="Obtained outcome for failed test case")
 
+	statusDetail = models.TextField(default=None, null=True, verbose_name="Signal like SIGSEGV, NZEC ...")
+	stderr = models.TextField(default=None, null=True, verbose_name="Stderr used when run time error happens")
+
 # Saves the draft for particular problem for an user
 class Draft(models.Model):
 	problem = models.ForeignKey(Problem, related_name="draft")

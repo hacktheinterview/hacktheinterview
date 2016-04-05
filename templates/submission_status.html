@@ -64,6 +64,26 @@
 {% endif %}
 
 
+{% if submissionStatus.status == 'RTE' %}
+    <div class="col-xs-12 col-xlg-9 col-md-9">
+      <div class="panel panel-bordered">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-danger">Run Time Error ..</span></h3>
+          <div class="panel-actions">
+            <a class="" data-toggle="panel-collapse" href="#">
+              <i style="color:red" class="icon wb-alert-circle"></i>
+            </a>
+          </div>
+        </div>
+        <div class="panel-body">
+            Your solution resulted in Run Time Error for the following test case.
+            <div><pre>{{ submissionStatus.inputTestCaseContent }}</pre>
+        </div>
+      </div>
+    </div>
+
+{% endif %}
+
 {% if submissionStatus.status == 'WA' %}
 <div class="col-xs-12 col-xlg-9 col-md-9">
   <div class="panel panel-bordered">

@@ -1,0 +1,19 @@
+Status Codes
+
+Table of Contents [hide]
+Q. Why do I get an error called SIGSEGV?
+Q. Why do I get an error called SIGABRT?
+Q. Why do I get an error called SIGFPE?
+Q. Why do I get an error called NZEC?
+
+Q. Why do I get an error called SIGSEGV?
+A. A SIGSEGV is an error(signal) caused by an invalid memory reference or a segmentation fault. You are probably trying to access an array element out of bounds or trying to use too much memory. Some of the other causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that the program doesn’t own.
+
+Q.Why do I get an error called SIGABRT?
+A. A SIGABRT is caused if your program aborted due to a fatal error. This can also be caused if you are using an assert() which fails or an abort().
+
+Q. Why do I get an error called SIGFPE?
+A. A SIGFPE is caused by a floating point error. Your program is encountering such an error, probably a division by zero or some similar undefined operation.
+
+Q. Why do I get an error called NZEC?
+A. NZEC stands for Non Zero Exit Code. Usually, returning non-zero values from main() will cause this error. It helps telling crash from WA (Wrong Answer) with interpreted languages. Typically this would happen if you omit a return 0; from main() in C. For interpreted languages or Java/C++, this could happen if your program threw an exception which was not caught (e.g. Trying to allocate too much memory in a vector).

@@ -36,6 +36,7 @@ class SubmissionStatus(ModelChoicesEnum):
 	TLE     = EnumValue("TLE", "Time Limit Exceeded")
 	MLE     = EnumValue("MLE", "Memory Limit Exceeded")
 	OTHER   = EnumValue("OTHER", "Reason Not Yet found")
+	RTE     = EnumValue("RTE", "Run Time Error")
 
 
 # class SubmissionResult(ModelChoicesEnum):

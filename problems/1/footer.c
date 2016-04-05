@@ -27,6 +27,7 @@ void printLinkedList(ListNode* head) {
 }
 
 int main() {
+	setbuf(stdout, NULL);
 	int testcases;
 	scanf("%d", &testcases);
 	int t = 0;
