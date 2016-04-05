@@ -2,11 +2,18 @@ import json
 import os
 from django.contrib.auth.models import User
 
-from backend.models import Problem, Company, Candidate, ProblemFunction, College
+from backend.models import Problem, Company, Candidate, ProblemFunction, College, Submission
 from backend.enums import ProblemSubCategory, ProblemCategory, ProblemDifficulty, LanguageName
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP
 from hacktheinterview.settings import PROJECT_ROOT
 
+def cleanData():
+	Company.objects.all().delete()
+	Candidate.objects.all().delete()
+	Problem.objects.all().delete()
+	Submission.objects.all().delete()
+	User.objects.all().delete()
+	ProblemFunction.objects.all().delete()
 
 def masterSeeder():
 	candidate = seedCandidate()
@@ -76,7 +83,7 @@ def seedAllProblems():
 		else:
 			problem = Problem.objects.create(
 				id=problem_id,
-				name=name,
+				title=name,
 				category=category,
 				difficulty=difficulty,
 				timeLimit=timeLimit,
@@ -85,7 +92,7 @@ def seedAllProblems():
 			for company in companies:
 				problem.companies.add(company)
 
-		languages = [LanguageName.C, LanguageName.CPP]
+		languages = [LanguageName.C, LanguageName.CPP, LanguageName.JAVA, LanguageName.PYTHON]
 
 		for lang in languages:
 			langExtension = LANGUAGE_FILE_EXTENSION_MAP.get(lang)
