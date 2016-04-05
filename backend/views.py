@@ -501,7 +501,7 @@ def problem_page(request, problem_id=1):
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, LanguageName.C)
+		"source": getSkeletonSource(problem_id, LanguageName.PYTHON)
 	}
 
 	return render_to_response("templates/problem_page.html", {
