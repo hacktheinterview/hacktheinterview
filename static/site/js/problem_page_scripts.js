@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode("ace/mode/python");
+    editor.getSession().setMode("ace/mode/c_cpp");
     editor.setShowPrintMargin(false);
     editor.getSession().setUseWrapMode(true);
     editor.getSession().setUseWorker(false);

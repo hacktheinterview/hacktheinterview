@@ -301,7 +301,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://lenayivmfr.localtunnel.me/test_url/',
+		callback='https://fqqvlysrza.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -316,7 +316,7 @@ def create_submission(request):
 	isSample = request.POST.get('isSample')
 
 	problemId = 1
-	language = LanguageName.PYTHON
+	language = LanguageName.C
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.get(id=1)
@@ -435,8 +435,8 @@ def problem_page(request, problem_id=1):
 	problem = Problem.objects.get(id=problem_id)
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
-		"language": "Python (python-2.7)",
-		"source": getSkeletonSource(problem_id, LanguageName.PYTHON)
+		"language": "C (gcc-4.8)",
+		"source": getSkeletonSource(problem_id, LanguageName.C)
 	}
 
 	return render_to_response("templates/problem_page.html", {
