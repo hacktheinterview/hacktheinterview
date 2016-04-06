@@ -38,8 +38,8 @@ int main() {
 		}
 
 		Solution s;
-		ListNode* reversedHead = s.reverseList(head);
-		printLinkedList(reversedHead);
+		ListNode* newHead = s.removeDuplicates(head);
+		printLinkedList(newHead);
 	}
 	return 0;
 }

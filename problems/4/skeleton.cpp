@@ -10,7 +10,6 @@
 // 		ListNode* reverseList(ListNode* );
 // };
 // Please Refrain from using print statements
-
-ListNode* Solution::reverseList(ListNode* head) {
+ListNode* Solution::removeDuplicates(ListNode* head) {
 	// Implement the function
 }

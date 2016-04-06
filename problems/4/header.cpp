@@ -27,5 +27,5 @@ struct ListNode {
 
 class Solution {
 	public:
-		ListNode* reverseList(ListNode* );
+		ListNode* removeDuplicates(ListNode* );
 };

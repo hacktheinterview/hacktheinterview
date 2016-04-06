@@ -338,9 +338,8 @@ def create_submission(request):
 	user_source_code = request.POST.get('source_code')
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-
-	problemId = 3
-	language = Language.PYTHON
+	problemId = 4
+	language = Language.C
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.first()
@@ -441,7 +440,7 @@ def inputLineToTwoLinkedLists(failedInputLine):
 
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
-	if problem_id in [1, 3]:
+	if problem_id in [1, 3, 4]:
 		inputSource = getInputData(problem_id, isSample)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
@@ -499,7 +498,7 @@ def problem_page(request, problem_id=1):
 	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, Language.PYTHON)
+		"source": getSkeletonSource(problem_id, Language.C)
 	}
 
 	return render_to_response("templates/problem_page.html", {
