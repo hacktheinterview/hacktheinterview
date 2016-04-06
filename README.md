@@ -62,6 +62,8 @@ Go to project root and run the following to run the web-server locally
     Always run migrate
     $ heroku run python manage.py migrate 
 
+## Setup PYTHONSTARTUP add to ~/.bash_profile
+    export PYTHONSTARTUP=~/workspace/hacktheinterview/.pythonstartup
 
 ## Further Reading
 
