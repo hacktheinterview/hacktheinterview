@@ -316,7 +316,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://xpbigjdozh.localtunnel.me/test_url/',
+		callback='https://wqzlmvnltf.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -330,11 +330,11 @@ def create_submission(request):
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
 
-	problemId = 2
+	problemId = 3
 	language = LanguageName.JAVA
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
-	candidate = Candidate.objects.get(id=3)
+	candidate = Candidate.objects.first()
 
 	s = Submission.objects.create(
 		problem=problem,
@@ -446,7 +446,7 @@ def inputLineToTwoLinkedLists(failedInputLine):
 
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
-	if problem_id == 1:
+	if problem_id in [1, 3]:
 		inputSource = getInputData(problem_id, isSample)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
