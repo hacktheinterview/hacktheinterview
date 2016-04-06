@@ -33,6 +33,7 @@ Misc Set up:
 To redirect callbacks from HackerEarth to local machine, install localtunnel using the following guide
 
     https://localtunnel.me/
+    lt --port 8000
 
 Go to project root and run the following to run the web-server locally
 
