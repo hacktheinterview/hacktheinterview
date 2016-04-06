@@ -1,7 +1,7 @@
 void addNodeToEnd(ListNode** head, int val) {
 	ListNode* tmp = (ListNode*) malloc(sizeof(ListNode));
 	tmp->val = val;
-	tmp->next = NULL;
+    tmp->next = NULL;
 
 	if (*head == NULL) {
 		*head = tmp;
@@ -15,6 +15,9 @@ void addNodeToEnd(ListNode** head, int val) {
 	}
 }
 
+void printInteger(int x) {
+	printf("%d\n", x);
+}
 void printLinkedList(ListNode* head) {
 	if (!head) {
 		printf("\n");
@@ -42,9 +45,8 @@ int main() {
 			scanf("%d", &x);
 			addNodeToEnd(&head, x);
 		}
-
-		ListNode* reversedHead = reverseList(head);
-		printLinkedList(reversedHead);
+		int val = isPalindromicList(head);
+        printInteger(val);
 	}
 	return 0;
 }
