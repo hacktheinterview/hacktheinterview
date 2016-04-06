@@ -1,1 +1,2 @@
 from backend.models import *
+from backend.seed import *

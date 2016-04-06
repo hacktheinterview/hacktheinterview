@@ -102,44 +102,24 @@ def editJAVACompilerLog(compilerLog, no_of_lines_to_subtract):
 
 
 def handleCompilationError(result, submission):
-	if submission.language in [Language.C, Language.CPP]:
-		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
-		print("linesToSubtract :{0}".format(linesToSubtract))
-		compilationErrorLog = editGccCompilerLog(result.compile_status, linesToSubtract)
-		print("Changed Compiler Log")
-		print(compilationErrorLog)
-		# save metadata information in the submission
-		submission.status = SubmissionStatus.CE
-		submission.originalCompilerErrorLog = result.compile_status
-		submission.compilerErrorLog = compilationErrorLog
-		submission.save()
-
-	elif submission.language == Language.JAVA:
-		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
-		print("linesToSubtract :{0}".format(linesToSubtract))
-		compilationErrorLog = editJAVACompilerLog(result.compile_status, linesToSubtract)
-		print("Changed Compiler Log")
-		print(compilationErrorLog)
-		# save metadata information in the submission
-		submission.status = SubmissionStatus.CE
-		submission.originalCompilerErrorLog = result.compile_status
-		submission.compilerErrorLog = compilationErrorLog
-		submission.save()
-
-	elif submission.language == Language.PYTHON:
-		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
-		print("linesToSubtract :{0}".format(linesToSubtract))
-		compilationErrorLog = editPythonErrorLog(result.compile_status, linesToSubtract)
-		print("Changed Compiler Log")
-		print(compilationErrorLog)
-		# save metadata information in the submission
-		submission.status = SubmissionStatus.CE
-		submission.originalCompilerErrorLog = result.compile_status
-		submission.compilerErrorLog = compilationErrorLog
-		submission.save()
-
-	else:
+	if submission.language not in [Language.C, Language.CPP, Language.JAVA, Language.PYTHON]:
 		raise NotImplementedError("Not implemented for other languages")
+
+	linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+	print("linesToSubtract :{0}".format(linesToSubtract))
+	d = {
+		Language.C: editGccCompilerLog,
+		Language.CPP: editGccCompilerLog,
+		Language.JAVA: editJAVACompilerLog,
+		Language.PYTHON: editPythonErrorLog
+	}
+	compilationErrorLog = d[submission.language](result.compile_status, linesToSubtract)
+	print("Changed Compiler Log")
+	print(compilationErrorLog)
+	submission.status = SubmissionStatus.CE
+	submission.originalCompilerErrorLog = result.compile_status
+	submission.compilerErrorLog = compilationErrorLog
+	submission.save()
 
 
 def getInputData(problemId, isSample=False):
@@ -324,7 +304,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://dmbvbsojvd.localtunnel.me/test_url/',
+		callback='https://vmsxffsgpl.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -333,7 +313,7 @@ def postSubmissionToEngine(submission):
 
 
 @csrf_exempt
-def create_submission(request):
+def createSubmission(request):
 	problem_id = request.POST.get('problem_id')
 	user_source_code = request.POST.get('source_code')
 	language = request.POST.get('language')
@@ -369,13 +349,16 @@ def prepareSubmissionStatus(submission_id):
 	elif submission.status == 'AC':
 		htmlContent = render_to_string("templates/submission_status.html", {'submissionStatus': submissionStatus})
 	elif submission.status == 'TLE':
-		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id, submission.failedCase, submission.isSample)
+		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id, submission.failedCase,
+		                                                              submission.isSample)
 		htmlContent = render_to_string("templates/submission_status.html", {'submissionStatus': submissionStatus})
 	elif submission.status == 'RTE':
-		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id, submission.failedCase, submission.isSample)
+		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id, submission.failedCase,
+		                                                              submission.isSample)
 		htmlContent = render_to_string("templates/submission_status.html", {'submissionStatus': submissionStatus})
 	elif submission.status == 'WA':
-		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id, submission.failedCase, submission.isSample)
+		submissionStatus['inputTestCaseContent'] = printInputTestCase(submission.problem.id, submission.failedCase,
+		                                                              submission.isSample)
 		submissionStatus['expectedOutputTestCaseContent'] = submission.expected
 		submissionStatus['obtainedOutputTestCaseContent'] = submission.obtained
 		htmlContent = render_to_string("templates/submission_status.html", {'submissionStatus': submissionStatus})
@@ -461,7 +444,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 	return printableContent
 
 
-def get_submission_status(request):
+def getSubmissionStatus(request):
 	submission_id = request.GET.get('submission_id')
 	if not Submission.objects.filter(id=submission_id).exists():
 		return HttpResponse("Error baby")
@@ -491,11 +474,11 @@ def getRecentSubmission(problem_id):
 	return None
 
 
-def problem_page(request, problem_id=1):
+def problemPage(request, problem_id=1):
 	print(problem_id)
 	# Check if problem exists, else return 404
 	problem = Problem.objects.get(id=problem_id)
-	problem_content_url = 'templates/problem_descriptions/{}.html'.format(problem_id)
+	problemContentUrl = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
 		"source": getSkeletonSource(problem_id, Language.C)
@@ -503,6 +486,6 @@ def problem_page(request, problem_id=1):
 
 	return render_to_response("templates/problem_page.html", {
 		"problem": problem,
-		"problem_content_url": problem_content_url,
+		"problem_content_url": problemContentUrl,
 		"recentSubmission": recentSubmission
 	})

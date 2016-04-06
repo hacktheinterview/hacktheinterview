@@ -12,12 +12,18 @@ class Company(models.Model):
 	def __unicode__(self):
 		return self.name
 
+	class Meta:
+		unique_together= ('name',)
+
 
 class College(models.Model):
 	name = models.CharField(max_length=255, null=False)
 
 	def __unicode__(self):
 		return self.name
+
+	class Meta:
+		unique_together = ('name',)
 
 
 class NoDeleteQuerySet(models.QuerySet):
@@ -49,17 +55,11 @@ class Problem(models.Model):
 		return self.title.lower().strip().replace(" ", "-")
 
 
-class TestCase(models.Model):
-	"""
-	"""
-	problem = models.ForeignKey(Problem, related_name="testCases")
-
 
 class Candidate(models.Model):
+	user = models.OneToOneField(User, related_name="candidate", on_delete=models.CASCADE)
 	college = models.ForeignKey(College, related_name="candidates", default=None, null=True)
 	company = models.ForeignKey(Company, related_name="candidates", default=None, null=True)
-	# TODO(Aayush), do we need cascade?
-	user = models.OneToOneField(User, related_name="candidate", on_delete=models.CASCADE)
 
 
 class Submission(models.Model):
@@ -125,14 +125,15 @@ class Draft(models.Model):
 # }
 
 class ProblemFunction(models.Model):
-	language = models.CharField(max_length=255, choices=Language.choices())
 	problem = models.ForeignKey(Problem, related_name="problemFunctions")
+	language = models.CharField(max_length=255, choices=Language.choices())
+
 	header = models.TextField()
 	skeleton = models.TextField()
 	footer = models.TextField()
 
 	class Meta:
-		unique_together = (('problem', 'language',),)
+		unique_together = ('problem', 'language',)
 
 	def __unicode__(self):
 		return "{}: {}".format(self.language, self.problem.name)
