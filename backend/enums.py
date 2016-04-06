@@ -8,7 +8,7 @@ class ProblemSubCategory(ModelChoicesEnum):
 
 	# LINKED LIST
 	LINKED_LIST_2_POINTER = EnumValue("LINKED_LIST_2_POINTER", "List 2 Pointer")
-	LINKED_LIST_BASIC   = EnumValue("LINKED_LIST_BASIC", "Linked List problems")
+	LINKED_LIST_BASIC     = EnumValue("LINKED_LIST_BASIC", "Linked List problems")
 
 class ProblemCategory(ModelChoicesEnum):
 	ARRAY       = EnumValue("ARRAY", "Array")
@@ -20,9 +20,9 @@ class ProblemDifficulty(ModelChoicesEnum):
 	MEDIUM = EnumValue("MEDIUM", "Medium")
 	HARD   = EnumValue("HARD", "Hard")
 
-class LanguageName(ModelChoicesEnum):
+class Language(ModelChoicesEnum):
 	C                = EnumValue("C", "C")
-	CPP      = EnumValue("C++", "C++")
+	CPP              = EnumValue("C++", "C++")
 	JAVA             = EnumValue("JAVA", "Java")
 	PYTHON           = EnumValue("PYTHON", "Python")
 	JAVASCRIPT       = EnumValue("JAVASCRIPT", "Javascript")

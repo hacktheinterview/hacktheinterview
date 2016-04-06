@@ -1,48 +1,55 @@
 import json
 import os
-from django.contrib.auth.models import User
 
-from backend.models import Problem, Company, Candidate, ProblemFunction, College, Submission
-from backend.enums import ProblemSubCategory, ProblemCategory, ProblemDifficulty, LanguageName
+from django.contrib.auth.models import User
+from django.apps import apps
+
+from backend.models import Problem, Company, Candidate, ProblemFunction, College
+from backend.enums import ProblemCategory, ProblemDifficulty, Language
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP
 from hacktheinterview.settings import PROJECT_ROOT
 
+COLLEGE_LIST = ["IIT ROPAR"]
+
+
 def cleanData():
-	Company.objects.all().delete()
-	Candidate.objects.all().delete()
-	Problem.objects.all().delete()
-	Submission.objects.all().delete()
+	print("Cleaning Data")
 	User.objects.all().delete()
-	ProblemFunction.objects.all().delete()
-
-def masterSeeder():
-	candidate = seedCandidate()
-	company = candidate.company
-	seedAllProblems()
+	app = apps.get_app_config('backend')
+	for model in app.get_models():
+		model.objects.all().delete()
 
 
-def seedCandidate():
-	user = seedUser()
-	return Candidate.objects.create(college=seedCollege(), company=seedCompany(), user=user)
-
-def seedUser():
-	lastUserId = User.objects.last().id if User.objects.last() else -1
-	newUserSuffix = lastUserId + 1
-
-	firstName = "First" + str(newUserSuffix)
-	lastName = "Last" + str(newUserSuffix)
+def seedUser(id):
+	firstName = "First"
+	lastName = "Last" + str(id)
 	email = firstName + lastName + "@hack.com"
 
-	return User.objects.create_user(email, first_name=firstName, last_name=lastName,
-		password="password", email=email)
+	return User.objects.create_user(email, first_name=firstName, last_name=lastName, password="password", email=email)
+
+
+def seedCandidate(id):
+	user = seedUser(id)
+	college = College.objects.get(name=COLLEGE_LIST[(id % College.objects.count())])
+	return Candidate.objects.create(college=college, company=seedCompany(), user=user)
+
+
+def seedHackTheInterview(numCandidates=1, numCollege=1):
+	cleanData()
+	for i in range(numCollege):
+		seedCollege(i)
+	for i in range(numCandidates):
+		seedCandidate(i)
+	seedAllProblems()
 
 
 def seedCompany():
 	return Company.objects.create(name='FACEBOOK')
 
 
-def seedCollege():
-	return College.objects.create(name="IIT ROPAR")
+def seedCollege(id):
+	return College.objects.create(name=COLLEGE_LIST[id])
+
 
 # Basically we will seed all the problems in our repo to avoid confusion
 def seedAllProblems():
@@ -50,7 +57,6 @@ def seedAllProblems():
 	directories = os.listdir(problemsRootDir)
 	for i in directories:
 		problemDirectory = os.path.join(problemsRootDir, i)
-		print problemDirectory
 		problem_id = int(i)
 		metadataFile = os.path.join(problemDirectory, "metadata.json")
 		d = {}
@@ -90,7 +96,7 @@ def seedAllProblems():
 			for company in companies:
 				problem.companies.add(company)
 
-		languages = [LanguageName.C, LanguageName.CPP, LanguageName.JAVA, LanguageName.PYTHON]
+		languages = [Language.C, Language.CPP, Language.JAVA, Language.PYTHON]
 
 		for lang in languages:
 			langExtension = LANGUAGE_FILE_EXTENSION_MAP.get(lang)
