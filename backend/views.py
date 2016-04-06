@@ -318,8 +318,8 @@ def createSubmission(request):
 	user_source_code = request.POST.get('source_code')
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	problemId = 4
-	language = Language.C
+	problemId = 5
+	language = Language.PYTHON
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.first()
@@ -423,7 +423,8 @@ def inputLineToTwoLinkedLists(failedInputLine):
 
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
-	if problem_id in [1, 3, 4]:
+	# TODO(Rad) Come up with a way to define input/output file format
+	if problem_id in [1, 3, 4, 5]:
 		inputSource = getInputData(problem_id, isSample)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
@@ -481,7 +482,7 @@ def problemPage(request, problem_id=1):
 	problemContentUrl = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, Language.C)
+		"source": getSkeletonSource(problem_id, Language.PYTHON)
 	}
 
 	return render_to_response("templates/problem_page.html", {
