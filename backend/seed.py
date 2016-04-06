@@ -64,9 +64,7 @@ def seedAllProblems():
 		ProblemDifficulty.validateValue(difficulty)
 
 		for company in d['companies']:
-			Company.objects.get_or_create(
-			name=company
-			)
+			Company.objects.get_or_create(name=company)
 		timeLimit = int(d['timeLimit'])
 		memoryLimit = int(d['memoryLimit'])
 
