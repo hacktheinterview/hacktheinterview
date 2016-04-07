@@ -68,6 +68,7 @@ def getSkeletonSource(problemId, lang):
 	skeletonSourceFileName = "skeleton" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
 	skeletonSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), skeletonSourceFileName)
 	skeletonSource = open(skeletonSourceFileLocation).read()
+	print(problemId)
 	return skeletonSource
 
 
@@ -304,7 +305,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://lgsqkocimf.localtunnel.me/test_url/',
+		callback='https://xniegtqoan.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -315,11 +316,12 @@ def postSubmissionToEngine(submission):
 @csrf_exempt
 def createSubmission(request):
 	problem_id = request.POST.get('problem_id')
+	print(problem_id)
 	user_source_code = request.POST.get('source_code')
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	problemId = 6
-	language = Language.CPP
+	problemId = 100
+	language = Language.JAVA
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.first()
@@ -389,6 +391,7 @@ def inputLineToLinkedList(failedInputLine):
 		displayMsg = "Empty Linked List"
 	return displayMsg
 
+
 def inputLineToTwoLinkedLists(failedInputLine):
 	inputItems = [int(x) for x in failedInputLine.split(" ")]
 	numNodes1 = inputItems[0]
@@ -419,24 +422,6 @@ def inputLineToTwoLinkedLists(failedInputLine):
 	displayMsg = displayMsg1 + "\n" + displayMsg2
 	return displayMsg
 
-def inputLineToLinkedListAndN(failedInputLine):
-	inputItems = [int(x) for x in failedInputLine.split(" ")]
-	numNodes = inputItems[0]
-	N = inputItems[-1]
-	nodes = inputItems[1:-1]
-	displayMsg = ""
-
-	for i in range(numNodes):
-		if i == numNodes - 1:
-			displayMsg += "{}".format(nodes[i])
-		else:
-			displayMsg += "{} -> ".format(nodes[i])
-
-	if displayMsg == "":
-		displayMsg = "Empty Linked List, N = {}".format(N)
-	else:
-		displayMsg = "LinkedList: {}, N = {}".format(displayMsg, N)
-	return displayMsg
 
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
@@ -448,13 +433,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 
 		failedInputLine = inputLines[testCaseNum - 1]
 		printableContent = inputLineToLinkedList(failedInputLine)
-	elif problem_id in [6]:
-		inputSource = getInputData(problem_id, isSample)
-		inputLines = inputSource.split("\n")
-		inputLines = inputLines[1:]
 
-		failedInputLine = inputLines[testCaseNum - 1]
-		printableContent = inputLineToLinkedListAndN(failedInputLine)
 	elif problem_id == 2:
 		inputSource = getInputData(problem_id, isSample)
 		print(inputSource)
@@ -505,7 +484,7 @@ def problemPage(request, problem_id=1):
 	problemContentUrl = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, Language.CPP)
+		"source": getSkeletonSource(problem_id, Language.JAVA)
 	}
 
 	return render_to_response("templates/problem_page.html", {
