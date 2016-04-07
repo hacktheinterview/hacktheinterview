@@ -259,7 +259,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://fxjodckgzn.localtunnel.me/test_url/',
+		callback='https://xdrxhczaug.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -269,16 +269,13 @@ def postSubmissionToEngine(submission):
 
 @csrf_exempt
 def createSubmission(request):
-	problem_id = request.POST.get('problem_id')
-	print(problem_id)
+	problem_id = int(request.POST.get('problem_id'))
 	user_source_code = request.POST.get('source_code')
-	print(user_source_code)
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	problemId = 6
 	language = Language.CPP
 	#user_source_code = getAdminSolutionSource(problemId, language)
-	problem = Problem.objects.get(id=problemId)
+	problem = Problem.objects.get(id=problem_id)
 	candidate = Candidate.objects.first()
 
 	s = Submission.objects.create(

@@ -24,7 +24,7 @@ $("#compile_and_test").click(function() {
     var language = 1;
     var editor = ace.edit("editor");
     var source_code = editor.getValue();
-    var problem_id = 1;
+    var problem_id = window.location.href.split("/")[4];
     var post_data = {
         "source_code": source_code,
         "language": language,

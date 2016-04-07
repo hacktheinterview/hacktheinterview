@@ -13,6 +13,7 @@ class ProblemSubCategory(ModelChoicesEnum):
 class ProblemCategory(ModelChoicesEnum):
 	ARRAY       = EnumValue("ARRAY", "Array")
 	LINKED_LIST = EnumValue("LINKED_LIST", "Linked List")
+	MATH        = EnumValue("MATH", "Math")
 
 
 class ProblemDifficulty(ModelChoicesEnum):

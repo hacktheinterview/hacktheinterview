@@ -12,7 +12,7 @@ def generateFiles(problem_id):
         f = open(path, 'r')
         parts = f.read().split(d[extension] + "--SPLIT--")
         f.close()
-        parts[1] = parts[1].replace(d[extension], '')
+        parts[1] = parts[1].replace(d[extension] + "-", '')
         for i, source in enumerate(SOURCES):
             sourcePath = os.path.join(problemDir, SOURCES[i] + extension)
             with open(sourcePath, 'w') as f:

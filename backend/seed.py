@@ -56,66 +56,69 @@ def seedAllProblems():
 	problemsRootDir = os.path.join(PROJECT_ROOT, "problems")
 	directories = os.listdir(problemsRootDir)
 	for i in directories:
-		problemDirectory = os.path.join(problemsRootDir, i)
-		problem_id = int(i)
-		metadataFile = os.path.join(problemDirectory, "metadata.json")
-		d = {}
-		with open(metadataFile) as data_file:
-			d = json.load(data_file)
+		try:
+			problemDirectory = os.path.join(problemsRootDir, i)
+			problem_id = int(i)
+			metadataFile = os.path.join(problemDirectory, "metadata.json")
+			d = {}
+			with open(metadataFile) as data_file:
+				d = json.load(data_file)
 
-		name = d['name']
-		category = d['category']
-		ProblemCategory.validateValue(category)
-		difficulty = d['difficulty']
-		ProblemDifficulty.validateValue(difficulty)
+			name = d['name']
+			category = d['category']
+			ProblemCategory.validateValue(category)
+			difficulty = d['difficulty']
+			ProblemDifficulty.validateValue(difficulty)
 
-		for company in d['companies']:
-			Company.objects.get_or_create(name=company)
-		timeLimit = int(d['timeLimit'])
-		memoryLimit = int(d['memoryLimit'])
+			for company in d['companies']:
+				Company.objects.get_or_create(name=company)
+			timeLimit = int(d['timeLimit'])
+			memoryLimit = int(d['memoryLimit'])
 
-		companies = Company.objects.filter(name__in=d['companies'])
+			companies = Company.objects.filter(name__in=d['companies'])
 
-		if Problem.objects.filter(id=problem_id).exists():
-			problem = Problem.objects.get(id=problem_id)
-			problem.companies = companies
-			problem.difficulty = difficulty
-			problem.name = name
-			problem.timeLimit = timeLimit
-			problem.memoryLimit = memoryLimit
-			problem.save()
-		else:
-			problem = Problem.objects.create(
-				id=problem_id,
-				title=name,
-				category=category,
-				difficulty=difficulty,
-				timeLimit=timeLimit,
-				memoryLimit=memoryLimit)
+			if Problem.objects.filter(id=problem_id).exists():
+				problem = Problem.objects.get(id=problem_id)
+				problem.companies = companies
+				problem.difficulty = difficulty
+				problem.name = name
+				problem.timeLimit = timeLimit
+				problem.memoryLimit = memoryLimit
+				problem.save()
+			else:
+				problem = Problem.objects.create(
+					id=problem_id,
+					title=name,
+					category=category,
+					difficulty=difficulty,
+					timeLimit=timeLimit,
+					memoryLimit=memoryLimit)
 
-			for company in companies:
-				problem.companies.add(company)
+				for company in companies:
+					problem.companies.add(company)
 
-		languages = [Language.C, Language.CPP, Language.JAVA, Language.PYTHON]
+			languages = [Language.C, Language.CPP, Language.JAVA, Language.PYTHON]
 
-		for lang in languages:
-			langExtension = LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-			headerFileName = "header" + langExtension
-			headerFileLocation = os.path.join(problemDirectory, headerFileName)
-			headerSource = open(headerFileLocation).read()
+			for lang in languages:
+				langExtension = LANGUAGE_FILE_EXTENSION_MAP.get(lang)
+				headerFileName = "header" + langExtension
+				headerFileLocation = os.path.join(problemDirectory, headerFileName)
+				headerSource = open(headerFileLocation).read()
 
-			footerFileName = "footer" + langExtension
-			footerFileLocation = os.path.join(problemDirectory, footerFileName)
-			footerSource = open(footerFileLocation).read()
+				footerFileName = "footer" + langExtension
+				footerFileLocation = os.path.join(problemDirectory, footerFileName)
+				footerSource = open(footerFileLocation).read()
 
-			skeletonFileName = "skeleton" + langExtension
-			skeletonFileLocation = os.path.join(problemDirectory, skeletonFileName)
-			skeletonSource = open(skeletonFileLocation).read()
+				skeletonFileName = "skeleton" + langExtension
+				skeletonFileLocation = os.path.join(problemDirectory, skeletonFileName)
+				skeletonSource = open(skeletonFileLocation).read()
 
-			ProblemFunction.objects.create(
-				language=lang,
-				problem=problem,
-				skeleton=skeletonSource,
-				header=headerSource,
-				footer=footerSource
-			)
+				ProblemFunction.objects.create(
+					language=lang,
+					problem=problem,
+					skeleton=skeletonSource,
+					header=headerSource,
+					footer=footerSource
+				)
+		except Exception as e:
+			print(e)

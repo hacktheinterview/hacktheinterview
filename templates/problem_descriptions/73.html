@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<p>Given an even number ( greater than 2 ), return two prime numbers whose sum will be equal to given number.</p>
 
-</body>
-</html>
+<p><strong>NOTE</strong> A solution will always exist. read <a href="https://en.wikipedia.org/wiki/Goldbach%27s_conjecture">Goldbach’s  conjecture</a></p>
+
+<p><strong>Example:</strong></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>
+Input : 4
+Output: 2 + 2 = 4
+
+</code></pre>
+</div>
+
+<p>If there are more than one solutions possible, return the lexicographically smaller solution.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>If [a, b] is one solution with a &lt;= b,
+and [c,d] is another solution with c &lt;= d, then
+
+[a, b] &lt; [c, d]
+
+If a &lt; c OR a==c AND b &lt; d.
+</code></pre>
+</div>
