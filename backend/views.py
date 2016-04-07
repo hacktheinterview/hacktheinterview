@@ -379,6 +379,24 @@ def inputLineToTwoLinkedLists(failedInputLine):
 	displayMsg = displayMsg1 + "\n" + displayMsg2
 	return displayMsg
 
+def inputLineToLinkedListAndN(failedInputLine):
+	inputItems = [int(x) for x in failedInputLine.split(" ")]
+	numNodes = inputItems[0]
+	N = inputItems[-1]
+	nodes = inputItems[1:-1]
+	displayMsg = ""
+
+	for i in range(numNodes):
+		if i == numNodes - 1:
+			displayMsg += "{}".format(nodes[i])
+		else:
+			displayMsg += "{} -> ".format(nodes[i])
+
+	if displayMsg == "":
+		displayMsg = "Empty Linked List, N = {}".format(N)
+	else:
+		displayMsg = "LinkedList: {}, N = {}".format(displayMsg, N)
+	return displayMsg
 
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
@@ -391,6 +409,14 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 
 		failedInputLine = inputLines[testCaseNum - 1]
 		printableContent = inputLineToLinkedList(failedInputLine)
+
+	elif problem_id in [6]:
+		inputSource = getInputData(problem_id, isSample)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToLinkedListAndN(failedInputLine)
 
 	elif problem_id in [2, 10]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
