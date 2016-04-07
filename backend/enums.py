@@ -39,6 +39,18 @@ class SubmissionStatus(ModelChoicesEnum):
 	RTE     = EnumValue("RTE", "Run Time Error")
 
 
+class SourceType(ModelChoicesEnum):
+	HEADER = EnumValue("header", "Header")
+	SKELETON = EnumValue("skeleton", "Skeleton")
+	SOLUTION = EnumValue("solution", "Solution")
+	FOOTER = EnumValue("footer", "Footer")
+
+	INPUT_SAMPLE = EnumValue('input_sample', "Input")
+	INPUT = EnumValue('input', "Input")
+	OUTPUT_SAMPLE = EnumValue('output_sample', "Output")
+	OUTPUT = EnumValue('output', "Output")
+
+
 # class SubmissionResult(ModelChoicesEnum):
 # 	PASS = EnumValue("PASS", "Pass")
 # 	COMPILE_ERROR = EnumValue("COMPILE_ERROR", "Compile Error")

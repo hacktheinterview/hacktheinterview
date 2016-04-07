@@ -7,9 +7,8 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 
-from backend.enums import Language, SubmissionStatus
+from backend.enums import Language, SubmissionStatus, SourceType
 from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP, PROBLEM_ROOT_DIR
-from backend.utils.source_utils import createFullSourceCode
 from backend.models import Problem, Submission, Candidate
 
 from hackerearth.api_handlers import HackerEarthAPI
@@ -50,33 +49,14 @@ def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 	return output_log
 
 
-def getHeaderSource(problemId, lang):
-	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), headerSourceFileName)
-	headerSource = open(headerSourceFileLocation).read()
-	return headerSource
-
-
-def getFooterSource(problemId, lang):
-	footerSourceFileName = "footer" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), footerSourceFileName)
-	footerSource = open(footerSourceFileLocation).read()
-	return footerSource
-
-
-def getSkeletonSource(problemId, lang):
-	skeletonSourceFileName = "skeleton" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	skeletonSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), skeletonSourceFileName)
-	skeletonSource = open(skeletonSourceFileLocation).read()
-	print(problemId)
-	return skeletonSource
-
-
-def getAdminSolutionSource(problemId, lang):
-	solutionSourceFileName = "solution" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	solutionSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), solutionSourceFileName)
-	solutionSource = open(solutionSourceFileLocation).read()
-	return solutionSource
+def getSource(problemId, sourceType, language):
+	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language)
+	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
+		extension = ".txt"
+	sourceFileName = sourceType + extension
+	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
+	source = open(sourceFileLocation).read()
+	return source
 
 
 def countLinesInHeaderSource(problemId, lang):
@@ -263,19 +243,8 @@ def test_url(request):
 	return HttpResponse("API Response Received")
 
 
-def prepareSourceCode(problemId, lang, userSource):
-	# Validate whether problem id is correct or not
-	# Validate language
-	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), headerSourceFileName)
-	headerSource = open(headerSourceFileLocation).read()
-
-	footerSourceFileName = "footer" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	footerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), footerSourceFileName)
-	footerSource = open(footerSourceFileLocation).read()
-
-	fullSourceCode = createFullSourceCode(headerSource, userSource, footerSource)
-	return fullSourceCode
+def prepareSourceCode(problemId, language, userSource):
+	return 
 
 
 def getProblemLimits(problemId):
@@ -288,12 +257,12 @@ def getProblemLimits(problemId):
 def postSubmissionToEngine(submission):
 	userSource = submission.source
 	problemId = submission.problem.id
-	lang = submission.language
+	language = submission.language
 	isSample = submission.isSample
-	fullSource = prepareSourceCode(problemId, lang, userSource)
+	fullSource = getSource(problemId, SourceType.HEADER, language) + "\n" + userSource + "\n" + getSource(problemId, SourceType.FOOTER, language)
 	inputText = getInputData(problemId, isSample)
 
-	hackerEarthLanguage = HTI_TO_HACKER_EARTH_LANGUAGE_MAP.get(lang)
+	hackerEarthLanguage = HTI_TO_HACKER_EARTH_LANGUAGE_MAP.get(language)
 	limits = getProblemLimits(problemId)
 
 	run_params = RunAPIParameters(
@@ -318,6 +287,7 @@ def createSubmission(request):
 	problem_id = request.POST.get('problem_id')
 	print(problem_id)
 	user_source_code = request.POST.get('source_code')
+	print(user_source_code)
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
 	problemId = 100
@@ -484,7 +454,7 @@ def problemPage(request, problem_id=1):
 	problemContentUrl = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSkeletonSource(problem_id, Language.JAVA)
+		"source": getSource(problem_id, SourceType.SKELETON, Language.JAVA)
 	}
 
 	return render_to_response("templates/problem_page.html", {
