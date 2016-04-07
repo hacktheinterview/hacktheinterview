@@ -275,7 +275,7 @@ def createSubmission(request):
 	print(user_source_code)
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	problemId = 11
+	problemId = 6
 	language = Language.CPP
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
@@ -411,7 +411,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 		printableContent = inputLineToLinkedList(failedInputLine)
 
 	elif problem_id in [6]:
-		inputSource = getInputData(problem_id, isSample)
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
 
