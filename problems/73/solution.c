@@ -1,18 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-//--SPLIT--
-
-/**
- * @input a : Integer
- *
- * @Output Integer array. You need to malloc memory, and fill the length in len1
- */
-//-int* primesum(int a) {
-//-}
-
-
-//--SPLIT--
 int * primesum(int a) {
     int result[2];
     int * isPrime = malloc(sizeof(int) * (a + 1));
@@ -36,17 +22,3 @@ int * primesum(int a) {
     return result;
 }
 
-//--SPLIT--
-int main() {
-	setbuf(stdout, NULL);
-	int testcases;
-	scanf("%d", &testcases);
-	int t = 0;
-	for (t = 0; t < testcases; t++) {
-		int a;
-		scanf("%d", &a);
-		int* result = primesum(a);
-		printf("[%d, %d]\n", result[0], result[1]);
-	}
-	return 0;
-}

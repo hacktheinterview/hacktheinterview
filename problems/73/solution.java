@@ -1,14 +1,4 @@
-import java.io.*;
-import java.util.*;
 
-//--SPLIT--
-
-//-class Solution {
-//-	public ArrayList<Integer> primesum(int a) {
-//-	}
-//-}
-
-//--SPLIT--
 class Solution {
 	public ArrayList<Integer> primesum(int a) {
 		ArrayList<Integer> result = new ArrayList<Integer>();
@@ -38,16 +28,3 @@ class Solution {
 	}
 }
 
-//--SPLIT--
-public class Main {
-	public static void main(String[] args) throws Exception {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		int cases = Integer.parseInt(reader.readLine());
-		Solution s = new Solution();
-		for (int i = 1; i <= cases; i++) {
-			String input = reader.readLine();
-			int a = Integer.parseInt(input);
-			System.out.println(s.primesum(a));
-		}
-	}
-}

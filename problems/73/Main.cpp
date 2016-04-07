@@ -26,13 +26,13 @@ class Solution {
 
 //--SPLIT--
 
-//vector<int> Solution::primesum(int a) {
-//}
+//-vector<int> Solution::primesum(int a) {
+//-}
 
 //--SPLIT--
 vector<int> Solution::primesum(int a) {
 	vector<int> result;
-	bool *isPrime = new bool[a];
+	bool *isPrime = new bool[a + 1];
     for (int i = 2; i <= a; i++) {
         isPrime[i] = true;
     }
