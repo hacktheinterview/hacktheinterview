@@ -1,0 +1,30 @@
+Linked list input types:
+Format(i) should be added to metadata.json and to enums
+
+Format1: <N> <Nodes in the linked list>
+Format2: <N1> <Nodes in List1> <N2> <Nodes in the list2>
+Format3: <N> <Nodes in the linked list> X
+Format4: <N> <Nodes in the linked list> X Y
+
+
+Reorder List: Format1
+Insertion sort list: Format1
+Swap list node in pairs: Format1
+Swap two linked list nodes: Format1
+
+Add two linked lists: Format 2
+Subtract two linked lists: Format 2
+Intersection of two linked lists: Format 2
+Merge two sorted lists in reverse order: Format 2
+
+
+Remove nth node from list end: Format3
+Rotate List: Format3
+Partition list: Format 3:
+Reverse Every K nodes: Format3
+
+
+Reverse Linked List II:  reverse linked list from m to n: Format 4
+
+TODO(LOL)
+Clone a linked list with random pointer (No plans)
