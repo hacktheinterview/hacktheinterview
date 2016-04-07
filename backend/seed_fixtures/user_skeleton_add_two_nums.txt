@@ -1,5 +1,0 @@
-// Please implement the following function
-
-int add (int a, int b) {
-	// return the value of addition of two numbers	
-}
