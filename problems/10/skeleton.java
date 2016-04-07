@@ -6,7 +6,7 @@
 // }
 
 class Solution {
-    public static ListNode mergeTwoSortedLinkedLists(ListNode H1, ListNode H2) {
-        // Implement the solution
+    public static ListNode addTwoLinkedLists(ListNode H1, ListNode H2) {
+        // Implement the solution 
     }
 }

@@ -259,7 +259,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://sheltered-ocean-78784.herokuapp.com/test_url/',
+		callback='https://jfgbarbxfq.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -275,7 +275,7 @@ def createSubmission(request):
 	print(user_source_code)
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	problemId = 9
+	problemId = 10
 	language = Language.JAVA
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
@@ -391,7 +391,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 		failedInputLine = inputLines[testCaseNum - 1]
 		printableContent = inputLineToLinkedList(failedInputLine)
 
-	elif problem_id == 2:
+	elif problem_id in [2, 10]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		print(inputSource)
 		inputLines = inputSource.split("\n")

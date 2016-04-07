@@ -63,8 +63,7 @@ public class Main {
             }
 
             Solution s = new Solution();
-            ListNode mergedHead = s.mergeTwoSortedLinkedLists(L1.head, L2.head);
-            L1.head = mergedHead;
+            L1.head = s.addTwoLinkedLists(L1.head, L2.head);
             L1.printLinkedList();
         }
 
