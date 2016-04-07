@@ -27,7 +27,7 @@ def getSource(problemId, sourceType, language):
 	return source
 
 
-def sourceLineCount(problemId, sourceType, language):
+def getSourceLineCount(problemId, sourceType, language):
 	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language)
 	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
 		extension = ".txt"
@@ -88,7 +88,7 @@ def handleCompilationError(result, submission):
 	if submission.language not in [Language.C, Language.CPP, Language.JAVA, Language.PYTHON]:
 		raise NotImplementedError("Not implemented for other languages")
 
-	linesToSubtract = sourceLineCount(submission.problem.id, SourceType.HEADER, submission.language) + 1
+	linesToSubtract = getSourceLineCount(submission.problem.id, SourceType.HEADER, submission.language) + 1
 	print("linesToSubtract :{0}".format(linesToSubtract))
 	d = {
 		Language.C: editGccCompilerLog,
@@ -172,7 +172,7 @@ def handleRunTimeError(result, submission):
 	submission.statusDetail = result.status_detail
 
 	if submission.language == Language.JAVA:
-		linesToSubtract = sourceLineCount(submission.problem.id, SourceType.HEADER, submission.language) + 1
+		linesToSubtract = getSourceLineCount(submission.problem.id, SourceType.HEADER, submission.language) + 1
 		stderr = editJavaStackTrace(result.stderr, linesToSubtract)
 
 	submission.stderr = result.stderr
@@ -230,10 +230,6 @@ def test_url(request):
 	print(result.__dict__)
 	parseHackerEarthResult(result)
 	return HttpResponse("API Response Received")
-
-
-def prepareSourceCode(problemId, language, userSource):
-	return
 
 
 def getProblemLimits(problemId):
