@@ -17,6 +17,25 @@ from hackerearth.parameters import RunAPIParameters
 from hacktheinterview.settings import HACKER_EARTH_API_KEY
 
 
+def getSource(problemId, sourceType, language):
+	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language, '')
+	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
+		extension = ".txt"
+	sourceFileName = sourceType + extension
+	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
+	source = open(sourceFileLocation).read()
+	return source
+
+
+def sourceLineCount(problemId, sourceType, language):
+	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language)
+	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
+		extension = ".txt"
+	sourceFileName = sourceType + extension
+	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
+	return sum(1 for line in open(sourceFileLocation))
+
+
 def editPythonErrorLog(errorLog, no_of_lines_to_subtract):
 	def repl(m):
 		return "{}File {}, line {}".format(m.group(1), m.group(2), str(int(m.group(3)) - no_of_lines_to_subtract))
@@ -47,26 +66,6 @@ def editGccCompilerLog(compilerLog, no_of_lines_to_subtract):
 			output_log += line
 
 	return output_log
-
-
-def getSource(problemId, sourceType, language):
-	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language)
-	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
-		extension = ".txt"
-	sourceFileName = sourceType + extension
-	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
-	source = open(sourceFileLocation).read()
-	return source
-
-
-def sourceLineCount(problemId, sourceType, language):
-	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language)
-	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
-		extension = ".txt"
-	sourceFileName = sourceType + extension
-	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
-	return sum(1 for line in open(sourceFileLocation))
-
 
 
 def editJAVACompilerLog(compilerLog, no_of_lines_to_subtract):
@@ -106,30 +105,10 @@ def handleCompilationError(result, submission):
 	submission.save()
 
 
-def getInputData(problemId, isSample=False):
-	inputSourceFileName = "input.txt"
-	inputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), inputSourceFileName)
-	inputSource = open(inputSourceFileLocation).read()
-	return inputSource
-
-
-def getOutputData(problemId, isSample=False):
-	outputSourceFileName = "output_sample.txt" if isSample else "output.txt"
-	outputSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), outputSourceFileName)
-	outputSource = open(outputSourceFileLocation).read()
-	return outputSource
-
-
-# PENDING = EnumValue("PENDING", "Pending")
-# CE      = EnumValue("CE", "Compilation Error")
-# AC      = EnumValue("AC", "Correct Answer")
-# WA      = EnumValue("WA", "Wrong Answer")
-# TLE     = EnumValue("TLE", "Time Limit Exceeded")
-# MLE     = EnumValue("MLE", "Memory Limit Exceeded")
-# OTHER   = EnumValue("OTHER", "Reason Not Yet found")
-
 def handleGeneralSubmission(result, submission):
-	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	sourceType = SourceType.OUTPUT_SAMPLE if submission.isSample else SourceType.OUTPUT
+	expectedOutput = getSource(submission.problem.id, sourceType, None)
+
 	obtainedOutput = result.output
 
 	eLines = expectedOutput.split("\n")
@@ -150,7 +129,8 @@ def handleGeneralSubmission(result, submission):
 			break
 
 	if failed:
-		inputSource = getInputData(submission.problem.id, submission.isSample)
+		sourceType = SourceType.INPUT_SAMPLE if submission.isSample else SourceType.INPUT
+		inputSource = getSource(submission.problem.id, sourceType, None)
 		inputLines = inputSource.split("\n")
 		submission.status = SubmissionStatus.WA
 		submission.timeUsed = result.time_used
@@ -172,13 +152,16 @@ def handleGeneralSubmission(result, submission):
 # Handle that condition.
 # TODO(Rad) Front end expose more information for Run time Error
 def handleRunTimeError(result, submission):
-	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	sourceType = SourceType.OUTPUT_SAMPLE if submission.isSample else SourceType.OUTPUT
+	expectedOutput = getSource(submission.problem.id, sourceType, None)
+
 	obtainedOutput = result.output
 
 	oLines = obtainedOutput.split("\n")
 	failedCase = len(oLines)
 
-	inputSource = getInputData(submission.problem.id, submission.isSample)
+	sourceType = SourceType.INPUT_SAMPLE if submission.isSample else SourceType.INPUT
+	inputSource = getSource(submission.problem.id, sourceType, None)
 	inputLines = inputSource.split("\n")
 	inputLines = inputLines[1:]
 
@@ -197,14 +180,17 @@ def handleRunTimeError(result, submission):
 
 
 def handleTimeLimitExceeded(result, submission):
-	expectedOutput = getOutputData(submission.problem.id, submission.isSample)
+	sourceType = SourceType.OUTPUT_SAMPLE if submission.isSample else SourceType.OUTPUT
+	expectedOutput = getSource(submission.problem.id, sourceType, None)
+
 	obtainedOutput = result.output
 
 	# eLines = expectedOutput.split("\n")
 	oLines = obtainedOutput.split("\n")
 	failedCase = len(oLines)
 
-	inputSource = getInputData(submission.problem.id, submission.isSample)
+	sourceType = SourceType.INPUT_SAMPLE if submission.isSample else SourceType.INPUT
+	inputSource = getSource(submission.problem.id, sourceType, None)
 	inputLines = inputSource.split("\n")
 	inputLines = inputLines[1:]
 
@@ -261,9 +247,9 @@ def postSubmissionToEngine(submission):
 	userSource = submission.source
 	problemId = submission.problem.id
 	language = submission.language
-	isSample = submission.isSample
 	fullSource = getSource(problemId, SourceType.HEADER, language) + "\n" + userSource + "\n" + getSource(problemId, SourceType.FOOTER, language)
-	inputText = getInputData(problemId, isSample)
+	sourceType = SourceType.INPUT_SAMPLE if submission.isSample else SourceType.INPUT
+	inputText = getSource(submission.problem.id, sourceType, None)
 
 	hackerEarthLanguage = HTI_TO_HACKER_EARTH_LANGUAGE_MAP.get(language)
 	limits = getProblemLimits(problemId)
@@ -343,7 +329,9 @@ def prepareSubmissionStatus(submission_id):
 
 
 def printExpectedOutputTestCaseLinkedList(problem_id, testCaseNum, isSample):
-	outputSource = getOutputData(problem_id, isSample)
+	sourceType = SourceType.OUTPUT_SAMPLE if isSample else SourceType.OUTPUT
+	outputSource = getSource(problem_id, sourceType, None)
+
 	outputLines = outputSource.split("\n")
 	failedLine = outputLines[testCaseNum - 1]
 	return failedLine
@@ -400,7 +388,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
 	if problem_id in [1, 3, 4, 5, 7]:
-		inputSource = getInputData(problem_id, isSample)
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
 
@@ -408,7 +396,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 		printableContent = inputLineToLinkedList(failedInputLine)
 
 	elif problem_id == 2:
-		inputSource = getInputData(problem_id, isSample)
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		print(inputSource)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
