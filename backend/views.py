@@ -247,7 +247,7 @@ def test_url(request):
 
 
 def prepareSourceCode(problemId, language, userSource):
-	return 
+	return
 
 
 def getProblemLimits(problemId):
@@ -293,8 +293,8 @@ def createSubmission(request):
 	print(user_source_code)
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	problemId = 100
-	language = Language.JAVA
+	problemId = 7
+	language = Language.PYTHON
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problemId)
 	candidate = Candidate.objects.first()
@@ -399,7 +399,7 @@ def inputLineToTwoLinkedLists(failedInputLine):
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
-	if problem_id in [1, 3, 4, 5]:
+	if problem_id in [1, 3, 4, 5, 7]:
 		inputSource = getInputData(problem_id, isSample)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]

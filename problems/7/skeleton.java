@@ -6,7 +6,7 @@
 // }
 
 class Solution {
-    public static ListNode reverseList(ListNode head) {
+    public static ListNode rearrangeLinkedList(ListNode head) {
         // Implement the solution here.
     }
 }
