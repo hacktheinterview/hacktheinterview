@@ -59,11 +59,14 @@ def getSource(problemId, sourceType, language):
 	return source
 
 
-def countLinesInHeaderSource(problemId, lang):
-	headerSourceFileName = "header" + LANGUAGE_FILE_EXTENSION_MAP.get(lang)
-	headerSourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), headerSourceFileName)
-	headerLines = sum(1 for line in open(headerSourceFileLocation))
-	return headerLines
+def sourceLineCount(problemId, sourceType, language):
+	extension = LANGUAGE_FILE_EXTENSION_MAP.get(language)
+	if sourceType in [SourceType.INPUT, SourceType.INPUT_SAMPLE, SourceType.OUTPUT, SourceType.OUTPUT_SAMPLE]:
+		extension = ".txt"
+	sourceFileName = sourceType + extension
+	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
+	return sum(1 for line in open(sourceFileLocation))
+
 
 
 def editJAVACompilerLog(compilerLog, no_of_lines_to_subtract):
@@ -86,7 +89,7 @@ def handleCompilationError(result, submission):
 	if submission.language not in [Language.C, Language.CPP, Language.JAVA, Language.PYTHON]:
 		raise NotImplementedError("Not implemented for other languages")
 
-	linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+	linesToSubtract = sourceLineCount(submission.problem.id, SourceType.HEADER, submission.language) + 1
 	print("linesToSubtract :{0}".format(linesToSubtract))
 	d = {
 		Language.C: editGccCompilerLog,
@@ -186,7 +189,7 @@ def handleRunTimeError(result, submission):
 	submission.statusDetail = result.status_detail
 
 	if submission.language == Language.JAVA:
-		linesToSubtract = countLinesInHeaderSource(submission.problem.id, submission.language) + 1
+		linesToSubtract = sourceLineCount(submission.problem.id, SourceType.HEADER, submission.language) + 1
 		stderr = editJavaStackTrace(result.stderr, linesToSubtract)
 
 	submission.stderr = result.stderr
