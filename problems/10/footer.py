@@ -1,32 +1,3 @@
-def addNodeToEnd(head, tail, val):
-    tmp = ListNode(val)
-    tmp.next = None
-
-    if head == None:
-        head = tmp
-        head.next = None
-        tail = head
-    else:
-        tail.next = tmp
-        tail = tail.next
-
-def printLinkedList(head):
-    if not head:
-        print ""
-        return
-
-    tmp = head
-    output = ""
-    while tmp != None:
-        if tmp.next:
-            output = "{}{} -> ".format(output)
-        else:
-            output = "{}{}".format(output, tmp.val)
-
-        tmp = tmp.next
-
-    print output
-
 if __name__ == "__main__":
     test_cases = int(raw_input())
     for i in range(test_cases):
@@ -45,6 +16,5 @@ if __name__ == "__main__":
             L2.addNodeToEnd(elem)
 
         s = Solution()
-        reversedHead = s.mergeTwoSortedLinkedLists(L1.head, L2.head)
-        L1.head = reversedHead
+        L1.head = s.addTwoLinkedLists(L1.head, L2.head)
         L1.printLinkedList()
