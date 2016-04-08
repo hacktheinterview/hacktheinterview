@@ -1,0 +1,9 @@
+{
+	"companies": ["FACEBOOK", "GOOGLE", "AMAZON", "MICROSOFT"],
+	"category": "MATH",
+	"subCategory": "DIGIT OP",
+	"timeLimit": 1,
+	"memoryLimit": 200000,
+	"name": "Palindrome Integer",
+	"difficulty": "EASY"
+}

@@ -1,0 +1,9 @@
+{
+	"companies": ["FACEBOOK", "GOOGLE", "AMAZON", "MICROSOFT"],
+	"category": "MATH",
+	"subCategory": "BASE CONVERSION",
+	"timeLimit": 1,
+	"memoryLimit": 200000,
+	"name": "Excel Column Number",
+	"difficulty": "EASY"
+}
