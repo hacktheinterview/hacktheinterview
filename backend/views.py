@@ -259,7 +259,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://xdrxhczaug.localtunnel.me/test_url/',
+		callback='https://vtdrrnjucx.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -273,7 +273,10 @@ def createSubmission(request):
 	user_source_code = request.POST.get('source_code')
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
-	language = Language.CPP
+
+	problemId = 12
+	language = Language.PYTHON
+
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problem_id)
 	candidate = Candidate.objects.first()
@@ -415,7 +418,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 		failedInputLine = inputLines[testCaseNum - 1]
 		printableContent = inputLineToLinkedListAndN(failedInputLine)
 
-	elif problem_id in [2, 10]:
+	elif problem_id in [2, 10, 12]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		print(inputSource)
 		inputLines = inputSource.split("\n")
@@ -465,7 +468,7 @@ def problemPage(request, problem_id=1):
 	problemContentUrl = 'templates/problem_descriptions/{}.html'.format(problem_id)
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSource(problem_id, SourceType.SKELETON, Language.CPP)
+		"source": getSource(problem_id, SourceType.SKELETON, Language.PYTHON)
 	}
 
 	return render_to_response("templates/problem_page.html", {
