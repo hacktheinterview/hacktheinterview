@@ -5,5 +5,5 @@
 #         self.next = None
 
 class Solution:
-    def removeNthNodeFromList(self, head, N):
+    def rotateList(self, head, N):
         # Implement the solution here

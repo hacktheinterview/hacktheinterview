@@ -11,6 +11,6 @@ if __name__ == "__main__":
             L.addNodeToEnd(elem)
 
         s = Solution()
-        newHead = s.removeNthNodeFromList(L.head, N)
+        newHead = s.rotateList(L.head, N)
         L.head = newHead
         L.printLinkedList()

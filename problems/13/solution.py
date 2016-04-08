@@ -1,21 +1,35 @@
 class Solution:
-    def removeNthNodeFromList(self, head, N):
-        if not head:
-            return None
+    def findLength(self, head):
+        tmp = head
+        length = 0
+        while tmp != None:
+            tmp = tmp.next
+            length = length + 1
+        return length
 
-        fast, slow = head, head
-
-        for i in range(N):
-            fast = fast.next
-
-        # Remove the first node
-        if fast == None:
-            head = head.next
+    def rotateList(self, head, N):
+        if head == None or head.next == None:
             return head
 
-        while fast.next != None:
-            fast = fast.next;
-            slow = slow.next;
+        length = self.findLength(head)
+        if N >= length:
+            N = N % length
 
-        slow.next = slow.next.next
-        return head
+        if N == 0:
+            return head
+
+        diff = length - N
+
+        newHead = head
+        prev = newHead
+        for i in range(diff):
+            prev = newHead
+            newHead = newHead.next
+
+        tail = head
+        while tail.next:
+            tail = tail.next
+
+        tail.next = head
+        prev.next = None
+        return newHead
