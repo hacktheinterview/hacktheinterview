@@ -1,0 +1,66 @@
+<h4>Please Note:</h4>
+<p><em>Note: It is intended for some problems to be ambiguous. You should gather all requirements up front before implementing one.</em></p>
+
+<p>Please think of all the corner cases and clarifications yourself.</p>
+
+<hr>
+</div>
+<div id="problem-content" class="blur markdown-content" style="position: relative">
+    <p>Validate if a given string is numeric.</p>
+
+    <p><strong>Examples:</strong></p>
+
+    <ul>
+        <li><code class="highlighter-rouge">"0" =&gt; true</code></li>
+        <li><code class="highlighter-rouge">" 0.1 " =&gt; true</code></li>
+        <li><code class="highlighter-rouge">"abc" =&gt; false</code></li>
+        <li><code class="highlighter-rouge">"1 a" =&gt; false</code></li>
+        <li><code class="highlighter-rouge">"2e10" =&gt; true</code></li>
+    </ul>
+
+    <p>Return <code class="highlighter-rouge">0 / 1</code> ( 0 for false, 1 for true ) for this problem</p>
+
+    <p><strong>Clarify the question using “See Expected Output”</strong></p>
+
+    <blockquote>
+
+        <ul>
+            <li>
+                <p>Is 1u ( which may be a representation for unsigned integers valid?<br />
+                    <em>For this problem, no.</em></p>
+            </li>
+            <li>
+                <p>Is 0.1e10 valid?<br />
+                    <em>Yes</em></p>
+            </li>
+            <li>
+                <p>-01.1e-10?<br />
+                    <em>Yes</em></p>
+            </li>
+            <li>
+                <p>Hexadecimal numbers like 0xFF?<br />
+                    <em>Not for the purpose of this problem</em></p>
+            </li>
+            <li>
+                <p><code class="highlighter-rouge">3.</code> (. not followed by a digit)?<br />
+                    <em>No</em></p>
+            </li>
+            <li>
+                <p>Can exponent have decimal numbers? 3e0.1?<br />
+                    <em>Not for this problem.</em></p>
+            </li>
+            <li>
+                <p>Is 1f ( floating point number with f as prefix ) valid?<br />
+                    <em>Not for this problem.</em></p>
+            </li>
+            <li>
+                <p>How about 1000LL or 1000L <em>( C++ representation for long and long long numbers )</em>?<br />
+                    <em>Not for this problem.</em></p>
+            </li>
+            <li>
+                <p>How about integers preceded by 00 or 0? like 008?<br />
+                    <em>Yes for this problem</em></p>
+            </li>
+        </ul>
+
+    </blockquote>
