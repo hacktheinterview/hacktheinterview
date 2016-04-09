@@ -2,7 +2,7 @@ import os
 
 d = {'.c': '//', '.cpp': '//', '.java': '//', '.py': '#'}
 
-FOLDER_PATH = '/Users/aayushbahuguna/workspace/hacktheinterview/problems'
+FOLDER_PATH = '/Users/radvenkat/hacktheinterview/problems'
 SOURCES = ['header', 'skeleton', 'solution', 'footer']
 def generateFiles(problem_id):
     problemDir = os.path.join(FOLDER_PATH, str(problem_id))
