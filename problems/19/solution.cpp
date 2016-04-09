@@ -1,3 +1,3 @@
-int Solution::findCount(const vector<int>& A, int K) {
+int Solution::ceilSearch(const vector<int>& A, int K) {
 
 }
