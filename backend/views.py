@@ -274,7 +274,7 @@ def createSubmission(request):
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
 
-	language = Language.JAVA
+	language = Language.PYTHON
 
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problem_id)
@@ -534,7 +534,7 @@ def problemPage(request, problem_id=1):
 
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSource(problem_id, SourceType.SKELETON, Language.JAVA)
+		"source": getSource(problem_id, SourceType.SKELETON, Language.PYTHON)
 	}
 
 	print recentSubmission
