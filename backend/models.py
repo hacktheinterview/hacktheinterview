@@ -48,7 +48,7 @@ class Problem(models.Model):
 	memoryLimit = models.PositiveIntegerField(verbose_name="Memory limit in KB", null=False, default=256 * 1024)
 
 	def __unicode__(self):
-		return "[{}: {}]".format(self.title, self.difficulty)
+		return "[id: {}, {}: {}]".format(self.id, self.title, self.difficulty)
 
 	@property
 	def url(self):
@@ -136,4 +136,4 @@ class ProblemFunction(models.Model):
 		unique_together = ('problem', 'language',)
 
 	def __unicode__(self):
-		return "{}: {}".format(self.language, self.problem.name)
+		return "{}: {}".format(self.language, self.problem.title)

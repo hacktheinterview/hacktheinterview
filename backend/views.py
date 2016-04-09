@@ -259,7 +259,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://vszprijvzk.localtunnel.me/test_url/',
+		callback='https://lcwpkbkcto.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -537,6 +537,7 @@ def problemPage(request, problem_id=1):
 		"source": getSource(problem_id, SourceType.SKELETON, Language.JAVA)
 	}
 
+	print recentSubmission
 	return render_to_response("templates/problem_page.html", {
 		"problem": problem,
 		"problem_content_url": problemContentUrl,

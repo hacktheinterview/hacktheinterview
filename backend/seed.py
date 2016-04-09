@@ -112,6 +112,8 @@ def seedAllProblems():
 				skeletonFileName = "skeleton" + langExtension
 				skeletonFileLocation = os.path.join(problemDirectory, skeletonFileName)
 				skeletonSource = open(skeletonFileLocation).read()
+				print skeletonSource
+				print problem
 
 				ProblemFunction.objects.create(
 					language=lang,
