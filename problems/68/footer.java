@@ -6,7 +6,7 @@ public class Main {
 		Solution s = new Solution();
 		for (int i = 1; i <= cases; i++) {
 			int input = Integer.parseInt(reader.readLine());
-			System.out.println(s.isPalindrome(input) ? "1" : "0");
+			System.out.println(s.reverse(input));
 		}
 	}
 }

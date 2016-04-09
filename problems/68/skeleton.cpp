@@ -1,4 +1,4 @@
 
-bool Solution::isPalindrome(int a) {
+int Solution::reverse(int a) {
 }
 

@@ -22,22 +22,27 @@ using namespace std;
 
 class Solution {
 	public:
-		bool isPalindrome(int a);
+		int reverse(int a);
 };
 
 //--SPLIT--
-//-bool Solution::isPalindrome(int a) {
+//-int Solution::reverse(int a) {
 //-}
 
 //--SPLIT--
-bool Solution::isPalindrome(int a) {
-	int rev_num = 0, num = a;
-    while(num > 0)
+int Solution::reverse(int a) {
+	int sign = a >= 0 ? 1 : -1;
+	a = abs(a);
+	long rev_num = 0;
+    while(a > 0)
     {
-        rev_num = rev_num*10 + num%10;
-        num = num/10;
+        rev_num = rev_num*10 + a%10;
+        a = a/10;
     }
-	return rev_num == a;
+    if (rev_num > INT_MAX) {
+        return 0;
+    }
+	return rev_num * sign;
 }
 
 //--SPLIT--
@@ -48,7 +53,7 @@ int main() {
     Solution s;
 	for (int t = 0; t < testcases; t++) {
 		int a; cin >> a;
-		cout << (s.isPalindrome(a) ? "1" : "0") << "\n";
+		cout << s.reverse(a) << "\n";
 	}
 	return 0;
 }

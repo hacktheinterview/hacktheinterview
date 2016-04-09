@@ -1,7 +1,7 @@
 
 
 public class Solution {
-	public boolean isPalindrome(int a) {
+	public int reverse(int a) {
 	}
 }
 

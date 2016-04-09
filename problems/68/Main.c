@@ -8,21 +8,15 @@
 /**
  * @input A : Integer
  *
- * @Output Integer 0 / 1. Return 0 if the number is not palindrome, else return 1
+ * @Output Integer
  */
-//-int isPalindrome(int a) {
+//-int reverse(int A) {
 //-}
 
 
 //--SPLIT--
-int isPalindrome(int a) {
-	int rev_num = 0, num = a;
-    while(num > 0)
-    {
-        rev_num = rev_num*10 + num%10;
-        num = num/10;
-    }
-    return rev_num == a ? 1 : 0;
+int reverse(int a) {
+	return a;
 }
 
 
@@ -35,7 +29,7 @@ int main() {
 	for (t = 0; t < testcases; t++) {
 		int a;
 		scanf("%d", &a);
-		printf("%d\n", isPalindrome(a));
+		printf("%d\n", reverse(a));
 	}
 	return 0;
 }

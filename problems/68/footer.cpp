@@ -6,7 +6,7 @@ int main() {
     Solution s;
 	for (int t = 0; t < testcases; t++) {
 		int a; cin >> a;
-		cout << (s.isPalindrome(a) ? "1" : "0") << "\n";
+		cout << s.reverse(a) << "\n";
 	}
 	return 0;
 }

@@ -1,11 +1,16 @@
 
-bool Solution::isPalindrome(int a) {
-	int rev_num = 0, num = a;
-    while(num > 0)
+int Solution::reverse(int a) {
+	int sign = a >= 0 ? 1 : -1;
+	a = abs(a);
+	long rev_num = 0;
+    while(a > 0)
     {
-        rev_num = rev_num*10 + num%10;
-        num = num/10;
+        rev_num = rev_num*10 + a%10;
+        a = a/10;
     }
-	return rev_num == a;
+    if (rev_num > INT_MAX) {
+        return 0;
+    }
+	return rev_num * sign;
 }
 

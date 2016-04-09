@@ -7,7 +7,7 @@ int main() {
 	for (t = 0; t < testcases; t++) {
 		int a;
 		scanf("%d", &a);
-		printf("%d\n", isPalindrome(a));
+		printf("%d\n", reverse(a));
 	}
 	return 0;
 }

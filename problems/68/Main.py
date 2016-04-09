@@ -4,16 +4,14 @@ import math
 
 #--SPLIT--
 #-class Solution:
-    # @param A : integer
-    # @return a boolean value ( True / False )
-#-    def isPalindrome(self, a):
-
-
+    # @param a : integer
+    # @return an integer
+#-    def reverse(self, a):
 
 #--SPLIT--
 class Solution:
-    def isPalindrome(self, a):
-        return str(a) == str(a)[::-1]
+    def reverse(self, a):
+        return a
 
 
 #--SPLIT--
@@ -23,4 +21,4 @@ if __name__ == "__main__":
     for i in range(test_cases):
         a = int(raw_input())
         s = Solution()
-        print("1" if s.isPalindrome(a) else "0")
+        print(s.reverse(a))

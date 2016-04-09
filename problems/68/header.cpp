@@ -22,6 +22,6 @@ using namespace std;
 
 class Solution {
 	public:
-		bool isPalindrome(int a);
+		int reverse(int a);
 };
 
