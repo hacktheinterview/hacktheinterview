@@ -1,4 +1,4 @@
-ListNode* reverseEveryKNodes(ListNode* head, int K) {
+ListNode* reverseNodesFromMtoN(ListNode* head, int K) {
     ListNode* current = head;
     ListNode* next = NULL;
     ListNode* prev = NULL;
