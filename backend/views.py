@@ -259,7 +259,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://lypjhrxphg.localtunnel.me/test_url/',
+		callback='https://uczawoewlg.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -378,6 +378,26 @@ def inputLineToTwoLinkedLists(failedInputLine):
 	displayMsg = displayMsg1 + "\n" + displayMsg2
 	return displayMsg
 
+def inputLineToLinkedListandMandN(failedInputLine):
+	inputItems = [int(x) for x in failedInputLine.split(" ")]
+	numNodes = inputItems[0]
+	M = inputItems[-2]
+	N = inputItems[-1]
+	nodes = inputItems[1:-2]
+	displayMsg = ""
+
+	for i in range(numNodes):
+		if i == numNodes - 1:
+			displayMsg += "{}".format(nodes[i])
+		else:
+			displayMsg += "{} -> ".format(nodes[i])
+
+	if displayMsg == "":
+		displayMsg = "Empty Linked List, M = {}, N = {}".format(M, N)
+	else:
+		displayMsg = "LinkedList: {}, M = {}, N = {}".format(displayMsg, M, N)
+	return displayMsg
+
 def inputLineToLinkedListAndN(failedInputLine):
 	inputItems = [int(x) for x in failedInputLine.split(" ")]
 	numNodes = inputItems[0]
@@ -416,6 +436,14 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 
 		failedInputLine = inputLines[testCaseNum - 1]
 		printableContent = inputLineToLinkedListAndN(failedInputLine)
+
+	elif problem_id in [16]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToLinkedListandMandN(failedInputLine)
 
 	elif problem_id in [2, 10, 12]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
@@ -465,10 +493,12 @@ def problemPage(request, problem_id=1):
 	# Check if problem exists, else return 404
 	problem = Problem.objects.get(id=problem_id)
 	problemContentUrl = 'templates/problem_descriptions/{}.html'.format(problem_id)
+
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
 		"source": getSource(problem_id, SourceType.SKELETON, Language.PYTHON)
 	}
+
 	return render_to_response("templates/problem_page.html", {
 		"problem": problem,
 		"problem_content_url": problemContentUrl,
