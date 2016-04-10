@@ -1,8 +1,6 @@
 
-#-class Solution:
-    # @param A : integer
-    # @return a boolean value ( True / False )
-#-    def isPalindrome(self, a):
-
+class Solution:
+    def isPalindrome(self, a):
+        return str(a) == str(a)[::-1]
 
 
