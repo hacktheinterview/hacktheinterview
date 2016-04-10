@@ -261,7 +261,8 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
+		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
+		callback="https://nhtuaelkor.localtunnel.me/test_url/",
 		compressed=0,
 	)
 
@@ -273,10 +274,10 @@ def postSubmissionToEngine(submission):
 def createSubmission(request):
 	problem_id = int(request.POST.get('problem_id'))
 	user_source_code = request.POST.get('source_code')
-	language = request.POST.get('language')
+	client_language_id = request.POST.get('language_id')
 	isSample = request.POST.get('isSample')
 
-	language = Language.PYTHON
+	language = LANGUAGE_MAP[client_language_id]
 
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problem_id)
@@ -569,7 +570,7 @@ def problemPage(request, problem_id=1):
 
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSource(problem_id, SourceType.SKELETON, Language.PYTHON)
+		"source": getSource(problem_id, SourceType.SKELETON, Language.C)
 	}
 
 	print recentSubmission

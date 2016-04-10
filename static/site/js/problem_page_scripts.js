@@ -21,19 +21,22 @@ $(document).ready(function() {
 });
 
 $("#compile_and_test").click(function() {
-    var language = 1;
+
     var editor = ace.edit("editor");
     var source_code = editor.getValue();
+    var language_id = $("#selected-language").data("selected-lang-id");
+    debugger;
     var problem_id = window.location.href.split("/")[4];
     var post_data = {
         "source_code": source_code,
-        "language": language,
+        "language_id": language_id,
         "problem_id": problem_id,
         "isSample": false,
     };
     // Show submission status area
     $("#default_compilation_status_area").show();
     $("#submission_status_area").html("");
+    console.log(post_data);
     $.post("/create_submission/", post_data, function(result_data) {
         submission_id = result_data.submission_id;
         var interval = setInterval(function(){poll_submission()}, 1500);
@@ -57,6 +60,7 @@ $(".language-select-menu-item").on("click", function() {
     $(this).parents('.btn-group').find('#selected-language').html(selText+' <span class="caret"></span>');
     var problem_id = window.location.href.split("/")[4];
     var language_id = $(this).data("langid");
+    $('#selected-language').data('selected-lang-id', language_id);
     $.get("/get_recent_submission/",
             {'language_id' : language_id, 'problem_id': problem_id},
             function(recentSubmission) {
