@@ -260,7 +260,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://enwydptsla.localtunnel.me/test_url/',
+		callback='https://zizodvvjol.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -429,6 +429,11 @@ def inputLineToArrayandK(failedInputLine):
 	displayMsg = displayMsg + ", K = {}".format(K)
 	return displayMsg
 
+def inputLineToANumber(failedInputLine):
+	inputItems = [int(x) for x in failedInputLine.split(" ")]
+	displayMsg = str(inputItems[0])
+	return displayMsg
+
 def inputLineToArray(failedInputLine):
 	inputItems = [int(x) for x in failedInputLine.split(" ")]
 	numElements = inputItems[0]
@@ -452,7 +457,15 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
 
-	if problem_id in [22, 23, 24]:
+	if problem_id in [24]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToANumber(failedInputLine)
+
+	elif problem_id in [22, 23]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
