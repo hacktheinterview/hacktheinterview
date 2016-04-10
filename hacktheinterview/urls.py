@@ -16,4 +16,5 @@ urlpatterns = [
 	url(r'^create_submission/', createSubmission),
 	url(r'^problem/(?P<problem_id>(\d+))/', problemPage),
 	url(r'^get_submission_status/', getSubmissionStatus),
+	url(r'^get_recent_submission/', getRecentSubmission),
 ]

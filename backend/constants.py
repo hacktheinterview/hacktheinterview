@@ -18,3 +18,10 @@ HTI_TO_HACKER_EARTH_LANGUAGE_MAP = {
 	Language.PYTHON: SupportedLanguages.PYTHON,
 	Language.JAVASCRIPT: SupportedLanguages.JAVASCRIPT
 }
+
+LANGUAGE_MAP = {
+	"1": Language.C,
+	"2": Language.CPP,
+	"3": Language.JAVA,
+	"4": Language.PYTHON
+}
