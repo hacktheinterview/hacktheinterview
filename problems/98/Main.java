@@ -1,6 +1,14 @@
 import java.io.*;
 import java.util.*;
 
+//--SPLIT--
+
+//-class Solution {
+//-	public ArrayList<Integer> plusOne(ArrayList<Integer> a) {
+//-	}
+//-}
+
+//--SPLIT--
 class Solution {
 	public ArrayList<Integer> plusOne(ArrayList<Integer> a) {
 	    ArrayList<Integer> result = new ArrayList<Integer>();
@@ -24,6 +32,7 @@ class Solution {
 	}
 }
 
+//--SPLIT--
 public class Main {
     public static void main(String args[]) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

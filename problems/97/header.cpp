@@ -22,6 +22,6 @@ using namespace std;
 
 class Solution {
 	public:
-		vector<int> plusOne(vector<int> &A);
+		vector<int> repeatedNumber(const vector<int> &A);
 };
 

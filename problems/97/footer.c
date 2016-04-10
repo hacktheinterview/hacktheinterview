@@ -11,9 +11,9 @@ int main() {
 		for (i = 0; i < n; i++)  {
 			scanf("%d", &A[i]);
 		}
-		int * result = plusOne(A, n);
-		for (i = 0; i < n; i++) {
-			printf("%d ", result[i]);
+		int * result = repeatedNumber(A, n);
+		for (i = 0; i < 1; i++) {
+			printf("%d %d ", result[0], result[1]);
 		}
 		printf("\n");
 	}

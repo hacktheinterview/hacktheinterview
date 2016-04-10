@@ -1,4 +1,19 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include<string.h>
 
+//--SPLIT--
+
+//-int* plusOne(int* A, int n) {
+//-}
+
+//--SPLIT--
+int* plusOne(int* A, int n) {
+	return 0;
+}
+
+//--SPLIT--
 int main() {
 	setbuf(stdout, NULL);
 	int testcases;

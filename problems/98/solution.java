@@ -1,3 +1,4 @@
+
 class Solution {
 	public ArrayList<Integer> plusOne(ArrayList<Integer> a) {
 	    ArrayList<Integer> result = new ArrayList<Integer>();
@@ -20,3 +21,4 @@ class Solution {
 	    return result;
 	}
 }
+

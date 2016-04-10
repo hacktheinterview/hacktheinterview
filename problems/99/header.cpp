@@ -22,6 +22,6 @@ using namespace std;
 
 class Solution {
 	public:
-		vector<int> plusOne(vector<int> &A);
+		int maxSubArray(const vector<int> &A);
 };
 

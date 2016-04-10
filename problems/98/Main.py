@@ -1,4 +1,18 @@
+import math
 
+#--SPLIT--
+#-class Solution:
+	# @param A : list of integers
+	# @return a list of integers
+#-	def plusOne(self, A):
+
+#--SPLIT--
+class Solution:
+	def plusOne(self, A):
+		return A
+
+
+#--SPLIT--
 
 if __name__ == "__main__":
     test_cases = int(raw_input())

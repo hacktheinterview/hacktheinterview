@@ -9,11 +9,7 @@ int main() {
 			cin >> A[i];
 		}
 		Solution solution;
-		vector<int> result = solution.plusOne(A);
-		for (int i = 0; i < result.size() ;i++) {
-			cout << result[i] << " ";
-		}
-		cout << "\n";
+		cout << solution.maxSubArray(A) << "\n";
 	}
 	return 0;
 }
