@@ -23,6 +23,7 @@ def getSource(problemId, sourceType, language):
 		extension = ".txt"
 	sourceFileName = sourceType + extension
 	sourceFileLocation = os.path.join(PROBLEM_ROOT_DIR, str(problemId), sourceFileName)
+	print sourceFileLocation
 	source = open(sourceFileLocation).read()
 	return source
 
@@ -259,7 +260,7 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='https://oypreilfbf.localtunnel.me/test_url/',
+		callback='https://zizodvvjol.localtunnel.me/test_url/',
 		compressed=0,
 	)
 
@@ -274,7 +275,7 @@ def createSubmission(request):
 	language = request.POST.get('language')
 	isSample = request.POST.get('isSample')
 
-	language = Language.JAVA
+	language = Language.PYTHON
 
 	#user_source_code = getAdminSolutionSource(problemId, language)
 	problem = Problem.objects.get(id=problem_id)
@@ -428,6 +429,11 @@ def inputLineToArrayandK(failedInputLine):
 	displayMsg = displayMsg + ", K = {}".format(K)
 	return displayMsg
 
+def inputLineToANumber(failedInputLine):
+	inputItems = [int(x) for x in failedInputLine.split(" ")]
+	displayMsg = str(inputItems[0])
+	return displayMsg
+
 def inputLineToArray(failedInputLine):
 	inputItems = [int(x) for x in failedInputLine.split(" ")]
 	numElements = inputItems[0]
@@ -451,7 +457,23 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
 
-	if problem_id in [17, 18, 19, 20, 21]:
+	if problem_id in [24]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToANumber(failedInputLine)
+
+	elif problem_id in [22, 23]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToArray(failedInputLine)
+
+	elif problem_id in [17, 18, 19, 20, 21]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
@@ -534,7 +556,7 @@ def problemPage(request, problem_id=1):
 
 	recentSubmission = {
 		"language": "C (gcc-4.8)",
-		"source": getSource(problem_id, SourceType.SKELETON, Language.JAVA)
+		"source": getSource(problem_id, SourceType.SKELETON, Language.PYTHON)
 	}
 
 	print recentSubmission
