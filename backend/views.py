@@ -483,7 +483,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 		failedInputLine = inputLines[testCaseNum - 1]
 		printableContent = inputLineToArray(failedInputLine)
 
-	elif problem_id in [17, 18, 19, 20, 21]:
+	elif problem_id in [17, 18, 19, 20, 21, 26]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
