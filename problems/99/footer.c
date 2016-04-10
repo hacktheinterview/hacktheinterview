@@ -11,11 +11,7 @@ int main() {
 		for (i = 0; i < n; i++)  {
 			scanf("%d", &A[i]);
 		}
-		int * result = plusOne(A, n);
-		for (i = 0; i < n; i++) {
-			printf("%d ", result[i]);
-		}
-		printf("\n");
+		printf("%d\n", maxSubArray(A, n));
 	}
 	return 0;
 }

@@ -9,11 +9,8 @@ int main() {
 			cin >> A[i];
 		}
 		Solution solution;
-		vector<int> result = solution.plusOne(A);
-		for (int i = 0; i < result.size() ;i++) {
-			cout << result[i] << " ";
-		}
-		cout << "\n";
+		vector<int> result = solution.repeatedNumber(A);
+		cout <<  result[0] << " " << result[1] << "\n";
 	}
 	return 0;
 }
