@@ -1,7 +1,14 @@
+var ACE_EDITOR_LANG_SYNTAX_MAP = {
+    "1": "c_cpp",
+    "2": "c_cpp",
+    "3": "java",
+    "4": "python"
+}
+
 $(document).ready(function() {
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
-    editor.getSession().setMode("ace/mode/java");
+    editor.setTheme("ace/theme/chrome");
+    editor.getSession().setMode("ace/mode/c_cpp");
     editor.setShowPrintMargin(false);
     editor.getSession().setUseWrapMode(true);
     editor.getSession().setUseWorker(false);
@@ -21,13 +28,14 @@ $(document).ready(function() {
 });
 
 $("#compile_and_test").click(function() {
-    var language = 1;
+
     var editor = ace.edit("editor");
     var source_code = editor.getValue();
+    var language_id = $("#selected-language").data("selected-lang-id");
     var problem_id = window.location.href.split("/")[4];
     var post_data = {
         "source_code": source_code,
-        "language": language,
+        "language_id": language_id,
         "problem_id": problem_id,
         "isSample": false,
     };
@@ -38,9 +46,7 @@ $("#compile_and_test").click(function() {
         submission_id = result_data.submission_id;
         var interval = setInterval(function(){poll_submission()}, 1500);
         function poll_submission() {
-            console.log("polling... ");
             $.get("/get_submission_status/", {'submission_id' : submission_id}, function(submission_status){
-                console.log(submission_status);
                 $("#default_compilation_status_area").hide();
                 if (submission_status["status"] != "QE") {
                     clearInterval(interval);
@@ -57,11 +63,14 @@ $(".language-select-menu-item").on("click", function() {
     $(this).parents('.btn-group').find('#selected-language').html(selText+' <span class="caret"></span>');
     var problem_id = window.location.href.split("/")[4];
     var language_id = $(this).data("langid");
+    $('#selected-language').data('selected-lang-id', language_id);
     $.get("/get_recent_submission/",
             {'language_id' : language_id, 'problem_id': problem_id},
             function(recentSubmission) {
                 // TODO(Rad), add retry to jquery if server fails
         var editor = ace.edit("editor");
+        var mode = "ace/mode/" + ACE_EDITOR_LANG_SYNTAX_MAP[language_id];
+        editor.getSession().setMode(mode);
         editor.getSession().setValue(recentSubmission["source"]);
     });
 
