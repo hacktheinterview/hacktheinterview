@@ -1,10 +1,8 @@
 
-class Solution:
-    def trailingZeroes(self, a):
-        result = 0
-        while (a > 0):
-            result += a / 5
-            a = a / 5
-        return result
 
-
+if __name__ == "__main__":
+    test_cases = int(raw_input())
+    for i in range(test_cases):
+        a = int(raw_input())
+        s = Solution()
+        print(s.trailingZeroes(a))

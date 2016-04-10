@@ -1,5 +1,3 @@
-#--SPLIT--
-
 import math
 
 #--SPLIT--

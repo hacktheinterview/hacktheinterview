@@ -1,4 +1,3 @@
-#--SPLIT--
 
 #--SPLIT--
 #- class Solution:
