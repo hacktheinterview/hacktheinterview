@@ -6,20 +6,17 @@
 //--SPLIT--
 
 /**
- * @input a : String termination by '\0'
+ * @input a : Read only ( DON'T MODIFY ) String termination by '\0'
  * 
  * @Output Integer
  */
-//-int isPalindrome(char* a) {
+//-int lengthOfLastWord(const char* a) {
 //-}
 
-
-
 //--SPLIT--
-int isPalindrome(char* a) {
+int lengthOfLastWord(const char* a) {
 	return 0;
 }
-
 
 //--SPLIT--
 int main() {
@@ -28,9 +25,8 @@ int main() {
 	scanf("%d", &testcases);
 	int t = 0;
 	for (t = 0; t < testcases; t++) {
-		char s[256];
-		scanf(" %[^\n]s", s);
-		printf("%d\n", isPalindrome(s));
+		char* a[256]; scanf(" %[^\n]s", a);
+		printf("%d\n", lengthOfLastWord(a));
 	}
 	return 0;
 }

@@ -6,19 +6,18 @@
 //--SPLIT--
 
 /**
- * @input a : String termination by '\0'
+ * @input a : Integer
  * 
- * @Output Integer
+ * @Output string. Make sure the string ends with null character
  */
-//-int isPalindrome(char* a) {
+//-char* countAndSay(int a) {
 //-}
 
-
-
 //--SPLIT--
-int isPalindrome(char* a) {
-	return 0;
+char* countAndSay(int a) {
+	return "";
 }
+
 
 
 //--SPLIT--
@@ -28,9 +27,8 @@ int main() {
 	scanf("%d", &testcases);
 	int t = 0;
 	for (t = 0; t < testcases; t++) {
-		char s[256];
-		scanf(" %[^\n]s", s);
-		printf("%d\n", isPalindrome(s));
+		int n, i; scanf("%d", &n);
+		printf("%s\n", countAndSay(n));
 	}
 	return 0;
 }

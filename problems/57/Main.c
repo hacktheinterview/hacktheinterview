@@ -8,18 +8,16 @@
 /**
  * @input a : String termination by '\0'
  * 
- * @Output Integer
+ * @Output Void. Just modifies the args passed by reference 
  */
-//-int isPalindrome(char* a) {
+//-void reverseWords(char* a) {
 //-}
 
 
-
 //--SPLIT--
-int isPalindrome(char* a) {
-	return 0;
+void reverseWords(char* a) {
+	return;
 }
-
 
 //--SPLIT--
 int main() {
@@ -28,9 +26,9 @@ int main() {
 	scanf("%d", &testcases);
 	int t = 0;
 	for (t = 0; t < testcases; t++) {
-		char s[256];
-		scanf(" %[^\n]s", s);
-		printf("%d\n", isPalindrome(s));
+		char* a[1024]; scanf(" %[^\n]s", a);
+		reverseWords(a);
+		printf("%s\n", a);
 	}
 	return 0;
 }
