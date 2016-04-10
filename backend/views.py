@@ -261,8 +261,8 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
-		# callback="https://nhtuaelkor.localtunnel.me/test_url/",
+		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
+		callback="https://bobsxqkpuf.localtunnel.me/test_url/",
 		compressed=0,
 	)
 
@@ -444,7 +444,7 @@ def inputLineToArray(failedInputLine):
 	displayMsg = ' '.join(str(elem) for elem in elements)
 	return displayMsg
 
-def inputLineToArrayandMandN(failedInputLine):
+def inputLineToArrayandAandB(failedInputLine):
 	inputItems = [int(x) for x in failedInputLine.split(" ")]
 	numElements = inputItems[0]
 	M = inputItems[-2]
@@ -452,14 +452,22 @@ def inputLineToArrayandMandN(failedInputLine):
 
 	elements = inputItems[1:-2]
 	displayMsg = ' '.join(str(elem) for elem in elements)
-	displayMsg = displayMsg + ", M = {}, N = {}".format(M, N)
+	displayMsg = displayMsg + ", A = {}, B = {}".format(M, N)
 	return displayMsg
 
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
 
-	if problem_id in [24]:
+	if problem_id in [25]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToArrayandAandB(failedInputLine)
+
+	elif problem_id in [24]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
