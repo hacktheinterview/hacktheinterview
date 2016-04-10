@@ -55,8 +55,17 @@ $("#compile_and_test").click(function() {
 $(".language-select-menu-item").on("click", function() {
     var selText = $(this).text();
     $(this).parents('.btn-group').find('#selected-language').html(selText+' <span class="caret"></span>');
-});
+    var problem_id = window.location.href.split("/")[4];
+    var language_id = $(this).data("langid");
+    $.get("/get_recent_submission/",
+            {'language_id' : language_id, 'problem_id': problem_id},
+            function(recentSubmission) {
+                // TODO(Rad), add retry to jquery if server fails
+        var editor = ace.edit("editor");
+        editor.getSession().setValue(recentSubmission["source"]);
+    });
 
+});
 
 $("#twilight").click(function(e) {
     var editor = ace.edit("editor");

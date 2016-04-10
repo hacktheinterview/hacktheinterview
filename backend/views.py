@@ -3,12 +3,13 @@ import re
 import json
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 
 from backend.enums import Language, SubmissionStatus, SourceType
-from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, HTI_TO_HACKER_EARTH_LANGUAGE_MAP, PROBLEM_ROOT_DIR
+from backend.constants import LANGUAGE_FILE_EXTENSION_MAP, \
+	HTI_TO_HACKER_EARTH_LANGUAGE_MAP, PROBLEM_ROOT_DIR, LANGUAGE_MAP
 from backend.models import Problem, Submission, Candidate
 
 from hackerearth.api_handlers import HackerEarthAPI
@@ -543,9 +544,21 @@ def home(request):
 		print(problems)
 	return render_to_response("templates/problem_list.html", {"problems": problems})
 
+#TODO(Actually return recent submission)
+def getRecentSubmission(request):
+	problem_id = request.GET.get('problem_id')
+	client_language_id = request.GET.get('language_id')
 
-def getRecentSubmission(problem_id):
-	return None
+	if not Problem.objects.filter(id=problem_id).exists():
+		raise Http404("Problem doesn't exist")
+
+	if client_language_id not in LANGUAGE_MAP:
+		raise Http404("Language is invalid")
+
+	lang = LANGUAGE_MAP[client_language_id]
+	return JsonResponse({
+		"source": getSource(problem_id, SourceType.SKELETON, lang)
+		})
 
 
 def problemPage(request, problem_id=1):
