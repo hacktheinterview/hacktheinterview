@@ -1,0 +1,9 @@
+{
+	"companies": ["FACEBOOK", "GOOGLE", "AMAZON", "MICROSOFT"],
+	"category": "ARRAY",
+	"subCategory": "ARRAY_BASIC",
+	"timeLimit": 1,
+	"memoryLimit": 200000,
+	"name": "Copying Books",
+	"difficulty": "EASY"
+}
