@@ -1,0 +1,9 @@
+{
+	"companies": ["FACEBOOK", "GOOGLE", "AMAZON", "MICROSOFT"],
+	"category": "ARRAY",
+	"subCategory": "ARRAY_SIMULATION_ARRAY",
+	"timeLimit": 1,
+	"memoryLimit": 200000,
+	"name": "Kth Row of Pascal's Triangle",
+	"difficulty": "EASY"
+}
