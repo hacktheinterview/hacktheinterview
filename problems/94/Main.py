@@ -3,24 +3,24 @@ import math
 
 #--SPLIT--
 #-class Solution:
-	# @param A : list of integers
+	# @param A : integer
 	# @return a list of integers
-#-	def plusOne(self, A):
+#-	def getRow(self, A):
+
 
 #--SPLIT--
 class Solution:
-	def plusOne(self, A):
-		return A
-
+	def getRow(self, A):
+		return []
 
 #--SPLIT--
 
 if __name__ == "__main__":
     test_cases = int(raw_input())
     for i in range(test_cases):
-        A = [int(l) for l in raw_input().split(" ")][1:]
+        A = int(raw_input())
         solution = Solution()
-        result = solution.plusOne(A)
+        result = solution.getRow(A) 
         for r in result:
             print(str(r) + " ", end="")
         print("")

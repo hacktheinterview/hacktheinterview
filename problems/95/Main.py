@@ -5,11 +5,11 @@ import math
 #-class Solution:
 	# @param A : list of integers
 	# @return a list of integers
-#-	def plusOne(self, A):
+#-	def maxset(self, A):
 
 #--SPLIT--
 class Solution:
-	def plusOne(self, A):
+	def maxset(self, A):
 		return A
 
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     for i in range(test_cases):
         A = [int(l) for l in raw_input().split(" ")][1:]
         solution = Solution()
-        result = solution.plusOne(A)
+        result = solution.maxset(A) 
         for r in result:
             print(str(r) + " ", end="")
         print("")
