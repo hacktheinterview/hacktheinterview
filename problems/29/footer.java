@@ -1,69 +1,60 @@
 class BinaryTree {
-    TreeNode head;
-    TreeNode tail;
-
-    LinkedList() {
-        this.head = null;
-        this.tail = null;
+    TreeNode root;
+    BinaryTree() {
+        this.root = null;
     }
 
-    public void addNodeToEnd(int val) {
-        ListNode tmp = new ListNode(val);
-        tmp.next = null;
-        if (head == null) {
-            head = tmp;
-            head.next = null;
-            tail = head;
-        } else {
-            tail.next = tmp;
-            tail = tail.next;
+    void printTreeToOutputFormat() {
+        StringBuilder sb = new StringBuilder();
+        if (this.root == null) {
+            System.out.println(sb.toString());
         }
+        serialize(this.root, sb);
+        System.out.println(sb.substring(0, sb.length() - 1));
     }
 
-    public void printLinkedList() {
-        if (head == null) {
-            System.out.println();
+    private void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("# ");
             return;
         }
+        sb.append(Integer.toString(root.val)).append(" ");
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
 
-        ListNode tmp = head;
-        while(tmp.next != null) {
-                System.out.print(tmp.val);
-                System.out.print(" -> ");
-            tmp = tmp.next;
+    public void deserializeTree(String line) {
+        StringTokenizer st = new StringTokenizer(line, " ");
+        st.nextToken();
+        this.root = constructTree(st);
+    }
+
+    private TreeNode constructTree(StringTokenizer st) {
+        if (!st.hasMoreTokens()) return null;
+
+        String val = st.nextToken();
+        if (val.equals("#")) {
+            return null;
         }
-        System.out.println(tmp.val);
+
+        TreeNode tmp = new TreeNode(Integer.parseInt(val));
+        tmp.left = constructTree(st);
+        tmp.right = constructTree(st);
+        return tmp;
     }
 }
 
 public class Main {
-
     public static void main(String args[]) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int cases = Integer.parseInt(reader.readLine());
 
         for (int i = 1; i <= cases; i++) {
             String inputLine = reader.readLine();
-            String inputItems[] = inputLine.split(" ");
-
-            int numNodes1 = Integer.parseInt(inputItems[0]);
-            LinkedList L1 = new LinkedList();
-            int x = 0;
-            for (x = 1; x <= numNodes1; x++) {
-                L1.addNodeToEnd(Integer.parseInt(inputItems[x]));
-            }
-
-            int numNodes2 = Integer.parseInt(inputItems[x]);
-            LinkedList L2 = new LinkedList();
-            x = x + 1;
-            for (; x < inputItems.length; x++) {
-                L2.addNodeToEnd(Integer.parseInt(inputItems[x]));
-            }
-
+            BinaryTree tree = new BinaryTree();
+            tree.deserializeTree(inputLine);
             Solution s = new Solution();
-            L1.head = s.addTwoLinkedLists(L1.head, L2.head);
-            L1.printLinkedList();
+            System.out.println(s.isValidBinarySearchTree(tree.root));
         }
-
     }
 }

@@ -1,10 +1,10 @@
 import java.io.*;
+import java.util.*;
+import java.util.LinkedList;
 
-class ListNode {
+class TreeNode {
     int val;
-    ListNode next;
-    ListNode(int x) {
-        val = x;
-        next = null;
-    }
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; left = null; right = null; }
 }

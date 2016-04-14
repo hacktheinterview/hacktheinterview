@@ -1,30 +1,3 @@
-import java.io.*;
-import java.util.*;
-import java.util.LinkedList;
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; left = null; right = null; }
-}
-
-// TreeNode type
-// class TreeNode {
-//     int val;
-//     TreeNode left;
-//     TreeNode right;
-//     TreeNode(int x) { val = x; left = null; right = null; }
-// }
-
-class Solution {
-    public static TreeNode addTwoLinkedLists(TreeNode H1, TreeNode H2) {
-        // Implement the solution
-        return null;
-    }
-}
-
-
 class BinaryTree {
     TreeNode root;
     BinaryTree() {
@@ -32,68 +5,42 @@ class BinaryTree {
     }
 
     void printTreeToOutputFormat() {
-        ArrayList<String> ret = new ArrayList<String>();
+        StringBuilder sb = new StringBuilder();
         if (this.root == null) {
-            System.out.println();
-            return;
+            System.out.println(sb.toString());
         }
-
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
-        q.add(this.root);
-        while(q.peek() != null) {
-            TreeNode tmp = q.remove();
-            if (tmp == null) {
-                ret.add("#");
-                continue;
-            }
-            ret.add(Integer.toString(tmp.val));
-
-            q.add(tmp.left);
-            q.add(tmp.right);
-        }
-
-        for (int i = 0; i < ret.size(); i++) {
-            System.out.print(ret.get(i));
-            if (i != ret.size() - 1) {
-                System.out.print(" ");
-            }
-        }
-        System.out.println();
+        serialize(this.root, sb);
+        System.out.println(sb.substring(0, sb.length() - 1));
     }
 
-    void deserializeTree(String[] inputItems) {
-        if (inputItems.length == 1) {
-            this.root = null;
+    private void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("# ");
             return;
         }
+        sb.append(Integer.toString(root.val)).append(" ");
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
 
-        int index = 1;
-        this.root = new TreeNode(Integer.parseInt(inputItems[index++]));
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
-        q.add(root);
-        while (index < inputItems.length) {
-            TreeNode tmp = q.remove();
+    public void deserializeTree(String line) {
+        StringTokenizer st = new StringTokenizer(line, " ");
+        st.nextToken();
+        this.root = constructTree(st);
+    }
 
-            if (inputItems[index].equals("#")) {
-                tmp.left = null;
-            } else {
-                int val = Integer.parseInt(inputItems[index]);
-                TreeNode leftNode = new TreeNode(val);
-                tmp.left = leftNode;
-                q.add(leftNode);
-            }
-            index++;
+    private TreeNode constructTree(StringTokenizer st) {
+        if (!st.hasMoreTokens()) return null;
 
-            if (inputItems[index].equals("#")) {
-                tmp.right = null;
-            } else {
-                int val = Integer.parseInt(inputItems[index]);
-                TreeNode rightNode = new TreeNode(val);
-                tmp.right = rightNode;
-                q.add(rightNode);
-            }
-            index++;
+        String val = st.nextToken();
+        if (val.equals("#")) {
+            return null;
         }
+
+        TreeNode tmp = new TreeNode(Integer.parseInt(val));
+        tmp.left = constructTree(st);
+        tmp.right = constructTree(st);
+        return tmp;
     }
 }
 
@@ -105,11 +52,10 @@ public class Main {
 
         for (int i = 1; i <= cases; i++) {
             String inputLine = reader.readLine();
-            String inputItems[] = inputLine.split(" ");
             BinaryTree tree = new BinaryTree();
-            tree.deserializeTree(inputItems);
-            tree.printTreeToOutputFormat();
+            tree.deserializeTree(inputLine);
+            Solution s = new Solution();
+            System.out.println(s.isValidBinarySearchTree(tree.root));
         }
-
     }
 }
