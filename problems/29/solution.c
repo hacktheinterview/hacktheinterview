@@ -1,71 +1,126 @@
-// Definition of Linked List Node
-// struct ListNode {
-// 	int val;
-// 	ListNode* next;
-// 	ListNode(int x) : val(x), next(NULL) {}
-// };
+#include <stdio.h>
+#include <stdlib.h>
 
-// class Solution {
-// 	public:
-// 		ListNode* reverseList(ListNode* );
+struct TreeNode {
+	int val;
+	TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x): val(x), left(NULL), right(NULL) {}
+};
+
+// struct TreeNode {
+// 	string val;
+// 	TreeNode* left;
+//     TreeNode* right;
+//     TreeNode(string x): val(x), left(NULL), right(NULL) {}
 // };
 // Please Refrain from using print statements
-int findLength(ListNode* H1) {
-    ListNode* tmp = H1;
-    int len = 0;
-    while(tmp != NULL) {
-        tmp = tmp->next;
-        len++;
-    }
-    return len;
+int isValidBinarySearchTree(TreeNode* root) {
+	// Implement the solution
 }
 
-ListNode* addTwoLists(ListNode* H1, ListNode* H2, int diff, int *carry) {
-    if (H1 == NULL && H2 == NULL) {
-        *carry = 0;
+string tostr(int x) {
+    if (x == 0) return "0";
+    string ret = "";
+    int neg = 0;
+    if (x < 0) {
+        neg = 1;
+        x = -x;
+    }
+
+    while(x) {
+        int mod = x % 10;
+        ret += (mod + '0');
+        x = x/10;
+    }
+    reverse(ret.begin(), ret.end());
+    if (neg) return "-" + ret;
+    return ret;
+}
+
+void printTreeToOutputFormat(TreeNode* root) {
+    vector<string> ret;
+    if (!root) {
+        cout << endl;
+    }
+    queue<TreeNode*> q;
+    q.push(root);
+    while(!q.empty()) {
+        TreeNode* tmp = q.front(); q.pop();
+        if (!tmp) {
+            ret.push_back("#");
+            continue;
+        }
+        ret.push_back(tostr(tmp->val));
+
+        q.push(tmp->left);
+        q.push(tmp->right);
+    }
+    for (int i = 0; i < ret.size(); i++) {
+        cout << ret[i];
+        if (i != ret.size() - 1) {
+            cout << " ";
+        }
+    }
+    cout << endl;
+}
+
+int toint(string x) {
+    if (x.size() == 0) return 0;
+    int start = 1;
+    int ret = 1;
+    if (x[0] == '-') {
+        ret = x[1] - '0';
+        ret = -ret;
+        start = 2;
+    } else {
+        ret = x[0] - '0';
+    }
+    for (int i = start; i < x.size(); i++) {
+        ret = ret * 10 + x[i] - '0';
+    }
+    return ret;
+}
+
+TreeNode* deserializeTree(char* inputItems[], int n) {
+    if (n == 0) return NULL;
+    int index = 0;
+    return constructTree(inputItems, &index, n);
+}
+
+TreeNode* constructTree(char* inputItems[], int *index, int n) {
+    if (*index == n) return NULL;
+
+    char* x = inputItems[*index];
+    if (strcmp(x, "#") == 0) {
         return NULL;
     }
 
-    if (diff > 0) {
-        ListNode* tmp = addTwoLists(H1->next, H2, diff-1, carry);
-        int sum = (H1 -> val) + *carry;
-        *carry = sum / 10;
-        H1->val = sum % 10;
-        H1->next = tmp;
-        return H1;
-    } else {
-        ListNode* tmp = addTwoLists(H1->next, H2->next, diff, carry);
-        int sum = (H1->val) + (H2->val) + *carry;
-        *carry = sum / 10;
-        H1->val = sum % 10;
-        H1->next = tmp;
-        return H1;
-    }
-    return NULL;
+    TreeNode tmp = (TreeNode*) malloc(sizeof (TreeNode));
+    tmp->val = toint(inputItems[*index]);
+    tmp->left = tmp->right = NULL;
+
+    *index = *index + 1;
+    tmp->left = constructTree(inputItems, index, n);
+    *index = *index + 1;
+    tmp->right = constructTree(inputItems, index, n);
+    return tmp;
 }
 
-ListNode* addTwoLinkedLists(ListNode* H1, ListNode* H2) {
-    if (!H1 && !H2) return NULL;
-    if (!H1) return H2;
-    if (!H2) return H1;
-	// Implement the function
-    int len1 = findLength(H1);
-    int len2 = findLength(H2);
+int main() {
+	int testcases;
+    scanf("%d", &testcases);
 
-    // Always keep longer list in H1
-    if (len2 > len1) {
-        ListNode* tmp = H2;
-        H2 = H1;
-        H1 = tmp;
-    }
+	for (int t = 0; t < testcases; t++) {
+        int n; scanf("%d", &n);
+        char* inputItems[n];
+        for (int i = 0; i < n; i++) {
+            scanf("%s", &inputItems[i]);
+        }
 
-    int carry = 0;
-    ListNode* tmp = addTwoLists(H1, H2, abs(len1 - len2), &carry);
-    if (carry > 0) {
-        ListNode* head = (ListNode*) malloc(sizeof(ListNode));
-        head->val = carry;
-        head->next= tmp;
-        return head;
-    }
-    return tmp;
+        TreeNode *root = deserializeTree(inputItems, n);
+        int result = isValidBinarySearchTree(root);
+        printf("%d\n", result);
+	}
+	return 0;
 }
