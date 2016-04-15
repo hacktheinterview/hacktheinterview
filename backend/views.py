@@ -261,8 +261,8 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
-		callback="https://jtrbxgkhst.localtunnel.me/test_url/",
+		callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
+		#callback="https://jtrbxgkhst.localtunnel.me/test_url/",
 		compressed=0,
 	)
 
