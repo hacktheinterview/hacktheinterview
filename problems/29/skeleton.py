@@ -1,3 +1,3 @@
 class Solution:
-    def mergeTwoSortedLinkedLists(self, H1, H2):
+    def isValidBinarySearchTree(self, root):
         # Implement the solution here

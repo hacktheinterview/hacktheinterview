@@ -12,7 +12,7 @@ $(document).ready(function() {
     editor.setShowPrintMargin(false);
     editor.getSession().setUseWrapMode(true);
     editor.getSession().setUseWorker(false);
-    document.getElementById('editor').style.fontSize = '12px';
+    document.getElementById('editor').style.fontSize = '13px';
 
     $("#default_compilation_status_area").hide();
     // var notes_editor = ace.edit("notes-editor");

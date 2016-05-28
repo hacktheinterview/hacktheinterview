@@ -1,36 +1,45 @@
-class LinkedList:
+class BinaryTreeDeserializer:
+    def __init__(self, tokens):
+        self.tokens = tokens
+
+    def _deserialize(self, index):
+        if index >= len(self.tokens):
+            return None, index
+
+        val = self.tokens[index]
+        nextIndex = index + 1
+        if val == "#":
+            return None, index + 1
+
+        root = TreeNode(int(self.tokens[index]))
+        root.left, nextIndex = self._deserialize(nextIndex)
+        root.right, nextIndex = self._deserialize(nextIndex)
+        return root, nextIndex + 1
+
+    def deserialize(self):
+        root, index = self._deserialize(0)
+        return root
+
+class BinaryTree:
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.root = None
 
-    def addNodeToEnd(self, val):
-        tmp = ListNode(val)
-        if self.head == None:
-            self.head = tmp
-            self.head.next = None
-            self.tail = self.head
-        else:
-            self.tail.next = tmp
-            self.tail = self.tail.next
-
-    def printLinkedList(self):
-        tmp = self.head
-        if not tmp:
-            print ""
+    def _inorder(self, root):
+        if not root:
             return
+        self._inorder(root.left)
+        print root.val,
+        self._inorder(root.right)
 
-        output = ""
-        while tmp != None:
-            if tmp.next:
-                output = "{}{} -> ".format(output, tmp.val)
-            else:
-                output = "{}{}".format(output, tmp.val)
-            tmp = tmp.next
+    def inorder(self):
+        self._inorder(self.root)
 
-        print output
+    def constructFromTokens(self, tokens):
+        d = BinaryTreeDeserializer(tokens)
+        self.root = d.deserialize()
 
-
-class ListNode:
+class TreeNode:
     def __init__(self, val):
         self.val = val
-        self.next = None
+        self.left = None
+        self.right = None
