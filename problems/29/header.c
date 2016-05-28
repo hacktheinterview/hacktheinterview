@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <limits.h>
 #include <stdlib.h>
+
 struct node {
 	int val;
-	struct node* next;
+	struct node* left;
+    struct node* right;
 };
-typedef struct node ListNode;
+typedef struct node TreeNode;

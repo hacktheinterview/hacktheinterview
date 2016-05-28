@@ -1,11 +1,11 @@
-// Definition of Linked List Node
-// struct ListNode {
+// struct node {
 // 	  int val;
-// 	  ListNode* next;
-// 	  ListNode(int x) : val(x), next(NULL) {}
+// 	  struct node* left;
+//    struct node* right;
 // };
+// typedef struct node TreeNode;
 
 // Please Refrain from using print statements
-ListNode* addTwoLinkedLists(ListNode* H1, ListNode* H2) {
+int isValidBinarySearchTree(TreeNode* root) {
     // Implement the function
 }

@@ -1,30 +1,53 @@
-void addNodeToEnd(ListNode** head, int val) {
-	ListNode* tmp = (ListNode*) malloc(sizeof(ListNode));
-	tmp->val = val;
-    tmp->next = NULL;
-
-	if (*head == NULL) {
-		*head = tmp;
-	} else {
-		ListNode* tail = *head;
-		while (tail->next != NULL)
-			tail = tail->next;
-		tail->next = tmp;
-	}
-    return;
+char* toStr(int num) {
+	char* token;
+	sprintf(token,"%d", num);
+	return token;
 }
 
-void printLinkedList(ListNode* head) {
-	if (!head) {
-		printf("\n");
-		return;
-	}
-	ListNode* tmp = head;
-	while(tmp->next != NULL) {
-		printf("%d -> ", tmp->val);
-		tmp = tmp->next;
-	}
-	printf("%d\n", tmp->val);
+// void preorder(TreeNode* root, stringstream& ss) {
+//     if (!root) {
+//         ss << ("null") << " ";
+//         return;
+//     }
+//     ss << (toStr(root->val)) << " ";
+//     preorder(root->left, ss);
+//     preorder(root->right, ss);
+// }
+//
+// string serializeTree(TreeNode* root) {
+//     stringstream ss;
+//     preorder(root, ss);
+//     string ret = ss.str();
+//     return ret;
+// }
+
+int toInt(char token[20]) {
+	int num;
+	sscanf(token, "%d", &num);
+	return num;
+}
+
+TreeNode* deserialize(char tokens[][20], int* index, int n) {
+    if (*index >= n)
+        return NULL;
+
+	int prevIndex = *index;
+	*index = *index + 1;
+
+    if (strcmp(tokens[prevIndex], "#") == 0) {
+        return NULL;
+    }
+
+    TreeNode* root = (TreeNode*) malloc(sizeof (TreeNode));
+	root->val = toInt(tokens[prevIndex]);
+    root->left = deserialize(tokens, index, n);
+    root->right = deserialize(tokens, index, n);
+    return root;
+}
+
+TreeNode* deserializeTree(char tokens[][20], int n) {
+    int index = 0;
+    return deserialize(tokens, &index, n);
 }
 
 int main() {
@@ -32,27 +55,17 @@ int main() {
 	int testcases;
 	scanf("%d", &testcases);
 	int t = 0;
-
 	for (t = 0; t < testcases; t++) {
+		int n;
+		scanf("%d", &n);
+		char tokens[n][20];
+		int i = 0;
+		for (i = 0; i < n; i++)
+			scanf("%s", tokens[i]);
 
-        int n1; scanf("%d", &n1);
-		ListNode* H1 = NULL;
-
-		for (int i = 0; i < n1; i++) {
-			int x; scanf("%d", &x);
-			addNodeToEnd(&H1, x);
-		}
-
-        int n2; scanf("%d", &n2);
-
-		ListNode* H2 = NULL;
-		for (int i = 0; i < n2; i++) {
-			int x; scanf("%d", &x);
-			addNodeToEnd(&H2, x);
-		}
-
-		ListNode* newHead = addTwoLinkedLists(H1, H2);
-		printLinkedList(newHead);
+		TreeNode *root = deserializeTree(tokens, n);
+        int result = isValidBinarySearchTree(root);
+		printf("%d\n", result);
 	}
 	return 0;
 }
