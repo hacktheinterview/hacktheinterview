@@ -1,99 +1,52 @@
-string tostr(int x) {
-    if (x == 0) return "0";
-    string ret = "";
-    int neg = 0;
-    if (x < 0) {
-        neg = 1;
-        x = -x;
-    }
-
-    while(x) {
-        int mod = x % 10;
-        ret += (mod + '0');
-        x = x/10;
-    }
-    reverse(ret.begin(), ret.end());
-    if (neg) return "-" + ret;
-    return ret;
+string toStr(int x) {
+    stringstream s;
+    s<<x;
+    return s.str();
 }
 
-void printTreeToOutputFormat(TreeNode* root) {
-    vector<string> ret;
+void preorder(TreeNode* root, stringstream& ss) {
     if (!root) {
-        cout << endl;
+        ss << ("null") << " ";
+        return;
     }
-    queue<TreeNode*> q;
-    q.push(root);
-    while(!q.empty()) {
-        TreeNode* tmp = q.front(); q.pop();
-        if (!tmp) {
-            ret.push_back("#");
-            continue;
-        }
-        ret.push_back(tostr(tmp->val));
-
-        q.push(tmp->left);
-        q.push(tmp->right);
-    }
-    for (int i = 0; i < ret.size(); i++) {
-        cout << ret[i];
-        if (i != ret.size() - 1) {
-            cout << " ";
-        }
-    }
-    cout << endl;
+    ss << (toStr(root->val)) << " ";
+    preorder(root->left, ss);
+    preorder(root->right, ss);
 }
 
-int toint(string x) {
-    if (x.size() == 0) return 0;
-    int start = 1;
-    int ret = 1;
-    if (x[0] == '-') {
-        ret = x[1] - '0';
-        ret = -ret;
-        start = 2;
-    } else {
-        ret = x[0] - '0';
-    }
-    for (int i = start; i < x.size(); i++) {
-        ret = ret * 10 + x[i] - '0';
-    }
+string serializeTree(TreeNode* root) {
+    stringstream ss;
+    preorder(root, ss);
+    string ret = ss.str();
     return ret;
 }
 
-TreeNode* deserializeTree(const vector<string>& inputItems) {
-    if (inputItems.size() == 0) return NULL;
-    // make it integer.
-    TreeNode* root = new TreeNode(toint(inputItems[0]));
-    queue<TreeNode*> q;
-    q.push(root);
-    int index = 1;
+int toInt(string x) {
+    stringstream s(x);
+    int y;
+    s>>y;
+    return y;
+}
 
-    while (index < inputItems.size()) {
-        TreeNode* tmp = q.front();
-        q.pop();
+TreeNode* deserialize(const vector<string>& tokens, int& index) {
+    if (index >= (int)tokens.size())
+        return NULL;
 
-        if (inputItems[index] == "#") {
-            tmp->left = NULL;
-        } else {
-            int val = toint(inputItems[index]);
-            TreeNode* leftNode = new TreeNode(val);
-            tmp->left = leftNode;
-            q.push(leftNode);
-        }
-        index++;
-
-        if (inputItems[index] == "#") {
-            tmp->right = NULL;
-        } else {
-            int val = toint(inputItems[index]);
-            TreeNode* rightNode = new TreeNode(val);
-            tmp->right = rightNode;
-            q.push(rightNode);
-        }
-        index++;
+    string val = tokens[index];
+    index++;
+    if (val == "#") {
+        return NULL;
     }
+
+    TreeNode * root = new TreeNode(toInt(val));
+    root->left = deserialize(tokens, index);
+    root->right = deserialize(tokens, index);
     return root;
+}
+
+TreeNode* deserializeTree(const vector<string>& tokens) {
+    int index = 0;
+    return deserialize(tokens, index);
 }
 
 int main() {
@@ -106,6 +59,7 @@ int main() {
         for (int i = 0; i < n; i++) {
             cin >> inputItems[i];
         }
+
         TreeNode *root = deserializeTree(inputItems);
         Solution s;
         int result = s.isValidBinarySearchTree(root);
