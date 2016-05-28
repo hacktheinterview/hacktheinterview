@@ -261,8 +261,8 @@ def postSubmissionToEngine(submission):
 		memory_limit=limits['memory_limit'],
 		async=1,
 		id=submission.id,
-		callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
-		#callback="https://jtrbxgkhst.localtunnel.me/test_url/",
+		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
+		callback="https://xcipseusfi.localtunnel.me/test_url/",
 		compressed=0,
 	)
 
@@ -455,11 +455,28 @@ def inputLineToArrayandAandB(failedInputLine):
 	displayMsg = displayMsg + ", A = {}, B = {}".format(M, N)
 	return displayMsg
 
+def inputLineToTree(failedInputLine):
+	inputItems = failedInputLine.split(" ")[1:]
+	print failedInputLine
+	print inputItems
+	displayMsg = ' '.join(elem for elem in inputItems)
+	if displayMsg == "":
+		return "Empty Tree"
+	return displayMsg
+
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
 
-	if problem_id in [25]:
+	if problem_id in [29]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToTree(failedInputLine)
+
+	elif problem_id in [25]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
