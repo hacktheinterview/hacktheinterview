@@ -4,6 +4,6 @@
 	"subCategory": "LINKED_LIST_BASIC",
 	"timeLimit": 1,
 	"memoryLimit": 200000,
-	"name": "Add Two Linked Lists as number",
+	"name": "Valid Binary Search Tree",
 	"difficulty": "EASY"
 }
