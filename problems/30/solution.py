@@ -14,7 +14,7 @@ class BinaryTreeDeserializer:
         root = TreeNode(int(self.tokens[index]))
         root.left, nextIndex = self._deserialize(nextIndex)
         root.right, nextIndex = self._deserialize(nextIndex)
-        return root, nextIndex
+        return root, nextIndex + 1
 
     def deserialize(self):
         root, index = self._deserialize(0)
@@ -43,3 +43,32 @@ class TreeNode:
         self.val = val
         self.left = None
         self.right = None
+
+
+class Solution:
+    def isBST(self, root, mini, maxi):
+        if not root:
+            return 1
+
+        if root.val < mini or root.val > maxi:
+            return 0
+
+        return self.isBST(root.left, mini, root.val - 1) and self.isBST(root.right, root.val + 1, maxi)
+
+    def isValidBinarySearchTree(self, root):
+        # Implement the solution here
+        INTEGER_MIN = -(1<<31) + 1
+        INTEGER_MAX = (1<<31) - 1
+        return self.isBST(root, INTEGER_MIN, INTEGER_MAX)
+
+if __name__ == "__main__":
+    test_cases = int(raw_input())
+    for i in range(test_cases):
+        lineItems = [l for l in raw_input().split(" ")]
+        tokens = lineItems[1:]
+
+        T = BinaryTree()
+        T.constructFromTokens(tokens)
+        s = Solution()
+        result = s.isValidBinarySearchTree(T.root)
+        print result
