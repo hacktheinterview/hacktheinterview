@@ -262,7 +262,7 @@ def postSubmissionToEngine(submission):
 		async=1,
 		id=submission.id,
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
-		callback="https://audnilzevn.localtunnel.me/test_url/",
+		callback="https://toahattfbj.localtunnel.me/test_url/",
 		compressed=0,
 	)
 
@@ -468,7 +468,7 @@ def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
 
-	if problem_id in [29]:
+	if problem_id in [29, 30, 31]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
