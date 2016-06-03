@@ -1,0 +1,9 @@
+{
+	"companies": ["FACEBOOK", "GOOGLE", "AMAZON", "MICROSOFT"],
+	"category": "LINKED_LIST",
+	"subCategory": "LINKED_LIST_BASIC",
+	"timeLimit": 1,
+	"memoryLimit": 200000,
+	"name": "Minimum Depth of a binary tree",
+	"difficulty": "EASY"
+}
