@@ -1,0 +1,110 @@
+import java.io.*;
+import java.util.*;
+import java.util.LinkedList;
+
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; left = null; right = null; }
+}
+// Bad solution. Need to re-write
+
+// TreeNode type
+// class TreeNode {
+//     int val;
+//     TreeNode left;
+//     TreeNode right;
+//     TreeNode(int x) { val = x; left = null; right = null; }
+// }
+class Solution {
+    ArrayList<Integer> result = new ArrayList<Integer>();
+
+    public ArrayList<Integer> inorderTraversal(TreeNode root) {
+        // Implement the solution
+        _inorder(root);
+        return result;
+    }
+
+
+    public void _inorder(TreeNode root) {
+        if (root == null)
+            return;
+
+        _inorder(root.left);
+        result.add(root.val);
+        _inorder(root.right);
+    }
+
+    public int KthSmallest(TreeNode root, int K) {
+        if (root == null)
+            return 0;
+        _inorder(root);
+        return result.get(K - 1);
+    }
+}
+
+
+class BinaryTree {
+    TreeNode root;
+    BinaryTree() {
+        this.root = null;
+    }
+
+    void printTreeToOutputFormat() {
+        StringBuilder sb = new StringBuilder();
+        if (this.root == null) {
+            System.out.println(sb.toString());
+        }
+        serialize(this.root, sb);
+        System.out.println(sb.substring(0, sb.length() - 1));
+    }
+
+    private void serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("# ");
+            return;
+        }
+        sb.append(Integer.toString(root.val)).append(" ");
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+    }
+
+    public void deserializeTree(String line) {
+        StringTokenizer st = new StringTokenizer(line, " ");
+        st.nextToken();
+        this.root = constructTree(st);
+    }
+
+    private TreeNode constructTree(StringTokenizer st) {
+        if (!st.hasMoreTokens()) return null;
+
+        String val = st.nextToken();
+        if (val.equals("#")) {
+            return null;
+        }
+
+        TreeNode tmp = new TreeNode(Integer.parseInt(val));
+        tmp.left = constructTree(st);
+        tmp.right = constructTree(st);
+        return tmp;
+    }
+}
+
+public class Main {
+    public static void main(String args[]) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int cases = Integer.parseInt(reader.readLine());
+
+        for (int i = 1; i <= cases; i++) {
+            String inputLine = reader.readLine();
+            int lastSpace = inputLine.lastIndexOf(" ");
+            int K = Integer.parseInt(inputLine.substring(lastSpace + 1));
+            inputLine = inputLine.substring(0, lastSpace);
+            BinaryTree tree = new BinaryTree();
+            tree.deserializeTree(inputLine);
+            Solution s = new Solution();
+            System.out.println(s.KthSmallest(tree.root, K));
+        }
+    }
+}
