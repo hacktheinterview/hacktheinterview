@@ -6,7 +6,7 @@
 //     TreeNode(int x) { val = x; left = null; right = null; }
 // }
 class Solution {
-    public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
+    public ArrayList<ArrayList<Integer>> binaryTreePaths(TreeNode root) {
         // Implement the solution
 
     }
