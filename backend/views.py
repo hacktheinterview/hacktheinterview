@@ -262,7 +262,7 @@ def postSubmissionToEngine(submission):
 		async=1,
 		id=submission.id,
 		#callback='http://sheltered-ocean-78784.herokuapp.com/test_url/',
-		callback="https://nryehyuwsr.localtunnel.me/test_url/",
+		callback="https://lcqmevnnsv.localtunnel.me/test_url/",
 		compressed=0,
 	)
 
@@ -464,10 +464,28 @@ def inputLineToTree(failedInputLine):
 		return "Empty Tree"
 	return displayMsg
 
+def inputLineToTreeAndK(failedInputLine):
+	inputItems = failedInputLine.split(" ")[1:]
+	K = inputItems[-1]
+	elements = inputItems[:-1]
+	print elements
+	displayMsg = ' '.join(str(elem) for elem in elements)
+	if displayMsg == "":
+		displayMsg = "Empty Tree "
+	displayMsg = displayMsg + ", K = {}".format(K)
+	return displayMsg
+
 def printInputTestCase(problem_id, testCaseNum, isSample):
 	printableContent = None
 	# TODO(Rad) Come up with a way to define input/output file format
-	if problem_id in [29, 30, 31, 32, 33, 34]:
+	if problem_id in [39]:
+		inputSource = getSource(problem_id, SourceType.INPUT, None)
+		inputLines = inputSource.split("\n")
+		inputLines = inputLines[1:]
+		failedInputLine = inputLines[testCaseNum - 1]
+		printableContent = inputLineToTreeAndK(failedInputLine)
+
+	elif problem_id in [29, 30, 31, 32, 33, 34, 35, 36, 37, 38]:
 		inputSource = getSource(problem_id, SourceType.INPUT, None)
 		inputLines = inputSource.split("\n")
 		inputLines = inputLines[1:]
