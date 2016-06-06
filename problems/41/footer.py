@@ -1,13 +1,21 @@
 def print2DVector(result):
-    print "[",
+    sys.stdout.write("[")
+    if result:
+        for row in result:
+            sys.stdout.write("[")
+            for elem in row:
+                sys.stdout.write(elem)
+                sys.stdout.write(",")
+            sys.stdout.write("]")
+    sys.stdout.write("]")
+    sys.stdout.flush()
+    print
 
-    print "]"
 if __name__ == "__main__":
     test_cases = int(raw_input())
     for i in range(test_cases):
         lineItems = [l for l in raw_input().split(" ")]
-        tokens = lineItems[1:-1]
-        K = int(lineItems[-1])
+        tokens = lineItems[1:]
         T = BinaryTree()
         T.constructFromTokens(tokens)
         s = Solution()

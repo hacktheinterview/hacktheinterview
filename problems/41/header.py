@@ -1,3 +1,4 @@
+import sys
 class BinaryTreeDeserializer:
     def __init__(self, tokens):
         self.tokens = tokens
