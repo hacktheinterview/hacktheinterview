@@ -6,8 +6,8 @@
 //     TreeNode(int x) { val = x; left = null; right = null; }
 // }
 class Solution {
-    public ArrayList<ArrayList<Integer>> levelOrder(TreeNode root, int K) {
+    public ArrayList<ArrayList<Integer>> levelOrder(TreeNode root) {
         // Implement the solution
-        
+
     }
 }

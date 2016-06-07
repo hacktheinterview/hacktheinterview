@@ -50,9 +50,6 @@ class BinaryTree {
 
     void printTreeToOutputFormat() {
         StringBuilder sb = new StringBuilder();
-        if (this.root == null) {
-            System.out.println(sb.toString());
-        }
         serialize(this.root, sb);
         System.out.println(sb.substring(0, sb.length() - 1));
     }
