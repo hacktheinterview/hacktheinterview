@@ -6,6 +6,6 @@
 // typedef struct node TreeNode;
 
 // Please refrain from using print statements
-TreeNode* constructBinaryTree(int n, int* preorder, int* inorder) {
+TreeNode* constructBinaryTree(int n, int* inorder, int* postorder) {
     // Implement the solution here
 }
