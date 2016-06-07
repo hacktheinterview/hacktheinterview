@@ -1,3 +1,3 @@
 class Solution:
-    def lca(self, root, A, B):
+    def constructBinaryTree(self, preorder, inorder):
         # Implement the solution here

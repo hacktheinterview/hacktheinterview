@@ -17,7 +17,7 @@ class Solution {
     }
 
     public TreeNode construct(int[] preorder, int preStart, int preEnd, int[] inorder, int inStart, int inEnd){
-        if(preStart>preEnd||inStart>inEnd){
+        if (preStart > preEnd || inStart > inEnd) {
             return null;
         }
 

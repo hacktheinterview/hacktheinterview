@@ -6,6 +6,8 @@
 // typedef struct node TreeNode;
 
 // Please refrain from using print statements
-int lca(TreeNode* root, int A, int B) {
-    // Implement the function
+TreeNode* constructBinaryTree(int n, int* preorder, int* inorder) {
+    int preIndex = 0;
+    TreeNode* root = buildTree(preorder, inorder, 0, n - 1, &preIndex);
+    return root;
 }

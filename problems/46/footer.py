@@ -3,10 +3,11 @@ if __name__ == "__main__":
     for i in range(test_cases):
         lineItems = [l for l in raw_input().split(" ")]
         n = int(lineItems[0])
-        inorder = lineItems[1:(n + 1)]
-        preorder = lineItems[(n + 1):]
+        preorder = lineItems[1:(n + 1)]
+        inorder = lineItems[(n + 1):]
 
         s = Solution()
-        root = s.constructBinaryTree(inorder, preorder)
+        root = s.constructBinaryTree(preorder, inorder)
         T = BinaryTree()
         T.root = root
+        T.printTreeToOutputFormat()

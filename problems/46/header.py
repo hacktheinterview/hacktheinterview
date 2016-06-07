@@ -9,12 +9,12 @@ class BinaryTreeSerializer:
         if not root:
             output.write("# ")
             return
-        output.write(root->val)
+        output.write(root.val)
         output.write(" ")
         self._serialize(root.left, output)
         self._serialize(root.right, output)
 
-    def deserialize(self):
+    def serialize(self):
         output = cStringIO.StringIO()
         self._serialize(self.root, output)
         result = output.getvalue()
@@ -62,6 +62,7 @@ class BinaryTree:
 
     def printTreeToOutputFormat(self):
         x = BinaryTreeSerializer(self.root)
+        x.serialize()
 
 class TreeNode:
     def __init__(self, val):
