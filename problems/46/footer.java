@@ -6,9 +6,6 @@ class BinaryTree {
 
     void printTreeToOutputFormat() {
         StringBuilder sb = new StringBuilder();
-        if (this.root == null) {
-            System.out.println(sb.toString());
-        }
         serialize(this.root, sb);
         System.out.println(sb.substring(0, sb.length() - 1));
     }
@@ -61,16 +58,16 @@ public class Main {
             int inorder[] = new int[n];
             int preorder[] = new int[n];
             for (int j = 0; j < n; j++)
-                inorder[j] = Integer.parseInt(tokens[j+1]);
+                preorder[j] = Integer.parseInt(tokens[j+1]);
 
             for (int j = 0; j < n; j++)
-                preorder[j] = Integer.parseInt(tokens[n+j+1]);
+                inorder[j] = Integer.parseInt(tokens[n+j+1]);
 
             BinaryTree tree = new BinaryTree();
             Solution s = new Solution();
-            TreeNode root = s.constructBinaryTree(n, inorder, preorder);
+            TreeNode root = s.constructBinaryTree(preorder, inorder);
             tree.updateRoot(root);
-            System.out.println(tree.printTreeToOutputFormat());
+            tree.printTreeToOutputFormat();
         }
     }
 }

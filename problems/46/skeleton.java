@@ -6,7 +6,7 @@
 //     TreeNode(int x) { val = x; left = null; right = null; }
 // }
 class Solution {
-    public int lca(TreeNode root, int A, int B) {
+    public TreeNode constructBinaryTree(int[] preorder, int[] inorder) {
         // Implement the solution
     }
 }
